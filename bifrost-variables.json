@@ -1,0 +1,6197 @@
+[
+  {
+    "collection": "Mode",
+    "name": "Base/bfc-base-1",
+    "id": "VariableID:4208:3049",
+    "key": "b47e01a04850743f39a7f0486059e83e3b48b246",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Base/bfc-base-2",
+    "id": "VariableID:4208:3050",
+    "key": "963d5350d3c338823bc0e22d1564dc2caa145591",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Base/bfc-base-3",
+    "id": "VariableID:4208:3051",
+    "key": "4bc69c6abe1f4adbeac709be87eb2889ee9c233e",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Base/bfc-base-dimmed",
+    "id": "VariableID:4208:3052",
+    "key": "914acf5e022c39663aacbb74b0a47798cecedc91",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Base/bfc-base-dimmed-2",
+    "id": "VariableID:6804:5318",
+    "key": "232356a4ecba09daf7a9da167354981f32a8d31f",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Base/bfc-base-dimmed-3",
+    "id": "VariableID:6804:5340",
+    "key": "ad22cf082f950bf446c6031601f80262f350f631",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Base/bfc-base-disabled",
+    "id": "VariableID:4208:3053",
+    "key": "b84d201719bd603a1badc6eb8b734d682f7b412d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Base/bfc-base-c-1",
+    "id": "VariableID:4208:3054",
+    "key": "2837100a064fe5c6d368c990bc09ebe3b46e0a22",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Base/bfc-base-c-2",
+    "id": "VariableID:4208:3055",
+    "key": "0a715c7d3de7d9b12249078ae1cf93eaacb58b32",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Base/bfc-base-c-theme",
+    "id": "VariableID:4208:3056",
+    "key": "8822a82f60f23d2bfc514e1d514b605dfbf86d11",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Base/bfc-base-c-brand",
+    "id": "VariableID:8254:7939",
+    "key": "2f2785d8824ed9971da8cee26d34698616d24def",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Base/bfc-base-c-chill",
+    "id": "VariableID:4208:3061",
+    "key": "a3f3191611012b5a5c452407e932baffc976975e",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Base/bfc-base-c-attn",
+    "id": "VariableID:4208:3060",
+    "key": "28421f979730d9b9244be023e35836dfdb1da0a4",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Base/bfc-base-c-success",
+    "id": "VariableID:4208:3057",
+    "key": "a191eb8514378fb58689206969c647636056e86d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Base/bfc-base-c-warning",
+    "id": "VariableID:4208:3058",
+    "key": "c44d0dfd44964dcd8b9a4178c9240613b73f3af0",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Base/bfc-base-c-alert",
+    "id": "VariableID:4208:3059",
+    "key": "9b913c53f125722cda5d8d3597811e9687513819",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Base/bfc-base-c-wcag",
+    "id": "VariableID:4208:3062",
+    "key": "595829b878413cd2873125cfb2f4fbd8be83a29f",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Base/bfc-base-c-dimmed",
+    "id": "VariableID:4208:3063",
+    "key": "18c1bd566b33822c9e82aa4f308c15f8b9776a79",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Base/bfc-base-c-disabled",
+    "id": "VariableID:4208:3064",
+    "key": "3cae2e1e4b27a5d108bb7eb53d1c00641cc741f8",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Base/bfc-base-c-inverted-1",
+    "id": "VariableID:4208:3065",
+    "key": "18d4066ebc187eaec04c6f7d3945ca268186a14b",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Base/bfc-base-c-inverted-2",
+    "id": "VariableID:4208:3066",
+    "key": "c93f3861932dd975d25b32bfecec594892caad7b",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Base/bfc-base-c-inverted-3",
+    "id": "VariableID:6977:25177",
+    "key": "17257cec004f3e9eb18b17d4b376aa0c7b5ad374",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Theme/bfc-theme-1",
+    "id": "VariableID:4208:3087",
+    "key": "14bb458fcf154018f25fd4558ef1c4c7b9071750",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Theme/bfc-theme-2",
+    "id": "VariableID:4208:3088",
+    "key": "458bae30b4e35de1b7db0fabfbd0a5a165000ad3",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Theme/bfc-theme-3",
+    "id": "VariableID:4208:3089",
+    "key": "1ebac36ee29ede9631fce479a3ef8098b090fc2f",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Theme/bfc-theme-c-1",
+    "id": "VariableID:4208:3090",
+    "key": "5e5afbd3d2825105c9d97d5db8b61ebaa0fdfed7",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Theme/bfc-theme-c-2",
+    "id": "VariableID:4208:3091",
+    "key": "ef0e587fff1a7fa01b4dbe54e6f1e98c706e8ba1",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Theme/bfc-theme-hc",
+    "id": "VariableID:8307:24599",
+    "key": "f90c411a51a5e8649012341c2314a9b60e7237c5",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Theme/bfc-theme-fade",
+    "id": "VariableID:8257:20083",
+    "key": "9f8c7df73b3f559df0409f7f3f2539d03161288a",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Theme/bfc-theme-fade-c",
+    "id": "VariableID:8257:20084",
+    "key": "324c209f1c7ecf677bc7f8b4bda412a9472177d6",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Neutral/bfc-neutral",
+    "id": "VariableID:8307:24770",
+    "key": "bc378a2b57f483d26dd5f7c9158edbb25e2e8346",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Neutral/bfc-neutral-2",
+    "id": "VariableID:9910:62066",
+    "key": "a93b98960360d4fa6deeb6c9b547ba848c476d53",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Neutral/bfc-neutral-c",
+    "id": "VariableID:8307:24771",
+    "key": "9d1b0e1512ccce01bb84d688d2af1f41b1e8d6f3",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Neutral/bfc-neutral-hc",
+    "id": "VariableID:8307:24772",
+    "key": "6f8e9a3d9e6b5376f91cf8fb9ea911e8f23a55d5",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Neutral/bfc-neutral-fade",
+    "id": "VariableID:8307:24773",
+    "key": "60ad026fdb4921d0e44f36d0155c17660ac0971a",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Neutral/bfc-neutral-fade-c",
+    "id": "VariableID:8307:24774",
+    "key": "4a67b4d00ecea2d7a8d8b67aee8255ca7447b99c",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Brand/bfc-brand",
+    "id": "VariableID:8257:17906",
+    "key": "872f2d456b4197b1f01c0cc4fadb0f731d342f05",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Brand/bfc-brand-c",
+    "id": "VariableID:8257:17907",
+    "key": "7021d0459b5ece749e035f64cf5033235f098dde",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Brand/bfc-brand-hc",
+    "id": "VariableID:8307:24587",
+    "key": "78fa052ab41b3de5826dbdf6287862d12caf1efc",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Brand/bfc-brand-fade",
+    "id": "VariableID:8257:20085",
+    "key": "aac21dab6245aa1ed8d3dcfb5077085361281e80",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Brand/bfc-brand-fade-c",
+    "id": "VariableID:8257:20086",
+    "key": "a6456c03ca116ea440ffff9762603e967906bba7",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Chill/bfc-chill",
+    "id": "VariableID:4208:3077",
+    "key": "905e6611de3163444f2026be89baa359c051d796",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Chill/bfc-chill-c",
+    "id": "VariableID:4208:3086",
+    "key": "aee262a766074599b8fafd90359a4475d5d55630",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Chill/bfc-chill-hc",
+    "id": "VariableID:8307:24617",
+    "key": "74bf8a5c240c24b97487ca3040463a751ab0cb03",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Chill/bfc-chill-fade",
+    "id": "VariableID:8257:20087",
+    "key": "02722d5e9b020f0d3cefbd6d833cbc62ed7036d1",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Chill/bfc-chill-fade-c",
+    "id": "VariableID:8257:20088",
+    "key": "b50f6d82d4ceb76352f8dc8abe998c3eb7500bc4",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Attention/bfc-attn",
+    "id": "VariableID:4208:3076",
+    "key": "3623b1127b526d50815297741d19090217847c9b",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Success/bfc-success",
+    "id": "VariableID:4208:3074",
+    "key": "a6d961fcc5af3e17fc425cd7593ba57d96df45b2",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Success/bfc-success-c",
+    "id": "VariableID:4208:3083",
+    "key": "b452a57d196298ee8b860ead11653499b0a08df9",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Success/bfc-success-hc",
+    "id": "VariableID:8307:24647",
+    "key": "a3d4e776cc198725c4ff73e5d9ff752f8313e559",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Success/bfc-success-fade",
+    "id": "VariableID:4208:3075",
+    "key": "8c45fd10d81a81e4b883d32837d323ebd21b75e8",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Success/bfc-success-fade-c",
+    "id": "VariableID:4208:3084",
+    "key": "c940ceceda20b78de5791a8e0c5e782fdbd606cb",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Attention/bfc-attn-c",
+    "id": "VariableID:4208:3085",
+    "key": "9cbe8267e82f13a0e90084d773ae598d34f3007a",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Attention/bfc-attn-hc",
+    "id": "VariableID:8307:22623",
+    "key": "501af30585cdf5031a402e2b37f764785c6153ea",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Attention/bfc-attn-fade",
+    "id": "VariableID:8257:20389",
+    "key": "9594e63ec44caf387fe5fca0c4e3a0ba24edc640",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Attention/bfc-attn-fade-c",
+    "id": "VariableID:8257:20390",
+    "key": "4e4801a917e9b05c2d7e5bd8970d4be826ac6cbe",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Warning/bfc-warning",
+    "id": "VariableID:4208:3072",
+    "key": "58ddd320eeb3833e0814f25978b3cadbc0fdeefe",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Warning/bfc-warning-c",
+    "id": "VariableID:4208:3081",
+    "key": "03fe951a50491a1b8394cd9fafdf45b0cb16ca13",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Warning/bfc-warning-hc",
+    "id": "VariableID:8307:24661",
+    "key": "0adf440973ffd2b83789bbaceeabb204ad4c1381",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Warning/bfc-warning-fade",
+    "id": "VariableID:4208:3073",
+    "key": "c67fdc42b6cee94cce197dbee53bdb05561af4f3",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Warning/bfc-warning-fade-c",
+    "id": "VariableID:4208:3082",
+    "key": "2560b7e1351ed14e6e6ba32ea9c1c16ef2d5fe0e",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Alert/bfc-alert",
+    "id": "VariableID:4208:3069",
+    "key": "6117752ae0d24cacd6585659361765b28fa76469",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Alert/bfc-alert-2",
+    "id": "VariableID:7008:7534",
+    "key": "5484fa6f271490bf906c4b4ff90c8820cf2efaf1",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Alert/bfc-alert-c",
+    "id": "VariableID:4208:3078",
+    "key": "e078fbd02308eb512191628a17f9891ef404d213",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Alert/bfc-alert-hc",
+    "id": "VariableID:8307:24670",
+    "key": "28a37e2e9d3605d96e03d6ee05b2494a99e70fef",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Alert/bfc-alert-fade",
+    "id": "VariableID:4208:3071",
+    "key": "36df5f63976a2c65f15d1d20da658e7c16453e91",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Alert/bfc-alert-fade-c",
+    "id": "VariableID:4208:3080",
+    "key": "0280359ce4b1c1cadc66cede173959d54a0413d9",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Alert/bfc-alert-fade-2",
+    "id": "VariableID:4208:3070",
+    "key": "7f0e0cca71753cc29d071f62936aed78b9d9d366",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Pop/Alert/bfc-alert-fade-2-c",
+    "id": "VariableID:4208:3079",
+    "key": "0d0b4fdf57520a0c5da712ab009fd0411f3f54cc",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Miscellaneous/bfc-overlay",
+    "id": "VariableID:4208:3067",
+    "key": "d161a47b1359e7cda161e31afb7e189eeac5354b",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Miscellaneous/bfc-overlay-c",
+    "id": "VariableID:4208:3068",
+    "key": "469716119d65211597e77559167131928b5bff96",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Miscellaneous/ios-browser-bg",
+    "id": "VariableID:4277:3000",
+    "key": "48a9c81af750dc4c81110cc94dae3ed55c751fae",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Miscellaneous/transparent-base-3",
+    "id": "VariableID:6994:7457",
+    "key": "2c1c60f405c2dd1f77833de89bb4d2dbc9870af9",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Miscellaneous/transparent-base-2",
+    "id": "VariableID:10663:87321",
+    "key": "d5c335e076dc7d4806f7d5e5d82ebdb394cce41a",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Miscellaneous/transparent-base-1",
+    "id": "VariableID:10663:87322",
+    "key": "aa8585d8b0314c36071772dc7e928bd291fa34ca",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Miscellaneous/transparent-base-dimmed",
+    "id": "VariableID:10664:87323",
+    "key": "a4ad81af58c962c519c991036e7b212cc4c61b15",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Miscellaneous/high-contrast",
+    "id": "VariableID:8373:14834",
+    "key": "f06f87d917b75da5c16f54891a863ffdc510c63b",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Miscellaneous/high-contrast-inv",
+    "id": "VariableID:8373:14835",
+    "key": "1153a6692228b8808f36a2cf789c335074e25e2f",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Effect variables/Shadows/Opacity/bfc-theme-1-40",
+    "id": "VariableID:4339:2968",
+    "key": "7a2bc18ef887b51521ae826baf4ed14e12532c10",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Effect variables/Shadows/Axis/None",
+    "id": "VariableID:4271:3057",
+    "key": "dcd41850699265184edcabfc522862014265aa2b",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Effect variables/Shadows/Axis/XS",
+    "id": "VariableID:4271:3058",
+    "key": "28a4b85b5d1c07170822306ff220a56ed121d064",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Effect variables/Shadows/Axis/XS-neg",
+    "id": "VariableID:4271:3059",
+    "key": "dd6d2717920949baee127c6196468f17f78c4f04",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Effect variables/Shadows/Axis/S",
+    "id": "VariableID:4271:3060",
+    "key": "2a33bfbda64dc431374428e7291c5ac9962904df",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Effect variables/Shadows/Axis/S-neg",
+    "id": "VariableID:4271:3061",
+    "key": "b80506daf0507ca9d26862e30995459752fdd12a",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Effect variables/Shadows/Axis/M",
+    "id": "VariableID:4271:3062",
+    "key": "8d1077afa5230f77585c46f72bcb32e5cc9cdf49",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Effect variables/Shadows/Axis/L",
+    "id": "VariableID:4271:3063",
+    "key": "2a122d55413ee244ad22eb84effcb415361ffe5b",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Effect variables/Shadows/Axis/XL",
+    "id": "VariableID:4271:3064",
+    "key": "ad138ca67ff904f9d6c116f7a2ff15b20d66e857",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Effect variables/Shadows/Blur/None",
+    "id": "VariableID:4271:3065",
+    "key": "c9e6defc5bfd7ff99dd1bed7ddd7771264a27ed6",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Effect variables/Shadows/Blur/XS",
+    "id": "VariableID:4271:3066",
+    "key": "1deeeca2922416dc09a9d53f4a8406177279bd9a",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Effect variables/Shadows/Blur/S",
+    "id": "VariableID:4271:3068",
+    "key": "e9187bbda58fbb69c4b21431a3e20b1cb2137e4b",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Effect variables/Shadows/Blur/M",
+    "id": "VariableID:4271:3070",
+    "key": "6db2825a70cc5a8808ee9ebd6e079719cca1a70a",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Effect variables/Shadows/Blur/L",
+    "id": "VariableID:4271:3071",
+    "key": "963d4ccb223493e0fce76753afae2aa7c324933f",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Effect variables/Shadows/Blur/XL",
+    "id": "VariableID:4271:3072",
+    "key": "87cf5d9d2e2d3e4f70d516dd2cd057766bf2326c",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Effect variables/Shadows/Blur/XXL",
+    "id": "VariableID:4271:3073",
+    "key": "dc2b5954e6f0f093802b12626ae87a42caf0ef7a",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Effect variables/Shadows/Opacity/bfc-shadow",
+    "id": "VariableID:4271:3074",
+    "key": "d113e34092408bb01b115b89f390001d26b46a39",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Effect variables/Shadows/Opacity/200",
+    "id": "VariableID:4271:3075",
+    "key": "51e22ea7cf9fe5454144c2bb6fc6ee5365b452b2",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Effect variables/Shadows/Opacity/300",
+    "id": "VariableID:4271:3076",
+    "key": "aab32cd07c51a7681a2acfa2d4213080e737d83f",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Effect variables/Shadows/Opacity/400",
+    "id": "VariableID:9456:32553",
+    "key": "6c657f5060bc6bb2f470e1c7f43f72742f433ae5",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Mode",
+    "name": "Effect variables/Shadows/Spread/None",
+    "id": "VariableID:4271:3077",
+    "key": "91b8fb91306245674cb3e6bc0e0b14d9dc1fd47a",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Effect variables/Shadows/Spread/XS-neg",
+    "id": "VariableID:4271:3078",
+    "key": "41672f4fd4e384f7d84b639b4ea7cb44bad32abd",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Border radius/None",
+    "id": "VariableID:4376:2991",
+    "key": "009d8cf61c0846da9049ee698f33dea3a964ad8a",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Spacing/None",
+    "id": "VariableID:4378:2968",
+    "key": "0f609a2bf0a14ca128c0c79d68f1bd0130f63e0b",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Spacing/XXS",
+    "id": "VariableID:4378:2969",
+    "key": "309b8e80eff438dfb595cf09ecf0d816201b3b48",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Spacing/XS",
+    "id": "VariableID:4378:2970",
+    "key": "fd0fd445f3bef48fed0dc54346e3016c0c40da66",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Spacing/S",
+    "id": "VariableID:4378:2971",
+    "key": "81f7c039c7f926d1301085fc17626cd66ca9ef91",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Spacing/M",
+    "id": "VariableID:4378:2972",
+    "key": "21e063c65d167b8a923e824deb1ff8270696571b",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Spacing/L",
+    "id": "VariableID:4378:2973",
+    "key": "baf9b1deccf19bd9bd7e63ce3236807349c89835",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Spacing/XL",
+    "id": "VariableID:4378:2974",
+    "key": "bbab0d7e98028615766abe21f549517ff319f972",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Spacing/XXL",
+    "id": "VariableID:4378:2975",
+    "key": "0b86721eb1125074d971e2725000969bae17156d",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Spacing/3XL",
+    "id": "VariableID:4378:2976",
+    "key": "a82f36de63cfec793b66e743ff33f2f72ca79d7f",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Spacing/4XL",
+    "id": "VariableID:4378:2977",
+    "key": "52faccc4889a7db3f0b723ab7b3f810f19ecd786",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Spacing/5XL",
+    "id": "VariableID:4378:2978",
+    "key": "bdec85801ff9d745a6cbf62ae06480dbda30fa24",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Spacing/6XL",
+    "id": "VariableID:4378:2979",
+    "key": "4616f17bef9dcefffcabd606ecdaecd9fd71b515",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Border radius/XS",
+    "id": "VariableID:4376:2992",
+    "key": "3ac16856bca5ffcfa86615277e94da396d3d7a24",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Border radius/S",
+    "id": "VariableID:4376:2993",
+    "key": "692cb676b4aa7e90c28e07807648ebe52c4dc354",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Border radius/M",
+    "id": "VariableID:4376:2994",
+    "key": "17f3356af8106450092c9bada065d2dda6565876",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Border radius/L",
+    "id": "VariableID:4376:2995",
+    "key": "171042daa80b49b6bac9457c1b89b9ce9f115fc8",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Border radius/XL",
+    "id": "VariableID:4376:2996",
+    "key": "04cbc085152371e058e568c3c5310a7aa93df3a3",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Border radius/Full",
+    "id": "VariableID:4376:2997",
+    "key": "d812938f982ab4cf055f1a3a5545507638a0ee9c",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Mode",
+    "name": "Visibility/dark-only",
+    "id": "VariableID:10119:56537",
+    "key": "ed46649c594edb68b3beecac0b0ad3bf6a1879e3",
+    "resolvedType": "BOOLEAN"
+  },
+  {
+    "collection": "Mode",
+    "name": "Visibility/light-only",
+    "id": "VariableID:10119:56538",
+    "key": "293861c0e9d8919c442a1a3268833ddde4ca771f",
+    "resolvedType": "BOOLEAN"
+  },
+  {
+    "collection": "Translations",
+    "name": "Cancel",
+    "id": "VariableID:4340:2974",
+    "key": "50613923d2e7916ef8352d520f04ccd032e6f6be",
+    "resolvedType": "STRING"
+  },
+  {
+    "collection": "Translations",
+    "name": "Save",
+    "id": "VariableID:4340:2975",
+    "key": "ce7e400dd99628fb0a34138b30366cac59a33b13",
+    "resolvedType": "STRING"
+  },
+  {
+    "collection": "Translations",
+    "name": "Edit",
+    "id": "VariableID:4340:2976",
+    "key": "50d6b8491bd88f7ba0b57d64c6094bcdf10c48c5",
+    "resolvedType": "STRING"
+  },
+  {
+    "collection": "Translations",
+    "name": "Change",
+    "id": "VariableID:4340:2978",
+    "key": "c5b6e8aa52de4ad54ebca8e2fddad8f215be236d",
+    "resolvedType": "STRING"
+  },
+  {
+    "collection": "Translations",
+    "name": "Create",
+    "id": "VariableID:4340:2977",
+    "key": "0e5144ec6e3c3ba9f5fca77d1c883157fadaf2d7",
+    "resolvedType": "STRING"
+  },
+  {
+    "collection": "Translations",
+    "name": "New",
+    "id": "VariableID:4340:2979",
+    "key": "4f656d19a98d9de8b2f8c624e6b7af608928d94e",
+    "resolvedType": "STRING"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/0",
+    "id": "VariableID:9268:74261",
+    "key": "6b2c7908ffbf8959862e77c36aab07ddd2da605f",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/10",
+    "id": "VariableID:9268:74262",
+    "key": "e16b188ae6f727e951bd4be3596db17702e1b80f",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/20",
+    "id": "VariableID:9268:74263",
+    "key": "2a514b04f2783dfeea90d1ad27cb23aeef5d58e4",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/30",
+    "id": "VariableID:9268:74264",
+    "key": "e285e21d9ea7bee4b43563ab69742dd55656cb57",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/40",
+    "id": "VariableID:9268:74265",
+    "key": "41c9d88781288c43ccb47f5bb12ff552e5559266",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/50",
+    "id": "VariableID:9268:74266",
+    "key": "fdba7702a0306a572261c1efa486dde80c494953",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/60",
+    "id": "VariableID:9268:74267",
+    "key": "8f427812bb31bbb8ce88fa02890f695d9fb179db",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/70",
+    "id": "VariableID:9268:74268",
+    "key": "427428f4944f42e76135f8cab64f2c9bf92d276a",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/80",
+    "id": "VariableID:9268:74269",
+    "key": "c0a002b07eaaa2bfec4fbc416557aa4ccf44555e",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/90",
+    "id": "VariableID:9268:74270",
+    "key": "b9a80534530d13c12bd3f17de485e54d53075acf",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/100",
+    "id": "VariableID:9262:60930",
+    "key": "c6d10475c4d91e0e53502526184d202d9935faeb",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/110",
+    "id": "VariableID:9268:74271",
+    "key": "3711d9805dd6836e877682dd3a7de8c33ae8004f",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/120",
+    "id": "VariableID:9268:74272",
+    "key": "b182b003ac853cc2cb5743e8ce88fb7fdef05f56",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/130",
+    "id": "VariableID:9268:74273",
+    "key": "e3a6f27b9234f9d24bf6019c7d3c970cb60b4879",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/140",
+    "id": "VariableID:9268:74274",
+    "key": "861f66242d026b9b940f9fc03d9a2fba7a521c09",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/150",
+    "id": "VariableID:9262:60929",
+    "key": "9d775ec70e64f5c51f13b9bd403f98afd683d7e3",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/160",
+    "id": "VariableID:9268:74275",
+    "key": "cbdd267c963c417bee6ac07192682b54fff4f040",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/170",
+    "id": "VariableID:9268:74276",
+    "key": "d4fdc7cf89b77c6bd8b0df1211b140a9d42645bb",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/180",
+    "id": "VariableID:9268:74277",
+    "key": "bc958b53db1ea305a7c2065bc00a46076792120c",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/190",
+    "id": "VariableID:9268:74278",
+    "key": "930a64e38c2b1b572b3708f7a27fd6f4c04fee72",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/200",
+    "id": "VariableID:9262:60919",
+    "key": "1eb87929fd3d14a6b30d1f63e25baf754f13ecd1",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/210",
+    "id": "VariableID:9268:74279",
+    "key": "8d2084d31d46b10206ea725d1451ae16213ee892",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/220",
+    "id": "VariableID:9268:74280",
+    "key": "cc320cc13bb56dc4dc14c5375cedf3183ff1ba74",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/230",
+    "id": "VariableID:9268:74281",
+    "key": "0a5270469297cc73592051f167e1314b3cef5f3b",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/240",
+    "id": "VariableID:9268:74282",
+    "key": "ff00b92d08d1fa6c825df82bdc1aece891366242",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/250",
+    "id": "VariableID:9262:60920",
+    "key": "cb2ecfec43236d7def471c413aa44421e55a83b9",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/260",
+    "id": "VariableID:9268:74283",
+    "key": "44b1d495463de607673048d9b7dfb2893ba6fef2",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/270",
+    "id": "VariableID:9268:74284",
+    "key": "53757a312e953647f49afab5fae3a82e5285d478",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/280",
+    "id": "VariableID:9268:74285",
+    "key": "b23020ece3d7f5c29b97f4a54c2af55139f62015",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/290",
+    "id": "VariableID:9268:74286",
+    "key": "91720611bb382414828863ae417b9c03496723e5",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/300",
+    "id": "VariableID:9262:60921",
+    "key": "77fb8ec428c723e0f66e8ffdecf07c759431b1ca",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/310",
+    "id": "VariableID:9268:74287",
+    "key": "1c6a2495d74503fed99c60a1bf1365d23a59b364",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/320",
+    "id": "VariableID:9268:74288",
+    "key": "e6f219038a04906e39f1c04f25093bcbdd6cd2ff",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/330",
+    "id": "VariableID:9268:74289",
+    "key": "d25057a4ae89cc98b283f60ef43d6853e36c995d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/340",
+    "id": "VariableID:9268:74290",
+    "key": "73e1d3536b4bd8b179a6071675e2d425e091e5a4",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/350",
+    "id": "VariableID:9268:74291",
+    "key": "7d9727b8dd767fa063d302c4881706e783e533b5",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/360",
+    "id": "VariableID:9268:74292",
+    "key": "19ca5d96eb95d4ff2ea63daa49adfc72195e8556",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/370",
+    "id": "VariableID:9268:74293",
+    "key": "e6498b83747df723820782f560d310208ca4a451",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/380",
+    "id": "VariableID:9268:74294",
+    "key": "5539f958914fde298289ebecee33d05acf85f54a",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/390",
+    "id": "VariableID:9268:74295",
+    "key": "7dcb3685968b30a7e1c0e10652e4dc161114e776",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/400",
+    "id": "VariableID:9268:74296",
+    "key": "81128be1a99d705bcb5dc460c38f7b191b938a26",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/410",
+    "id": "VariableID:9268:74297",
+    "key": "086694965db62a678cbff01b9f8d8c5d4c016c34",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/420",
+    "id": "VariableID:9268:74298",
+    "key": "73057466ea545db1a80d9261042038ef3677c646",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/430",
+    "id": "VariableID:9268:74299",
+    "key": "ad0bba83a551e102343d492aef2f405921325e63",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/440",
+    "id": "VariableID:9268:74300",
+    "key": "9d2d7895952cb45d5f27f1a5fd1420512f1a2f66",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/450",
+    "id": "VariableID:9268:74301",
+    "key": "68965a565153cdd9d230d514e021a10406eeef5f",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/460",
+    "id": "VariableID:9268:74302",
+    "key": "769fe377f51bae9f4955ae3fb6923bdef1fc0f29",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/470",
+    "id": "VariableID:9268:74303",
+    "key": "5659747ab3cefd2c0745318f1aaae066e40823fe",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/480",
+    "id": "VariableID:9268:74304",
+    "key": "35cbbb6051884dafb9eb545563dcf37965ffb2e2",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/490",
+    "id": "VariableID:9268:74305",
+    "key": "9877c6c9d25f824f43e54bec9c1c92428892d1d0",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/500",
+    "id": "VariableID:9268:74306",
+    "key": "bf1d63a4a9d16c7d40a5d9b4231bc1ad6eb9b45f",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/510",
+    "id": "VariableID:9268:74307",
+    "key": "c23f1b33a08f3fb8f81342fe2266229203a7963a",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/520",
+    "id": "VariableID:9268:74308",
+    "key": "497efc0874ce86239dab6643624c8e3ffc30585b",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/530",
+    "id": "VariableID:9268:74309",
+    "key": "140a8a8065a27733228b56db3be5b0e198ef0dca",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/540",
+    "id": "VariableID:9268:74310",
+    "key": "3ab75a54b834cff7f21781f703d9e95a4f199000",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/550",
+    "id": "VariableID:9268:74311",
+    "key": "603e3aa4e2dc562ef8083cef42700d36c50508af",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/560",
+    "id": "VariableID:9268:74312",
+    "key": "70dffb19fc4af4719b82c2a9639a7b49d3f24d15",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/570",
+    "id": "VariableID:9262:60924",
+    "key": "d4d4af78e6751545fa4c95248e311e5e6b2251fd",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/580",
+    "id": "VariableID:9268:74313",
+    "key": "f01e9324120ec3826c65038c65a1a667fa264c0e",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/590",
+    "id": "VariableID:9268:74314",
+    "key": "bd904da72df941d81444c1a97a24b835d9992ac5",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/600",
+    "id": "VariableID:9268:74315",
+    "key": "7bdc44fe19a4b0c0863e32ff1a68b4f6c8413b1b",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/610",
+    "id": "VariableID:9268:74316",
+    "key": "250e85845b9364cdb59db533d02aa8d9b60bbfef",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/620",
+    "id": "VariableID:9262:60925",
+    "key": "706336d7a7e72f3a727839742294cf5c355ca5f6",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/630",
+    "id": "VariableID:9268:74317",
+    "key": "5d58723f781d1b39fdad9e55b090ef8fd9a634fd",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/640",
+    "id": "VariableID:9268:74318",
+    "key": "0330d1d04567c6c1180a0f8ff8d6fa4c182795ad",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/650",
+    "id": "VariableID:9268:74319",
+    "key": "872a1a21b97a3f12f2b16ea8f9cce165fc4b6fab",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/660",
+    "id": "VariableID:9262:60926",
+    "key": "15ef06b8537f1fd8b03220ee6cba6d8bfc0bda0e",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/670",
+    "id": "VariableID:9268:74320",
+    "key": "c16bb56034f0ebd41a0f01d2dd3e1024ed66dc28",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/680",
+    "id": "VariableID:9268:74321",
+    "key": "2f40908899c08becd80cf65933c4fa7407d29a90",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/690",
+    "id": "VariableID:9268:74322",
+    "key": "417d3b52490fb5335f8fc0f48dbf10a7f9402e78",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/700",
+    "id": "VariableID:9268:74323",
+    "key": "e9f189e2c05cb02e14f864c60d0af20b9bc93cfa",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/710",
+    "id": "VariableID:9268:74324",
+    "key": "0aeada5ca100f60b2183b14ea4320aaa8bf5048f",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/720",
+    "id": "VariableID:9268:74325",
+    "key": "59b66093adf8aa6722686e1bcded93a0100413f3",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/730",
+    "id": "VariableID:9268:74326",
+    "key": "03fb05426bb763f8bd743aaaf524dddeed9e2392",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/740",
+    "id": "VariableID:9268:74327",
+    "key": "d3534f35684f3d6062ad164f943673677e556730",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/750",
+    "id": "VariableID:9268:74328",
+    "key": "ae8314394be60951479611657dd11390aed860bb",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/760",
+    "id": "VariableID:9268:74329",
+    "key": "d58070a87311d81765fc3ad5568a5d7f0f70d0f7",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/770",
+    "id": "VariableID:9268:74330",
+    "key": "00757c3624aec38ca33a3d283cf214c83d22e9dd",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/780",
+    "id": "VariableID:9268:74331",
+    "key": "07c0aebaa3717d092015d7b8f5a4e36a962bc1fb",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/790",
+    "id": "VariableID:9268:74332",
+    "key": "279e4cc262664679dc8f6fdf31538f4cff94c41a",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/800",
+    "id": "VariableID:9262:60927",
+    "key": "d3e0d6fa3f54c9d23a85e910e205100683a0ea3d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/810",
+    "id": "VariableID:9268:74333",
+    "key": "9a347034b32e16058765b815fade5e69a90f6f3b",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/820",
+    "id": "VariableID:9268:74334",
+    "key": "e60e6cba7d67fbe3bea23aad5ec69afcb96c267c",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/830",
+    "id": "VariableID:9268:74335",
+    "key": "23a372ce007623b4bb88949bbf35102bf5d862dc",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/840",
+    "id": "VariableID:9268:74336",
+    "key": "79966dfda80d4b719fc48674e28cc45ec8b55afe",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/850",
+    "id": "VariableID:9268:74337",
+    "key": "bdbd919960c75dc402841995cabd09debd930098",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/860",
+    "id": "VariableID:9268:74338",
+    "key": "61ef47bb497007c9467e0ae11efd39adf87f5a03",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/870",
+    "id": "VariableID:9268:74339",
+    "key": "7dcef3cb07a7cc2936599e37a745e86cca7aa9c9",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/880",
+    "id": "VariableID:9268:74340",
+    "key": "c301c074bfb06dd782164b61e369d0f80e9096d2",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/890",
+    "id": "VariableID:9262:60928",
+    "key": "3480336dcbec525e322094d7f017da32ceb92ba9",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/900",
+    "id": "VariableID:9268:74341",
+    "key": "f1ce533a2187211fdb3bf460b2397fa978a816a6",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/910",
+    "id": "VariableID:9268:74342",
+    "key": "57769db543c727479b5c607e3e6cc64baf6089d0",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/920",
+    "id": "VariableID:9268:74343",
+    "key": "8fcdba6c9a14f5582c0d1027a80a855de479136c",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/930",
+    "id": "VariableID:9268:74344",
+    "key": "2fa4b12a1f68073c1519941ccf1e21404fa7897b",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/940",
+    "id": "VariableID:9268:74345",
+    "key": "42fbff6b97766bc2c2904d47efa75c9cc9c43f32",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/950",
+    "id": "VariableID:9268:74346",
+    "key": "3410702e50d21901db692200dcbc9edae16c3003",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/960",
+    "id": "VariableID:9268:74347",
+    "key": "96cdee95b83bca569524a9a3206b66e0bf662365",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/970",
+    "id": "VariableID:9268:74348",
+    "key": "db968a5690d219bb02e8b4f369cebbf7d5342c0c",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/980",
+    "id": "VariableID:9268:74349",
+    "key": "b8935b200b0d2701b781d4822ce190d115ada765",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/990",
+    "id": "VariableID:9268:74350",
+    "key": "d1ccd15d8586be39531da595df5c851fb5492572",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Teal/1000",
+    "id": "VariableID:9268:74351",
+    "key": "f878e64f108958e149ba90ec3d89c255e4d7d898",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/0",
+    "id": "VariableID:9268:74160",
+    "key": "0e6bf8cece7381823c0fd4583696859ba972ea12",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/0",
+    "id": "VariableID:10134:81665",
+    "key": "76bbd960092c74597fc2bf5681f98be42cc90431",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/10",
+    "id": "VariableID:10134:81666",
+    "key": "8f9c2b7e76e4d59392c9650256750653831b8d3a",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/20",
+    "id": "VariableID:10134:81667",
+    "key": "68fe7eef7e6d35f7ea764ad37f74971b07e933d7",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/30",
+    "id": "VariableID:10134:81668",
+    "key": "ee93022e8165036159b51223fbb9a7a5756625aa",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/40",
+    "id": "VariableID:10134:81669",
+    "key": "a743f8b1bac3634fd684227a6d9c43b3ce837122",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/50",
+    "id": "VariableID:10134:81670",
+    "key": "921b03288079be2644a916ffa0dfbb7ea1518117",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/60",
+    "id": "VariableID:10134:81671",
+    "key": "250957bea2467c611da5504deb634619d0dce1ae",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/70",
+    "id": "VariableID:10134:81672",
+    "key": "5c82b14d35d5aa00df55279a1a7e6c0e2b4b498c",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/80",
+    "id": "VariableID:10134:81673",
+    "key": "e2315ce2bf6584c941c611d0b79362aef030b153",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/90",
+    "id": "VariableID:10134:81674",
+    "key": "a698e97e57acd99351f0a216d3f689b7f7e25b53",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/100",
+    "id": "VariableID:9299:75324",
+    "key": "c7856872a7692617aa6588c8a326a90a9cbc9459",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/110",
+    "id": "VariableID:10134:81676",
+    "key": "834a4f2477576324e96eabe3a3934ca6f3e21ad6",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/120",
+    "id": "VariableID:9581:60468",
+    "key": "25f6ebac940c723ce5411e05b0bed79e8629ffb5",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/130",
+    "id": "VariableID:10134:81678",
+    "key": "ff93159d2a92f327b733da3115033b9c3c4f0752",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/140",
+    "id": "VariableID:10134:81679",
+    "key": "279b64a11d90b1a77fdc22d98d6e91710849f3f7",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/150",
+    "id": "VariableID:9299:76440",
+    "key": "821ae85466607301d48b3f52948d51a5e85a9f3e",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/160",
+    "id": "VariableID:10134:81681",
+    "key": "b66a0f89dbfe560ca8a322c7d9b82900022c4085",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/170",
+    "id": "VariableID:10134:81682",
+    "key": "96e179d4c5650e0f6725562c42082a278748b42f",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/180",
+    "id": "VariableID:10134:81683",
+    "key": "fff387e7cf91301bd0d1adbd2d487dd63a3d55f4",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/190",
+    "id": "VariableID:10134:81684",
+    "key": "e9db1defb5f59239b5ada6f31873992a44e1e104",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/200",
+    "id": "VariableID:9299:76441",
+    "key": "55a94c364ba457e468ede7d2235fecf8fc9ab4c4",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/210",
+    "id": "VariableID:10134:81686",
+    "key": "7e69fb41bfe96037e9a4e7f48c2257221b272524",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/220",
+    "id": "VariableID:10134:81687",
+    "key": "5be9a7f908f0e2ed0a0e6fad9645092d9546c9da",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/230",
+    "id": "VariableID:10134:81688",
+    "key": "d00709ec5495e82dc6263c467593cbeb599624f5",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/240",
+    "id": "VariableID:10134:81689",
+    "key": "e9d1041545ce5ceb988e5781453d469391374ee9",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/250",
+    "id": "VariableID:9299:76442",
+    "key": "148ed877433ae32d6be884dc5350269f070dc914",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/260",
+    "id": "VariableID:10134:81691",
+    "key": "0c173ab970788c8b79a4ff353ba43c1fa0e96aef",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/270",
+    "id": "VariableID:10134:81692",
+    "key": "43ee11a2136c81abf74b5b32a7539b265909de67",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/280",
+    "id": "VariableID:10134:81693",
+    "key": "d242c6c7acff730bfe08f9e8328531b09767afbe",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/290",
+    "id": "VariableID:10134:81694",
+    "key": "6cdadf9f6b6d489c39de9a0d198e2a5ff47bd110",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/300",
+    "id": "VariableID:9299:76443",
+    "key": "53324ac369a87ca0d78583a25e871bdbaee914b4",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/310",
+    "id": "VariableID:10134:81696",
+    "key": "cc56ff4e68235adf5dbfbbd504dd5c7435aadfcb",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/320",
+    "id": "VariableID:10134:81697",
+    "key": "e8a089e327abf18983dd9f05c23877990f30487d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/330",
+    "id": "VariableID:10134:81698",
+    "key": "b9d5a39cc505a492b7d2f00a2ee8e89dfb95c5f3",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/340",
+    "id": "VariableID:10134:81699",
+    "key": "f61ee0150f9ac49d212c144306b3e0f9e4288fef",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/350",
+    "id": "VariableID:10134:81700",
+    "key": "eae411188151e2911c4dae27ce0cd7c622e819a7",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/360",
+    "id": "VariableID:10134:81701",
+    "key": "7b06e6c21078cd96b0abe6d7bcbc43cc5aafed6e",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/370",
+    "id": "VariableID:10134:81702",
+    "key": "8ecb918b70139214fc1f51d4a411ae4d1a9be713",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/380",
+    "id": "VariableID:10134:81703",
+    "key": "40ebab8243029866185663b7fe7b89335b49e529",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/390",
+    "id": "VariableID:10134:81704",
+    "key": "8a4cc116356873ae9de4a8cce1f939f8d6bb9c7c",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/400",
+    "id": "VariableID:10134:81705",
+    "key": "0b79fbe3e1af8b77df2f5d9fb5894b5a0c2a9727",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/410",
+    "id": "VariableID:10134:81706",
+    "key": "a257a87a0554372c967f6ffc3b1db85a0ea06a35",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/420",
+    "id": "VariableID:10134:81707",
+    "key": "7e77cd462566ebef86e5a4250cd422780bb38f5d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/430",
+    "id": "VariableID:10134:81708",
+    "key": "0c4df9ec24499363d8a4683a81dae4f1eb2403f5",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/440",
+    "id": "VariableID:10134:81709",
+    "key": "f0ffeebfda69d3290029a9b5d24c462398e08ca1",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/450",
+    "id": "VariableID:10134:81710",
+    "key": "1654482ee0cf8e40e436fb0ba93d418dd593f810",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/460",
+    "id": "VariableID:10134:81711",
+    "key": "c43f52b1d9862f48aabb38f211b203a66a11ebe9",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/470",
+    "id": "VariableID:10134:81712",
+    "key": "562982a1f2458ae3cb37951386da4fc704700ef7",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/480",
+    "id": "VariableID:10134:81713",
+    "key": "0d7334afdac9eb2756204270eb250184de36b698",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/490",
+    "id": "VariableID:10134:81714",
+    "key": "ff74eabec58b65954783e620cc870abd2184a401",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/500",
+    "id": "VariableID:10134:81715",
+    "key": "4b64a7070f60a3bae867a8a671a0f8203a39c635",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/510",
+    "id": "VariableID:10134:81716",
+    "key": "4cacd4500815d3fdca1c760076abe2b2ad979e52",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/520",
+    "id": "VariableID:10134:81717",
+    "key": "2aeb13d4a1879e8ed42633cdbc23c388b0f37115",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/530",
+    "id": "VariableID:10134:81718",
+    "key": "41db5f2cc767c2fc3bdfb637f09c223b90609096",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/540",
+    "id": "VariableID:10134:81719",
+    "key": "bb19a228f1837bbed6a2343c9f02450271066b54",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/550",
+    "id": "VariableID:10134:81720",
+    "key": "cafec445d3be6d27d9ceeea37523c92d39b77073",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/560",
+    "id": "VariableID:10134:81721",
+    "key": "b99d2caf748533b728d1bc5c3222294ac08936aa",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/570",
+    "id": "VariableID:9302:79717",
+    "key": "cda1fa96694ba6ba7fee078c5f78194b5c9d5400",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/580",
+    "id": "VariableID:10134:81723",
+    "key": "3514a4b042af564bc259a37bc81e7bf3d1e0da7c",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/590",
+    "id": "VariableID:10134:81724",
+    "key": "dde9944d9ba3ddc31bd9cedac7a735dfc36a9ea0",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/600",
+    "id": "VariableID:10134:81725",
+    "key": "c1ecdf99a5e7e7036b32550f3aee4dca0f56631c",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/610",
+    "id": "VariableID:10134:81726",
+    "key": "1c16684889b5bcf765a3227a06e769f5d8993f50",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/620",
+    "id": "VariableID:9299:76444",
+    "key": "9c276a652e9edb13acc3ffe7f6b4d011dd7a8a71",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/630",
+    "id": "VariableID:10134:81728",
+    "key": "d6614a565e4dbbebe3a61547aaf88229661da361",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/640",
+    "id": "VariableID:10134:81729",
+    "key": "7a4fe9c8c6d9641e071e04d43d04f7bcb4238035",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/650",
+    "id": "VariableID:10134:81730",
+    "key": "0f85d629208bd270a7aec20f8c1c0ff8d9ca8b8e",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/660",
+    "id": "VariableID:9299:76445",
+    "key": "7c70e7f75fdc1ebfa3b50ee863438c12dc7677fc",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/670",
+    "id": "VariableID:10134:81732",
+    "key": "cb5202979a6a96e60f27a24534ca097222e1b3eb",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/680",
+    "id": "VariableID:10134:81733",
+    "key": "22b2d34b54cc83d88f646b1e3f7d1db2468c52a8",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/690",
+    "id": "VariableID:10134:81734",
+    "key": "a1c638c2191df0207c9c6d461b971534fb418cc0",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/700",
+    "id": "VariableID:10134:81735",
+    "key": "9140093e74f4dd0a44d388222b8f54378d7aa9d1",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/710",
+    "id": "VariableID:10134:81736",
+    "key": "3af07b9bc547f7d992425193e843aff0ce2a6d58",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/720",
+    "id": "VariableID:10134:81737",
+    "key": "3860486e11b3d086740b1662d6c5f74f0db1a340",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/730",
+    "id": "VariableID:10134:81738",
+    "key": "e880b23ce169772bf01c243952e597b04e7daa20",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/740",
+    "id": "VariableID:10134:81739",
+    "key": "c3ba898009e3302029926f3cdb8c20c286395174",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/750",
+    "id": "VariableID:10134:81740",
+    "key": "68716d40805791141dbf45a23910f072bc3ea2d2",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/760",
+    "id": "VariableID:10134:81741",
+    "key": "b542da216be5ffe992e050a7009e44b31b78852d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/770",
+    "id": "VariableID:10134:81742",
+    "key": "8d730a25913f70e6ac87959e4818c6a25aecf2ae",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/780",
+    "id": "VariableID:10134:81743",
+    "key": "bd9318da40fc8d3c6edd6124221bb610597f5e86",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/790",
+    "id": "VariableID:10134:81744",
+    "key": "af90a182aa2beb7c9c5f77c9f9081354aca1b9a2",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/800",
+    "id": "VariableID:9299:76446",
+    "key": "22db41909957dee5c04d96896bedfbfa26571a48",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/810",
+    "id": "VariableID:10134:81746",
+    "key": "508582f42215f50ea8a0c0f40539c3b942fb1156",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/820",
+    "id": "VariableID:10134:81747",
+    "key": "807301604292c531b33e3fbd6998fd21f51558b1",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/830",
+    "id": "VariableID:10134:81748",
+    "key": "a9fe5ee9bc61bf7ef8db872f440186ed9f4a39b5",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/840",
+    "id": "VariableID:10134:81749",
+    "key": "a6b26c6ea8074d7316c05c850b5852ddd3cd691e",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/850",
+    "id": "VariableID:10134:81750",
+    "key": "3c0c582fc37bfd390fd5d4596c3b88dd7e5e45b1",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/860",
+    "id": "VariableID:10134:81751",
+    "key": "a3c18b87b97e89c758522c13821dfe15a781e629",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/870",
+    "id": "VariableID:10134:81752",
+    "key": "0b2746556fcfe308c2e7a4ccb058c6b342b4adc3",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/880",
+    "id": "VariableID:10134:81753",
+    "key": "eee7472e580ba48ab8d9626140a390da1ad1e939",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/890",
+    "id": "VariableID:9299:76447",
+    "key": "ad22092401bb0b67a817a7530b54578fd34b28ef",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/900",
+    "id": "VariableID:10134:81755",
+    "key": "f63824262618d26d1f9e84d1d20e387cb05d5024",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/910",
+    "id": "VariableID:10134:81756",
+    "key": "e52d485a4a8076943439510e5708826d58586729",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/920",
+    "id": "VariableID:10134:81757",
+    "key": "b4a78791ed0b0e007e5e094bc2072559e05f3380",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/930",
+    "id": "VariableID:10134:81758",
+    "key": "32b6b9f689ca68f9ba2dbb8cc9ef6ffd0d2677a1",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/940",
+    "id": "VariableID:10134:81759",
+    "key": "4dc4bd0be467ef0b6d3456d8d630c10496eebf6d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/950",
+    "id": "VariableID:10134:81760",
+    "key": "647ea7cee5ebc4c32767764919cda552c25d0d9a",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/960",
+    "id": "VariableID:10134:81761",
+    "key": "73cb7c2408d617bb85bf981b31579d4faf15028e",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/970",
+    "id": "VariableID:10134:81762",
+    "key": "db813f8a22b4ff69da4a8f3be025170bdcb571bb",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/980",
+    "id": "VariableID:10134:81763",
+    "key": "21d17beb127c86d74c51d41992fd3baa9c0d5749",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/990",
+    "id": "VariableID:10134:81764",
+    "key": "f0b7de70a5e795cae756f727ef45f3b43308ee60",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Pink/1000",
+    "id": "VariableID:10134:81765",
+    "key": "320fcb8f6528417067b2ed7dd354963bcc992c11",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/10",
+    "id": "VariableID:9268:74170",
+    "key": "fbf6b30fe54d3fada2c2ee7699c0785cb2c4f1a4",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/20",
+    "id": "VariableID:9268:74171",
+    "key": "b1099792a1fc05eb72fc1069018fce6b56ecce10",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/30",
+    "id": "VariableID:9268:74172",
+    "key": "8759a8b02cd6c9934a0a6d44309e770a8885df76",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/40",
+    "id": "VariableID:9268:74173",
+    "key": "dbced0aa6179dce4399afc2cd2213fdc3af4655e",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/50",
+    "id": "VariableID:9268:74174",
+    "key": "8c03652aa414f26b38a2bd61d170d776b07db1a1",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/60",
+    "id": "VariableID:9268:74175",
+    "key": "ca45415f0d413f34410835c0a8a91f0096b1fdd6",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/70",
+    "id": "VariableID:9268:74176",
+    "key": "21a7eada2fb81f5f5a853a92ec8e4d377c89c643",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/80",
+    "id": "VariableID:9268:74177",
+    "key": "c46916391385d9b894f13d322e6e49617c746121",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/90",
+    "id": "VariableID:9268:74178",
+    "key": "5ca20ff87b33803af36a986b0b5e3bb7892f7e66",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/100",
+    "id": "VariableID:9262:60913",
+    "key": "07489dbf9f98ba38142c087dafe8b712b2579bf3",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/110",
+    "id": "VariableID:9268:74180",
+    "key": "f4fc98415a1f7dad3f1c0264a51760c52f575386",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/120",
+    "id": "VariableID:9268:74181",
+    "key": "0db6972b53fa01b3209590c850979828e6ba719c",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/130",
+    "id": "VariableID:9268:74182",
+    "key": "dba6559bdf7ca744ed6aba8c816d323eca86de82",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/140",
+    "id": "VariableID:9268:74183",
+    "key": "f606e2e642531dadb76135e15cbe786980f60991",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/150",
+    "id": "VariableID:9262:60912",
+    "key": "64533b78bb0c8bf435a83f30e2041210f40f5f5f",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/160",
+    "id": "VariableID:9268:74184",
+    "key": "0a3a7c96d7f248c0f85664dc589e73c113bc55f9",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/170",
+    "id": "VariableID:9268:74185",
+    "key": "09252e42a84516250e5b4ae4fdfa2555d52fdec0",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/180",
+    "id": "VariableID:9268:74187",
+    "key": "27933b4c57d9096f696e99a0699c0ec9e9019ccb",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/190",
+    "id": "VariableID:9268:74186",
+    "key": "8d4ab508e515f90751f25e191fcd2e539c761ad8",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/200",
+    "id": "VariableID:9262:60911",
+    "key": "cd4f795fffcd345420d93f8e61e0bcf77bc176c7",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/210",
+    "id": "VariableID:9268:74188",
+    "key": "8cdbcde29f9a9ad906d69c704f43e25d3ab9bc04",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/220",
+    "id": "VariableID:9268:74189",
+    "key": "c7ff7f15c81e32448f59e62aeaa89058b2405ed9",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/230",
+    "id": "VariableID:9268:74190",
+    "key": "8c5cf21e1e7aac218d8254811e14e9c5fcbf7fd2",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/240",
+    "id": "VariableID:9268:74191",
+    "key": "43f214e65915bfb924f07a8e490c0bc8d818066c",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/250",
+    "id": "VariableID:9262:60910",
+    "key": "0f9cc6b6b3b07a3eb6d54744b53c963da1e2e8ed",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/260",
+    "id": "VariableID:9268:74192",
+    "key": "b1358a57f6c7216613521655911584e7b09e44c6",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/270",
+    "id": "VariableID:9268:74193",
+    "key": "39bad9c7ffb1d0bd2727333579abf4ee45b22ead",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/280",
+    "id": "VariableID:9268:74194",
+    "key": "3b7989caf849f8959523a646315141913f8558b0",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/290",
+    "id": "VariableID:9268:74195",
+    "key": "b71ad466e5eef9fe8d32ddaa792e852ca1b70a2f",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/300",
+    "id": "VariableID:9262:60909",
+    "key": "09ef36e13a3f9bbe7053e9ad740a0439555760b2",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/310",
+    "id": "VariableID:9268:74196",
+    "key": "dd8fa43fa36d0ae48ff39fa105d3f1d9aa50f72b",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/320",
+    "id": "VariableID:9268:74197",
+    "key": "23fb4efd12aea7e83d8d01993d982e01ec0de00c",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/330",
+    "id": "VariableID:9268:74198",
+    "key": "833a5dfb45c65242310a284b3869693fae464f68",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/340",
+    "id": "VariableID:9268:74199",
+    "key": "baa15a7232d2c2bf71e25e131d84b31c344c2d33",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/350",
+    "id": "VariableID:9268:74200",
+    "key": "dc3ce8bda6c550215829771f3d889c7a90fa0ba8",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/360",
+    "id": "VariableID:9268:74201",
+    "key": "5195324b33ed0c5057a3c2a1ee908140d84899d3",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/370",
+    "id": "VariableID:9268:74202",
+    "key": "5d1424c4a070136063fc5f8f176ed93ff76deac0",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/380",
+    "id": "VariableID:9268:74203",
+    "key": "1d791d4146d11f8b8e797bfc5fe10158990f1209",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/390",
+    "id": "VariableID:9268:74204",
+    "key": "efdfa590978897fd7f813a94ad77b8e997c1e1b8",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/400",
+    "id": "VariableID:9268:74205",
+    "key": "e4e7ed7b9191dddf1b46d5da32497148984b6d4d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/410",
+    "id": "VariableID:9268:74206",
+    "key": "938860c9ade5dce79d73000e73382b2068dd628d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/420",
+    "id": "VariableID:9268:74207",
+    "key": "9995d1bb90e18ba7fa626a61a1d53fb7fe321f5d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/430",
+    "id": "VariableID:9268:74208",
+    "key": "c15e9c7b797c6e2383e4c97f66ed4ef9e52a1535",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/440",
+    "id": "VariableID:9268:74209",
+    "key": "917afd6f3dffeda02a6f654e9080a7da558e6814",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/450",
+    "id": "VariableID:9268:74210",
+    "key": "52944df55ba712ef7301bcb35c99d029aaa0ac22",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/460",
+    "id": "VariableID:9268:74211",
+    "key": "de2b7b81e9117786813ea2f18cca313481078b1b",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/470",
+    "id": "VariableID:9268:74212",
+    "key": "ed6a7febcab6902330fac5d5f741c5a8a908496d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/480",
+    "id": "VariableID:9268:74213",
+    "key": "3d1b33db5a4ccfbfce37a57e3dfa6d666db50a54",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/490",
+    "id": "VariableID:9268:74214",
+    "key": "b3ad5876ba859eb268ba098a7057d40da2a6d02b",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/500",
+    "id": "VariableID:9268:74215",
+    "key": "05895057381101c564f8b3444df56c9ea2f7815e",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/510",
+    "id": "VariableID:9268:74216",
+    "key": "f1d1e0c243873a1c978a886b319f54cb4f1b0a5d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/520",
+    "id": "VariableID:9268:74217",
+    "key": "e15310a37505032171863452a196097151600064",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/530",
+    "id": "VariableID:9268:74218",
+    "key": "1bdeb08b0d33e846af3ca12db25fa9f5b3605962",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/540",
+    "id": "VariableID:9268:74219",
+    "key": "9457f70c57ac8a311e22796d867c994cdc0db4a5",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/550",
+    "id": "VariableID:9268:74220",
+    "key": "455cba621f85d5275cdbda79af20b209d7ac5416",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/560",
+    "id": "VariableID:9268:74221",
+    "key": "02121db8611dbfaa7d81729fd0cbe5e25c4c1a6f",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/570",
+    "id": "VariableID:9262:60914",
+    "key": "8e77d5c4eec6233f83e9b32dc1d798e0d1588680",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/580",
+    "id": "VariableID:9268:74222",
+    "key": "fef0c1e2d9971297763cbf4f8512e3d26897491c",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/590",
+    "id": "VariableID:9268:74223",
+    "key": "f25978d50f4add59767988156fd4f363ac9be140",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/600",
+    "id": "VariableID:9268:74224",
+    "key": "ef8c1a1bd43ef1deca126533c210ba5ae44a3ca1",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/610",
+    "id": "VariableID:9268:74225",
+    "key": "afa4c1318df145cca8e8fba817ee1da1ab907879",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/620",
+    "id": "VariableID:9262:60915",
+    "key": "4facdd9ffb67090eb21016ec768337656a794f4f",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/630",
+    "id": "VariableID:9268:74226",
+    "key": "068dd692b85285f1172d74ee4451e7fda931cdea",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/640",
+    "id": "VariableID:9268:74227",
+    "key": "f5d5af0db2bfbeaadabc90386e15f0a99b0cda05",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/650",
+    "id": "VariableID:9268:74228",
+    "key": "cd0e123403d6f940111841d68ba475b3efcf13fd",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/660",
+    "id": "VariableID:9262:60916",
+    "key": "5442ff6eb409393ecaaf587caef24056db75a809",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/670",
+    "id": "VariableID:9268:74229",
+    "key": "702c994071bec752bfcde3f7d9f82983da7e4ad3",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/680",
+    "id": "VariableID:9268:74230",
+    "key": "9cce34088bfdbfdb7bc50de7ff51cb1f1cb2e94b",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/690",
+    "id": "VariableID:9268:74231",
+    "key": "3e27610d35329f87e286f377fa17fa2a119fbb75",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/700",
+    "id": "VariableID:9268:74232",
+    "key": "06bd9252c61dc9899c4d255986b267a52395dbcb",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/710",
+    "id": "VariableID:9268:74233",
+    "key": "efaffdf3c52ba9efc507dd52cae88bbdfe6ffb5a",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/720",
+    "id": "VariableID:9268:74234",
+    "key": "3bd8625d15c7af01e0d14a988310ad9eb9807d71",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/730",
+    "id": "VariableID:9268:74235",
+    "key": "d4dbc8377d9994e769472b56bfd1b15174d9eb98",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/740",
+    "id": "VariableID:9268:74236",
+    "key": "e8fb0a20d576018b27a27cfe17c59f96f24bddd2",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/750",
+    "id": "VariableID:9268:74237",
+    "key": "1908eba853a57f4e726675234d4904df475ef3d5",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/760",
+    "id": "VariableID:9268:74238",
+    "key": "0c9296e4e75df2f51c5758856b216392d38e0de5",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/770",
+    "id": "VariableID:9268:74239",
+    "key": "ae3f4e9d7c70374e0c9fd62c8f278c967b9c6221",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/780",
+    "id": "VariableID:9268:74240",
+    "key": "2b2354d65e9f93b90f790d27215b8cdabcf7f915",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/790",
+    "id": "VariableID:9268:74241",
+    "key": "0d1b59d88ded157c12fa0d183ee783e5722beb05",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/800",
+    "id": "VariableID:9262:60917",
+    "key": "c78813228be3e2ae58b311ce0fec68afc83c4364",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/810",
+    "id": "VariableID:9268:74242",
+    "key": "0f294c03344e7975dc55184098a9b6964b48248d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/820",
+    "id": "VariableID:9268:74243",
+    "key": "25d59e9a048f1dec7993260b3f9bf5482bb1b827",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/830",
+    "id": "VariableID:9268:74244",
+    "key": "2402ae490025cfc3d563b2432b4656aa1c368469",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/840",
+    "id": "VariableID:9268:74245",
+    "key": "1dbf7cbf5c09e1eef5a78dbd262564d24e929800",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/850",
+    "id": "VariableID:9268:74246",
+    "key": "0aa188fa1b81c500cde704d2900b1c329bc9a7ac",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/860",
+    "id": "VariableID:9268:74247",
+    "key": "df0366e8e47dd4e48198d8234478ac2af42f1ab5",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/870",
+    "id": "VariableID:9268:74248",
+    "key": "508d2c79683f9656200cc8f17304503feb59b14c",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/880",
+    "id": "VariableID:9268:74249",
+    "key": "2dbd1a9dd8bb51df07190d60aa0f0b98cb914c0c",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/890",
+    "id": "VariableID:9262:60918",
+    "key": "b9a7d3b36be499d94f60adb072d948b19fcf3561",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/900",
+    "id": "VariableID:9268:74250",
+    "key": "057e27d675f2f1945ae3425b5300c2dd956cbc3a",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/910",
+    "id": "VariableID:9268:74251",
+    "key": "c1a4d387b1d04154d8b892a25200095813336032",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/920",
+    "id": "VariableID:9268:74252",
+    "key": "e00d571381f51106f10bf4acdab4df8ccd9e8cc9",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/930",
+    "id": "VariableID:9268:74253",
+    "key": "ceab9d119735e63c50379b7a5995868f3dbdadcd",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/940",
+    "id": "VariableID:9268:74254",
+    "key": "12bcf3cffe2cd5b8f88edc21aed74c8529ac2190",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/950",
+    "id": "VariableID:9268:74255",
+    "key": "6b9ef74d540fecbbcd68e24d679414f06ffdd61a",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/960",
+    "id": "VariableID:9268:74256",
+    "key": "94c77c98283f6c8d15f7d1ae9cdb29b6839d50a3",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/970",
+    "id": "VariableID:9268:74257",
+    "key": "ac5ea135afabbd421cdf778af0fe2f110988f064",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/980",
+    "id": "VariableID:9268:74258",
+    "key": "dc556a659a8685afe5d0c1f9ea78ee2c893c5ef9",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/990",
+    "id": "VariableID:9268:74259",
+    "key": "bcfa1294d87248cdf384b50dad6a71cdae6c8e8f",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Purple/1000",
+    "id": "VariableID:9268:74260",
+    "key": "19ad6544789309aba310504d190c4633933cfba7",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/0",
+    "id": "VariableID:10032:86490",
+    "key": "3bee9a7c6a26ebbfcf1f56c9091c7b6b122b22ba",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/10",
+    "id": "VariableID:10032:86491",
+    "key": "f6b5dccc00a2adea172b3679bb645f25b2b78095",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/20",
+    "id": "VariableID:10032:86492",
+    "key": "91257326914301be49ed16fc91b2a323304bfeff",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/30",
+    "id": "VariableID:10032:86493",
+    "key": "fac6c928ccaf895ed69f22784f1315d020049070",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/40",
+    "id": "VariableID:10032:86494",
+    "key": "e44fbf391b84ca40bff7eca1ab08d99db341e1e2",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/50",
+    "id": "VariableID:10032:86495",
+    "key": "3f755877fe35686e7f63c5d70a2247f0921cdf38",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/60",
+    "id": "VariableID:10032:86496",
+    "key": "e6829c52214b3894d15160dd45e2bfc10901ab06",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/70",
+    "id": "VariableID:10032:86497",
+    "key": "33560392fe921db9597f59dfe2a9a3f8656ea62e",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/80",
+    "id": "VariableID:10032:86498",
+    "key": "61894656187c2b26b608762d6431c444020073a2",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/90",
+    "id": "VariableID:10032:86499",
+    "key": "aae82db1b16c07b11499fe1e0afb5dc5b10c8d92",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/100",
+    "id": "VariableID:10032:86500",
+    "key": "6b2d21076706d18ebeb586e663ba564dd63618ac",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/110",
+    "id": "VariableID:10032:86501",
+    "key": "1d137f21a87fa2c42d4dbc0f02a274dba7bf911f",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/120",
+    "id": "VariableID:10032:86502",
+    "key": "be01c454394d48ceb70d4ef3f2fa4252c0154de4",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/130",
+    "id": "VariableID:10032:86503",
+    "key": "47824c551a9a45d3ef1327dd3894a67d5d1ebe5f",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/140",
+    "id": "VariableID:10032:86504",
+    "key": "85847e8076d580b54db5553048bf79339682412a",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/150",
+    "id": "VariableID:10032:86505",
+    "key": "fc163048e4c94c206522fa086d8b6ab202352a9f",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/160",
+    "id": "VariableID:10032:86506",
+    "key": "60510f9cbcb8dca4bb0d7575c64f53bd76a8450d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/170",
+    "id": "VariableID:10032:86507",
+    "key": "e12d959c30d2cff52744bb8a9be82bdb4b67f5df",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/180",
+    "id": "VariableID:10032:86508",
+    "key": "58f9a24701bf2b2d102a9ed0a400f3a808f9bac7",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/190",
+    "id": "VariableID:10032:86509",
+    "key": "31f0ceba302dd2f2e51f29c3ebfbac001e0885cf",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/200",
+    "id": "VariableID:10032:86510",
+    "key": "571259c34747e0fd00e1057303b481305529b105",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/210",
+    "id": "VariableID:10032:86511",
+    "key": "132d76dd715fd257457885341116cf698e01ac56",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/220",
+    "id": "VariableID:10032:86512",
+    "key": "d60ac32dae6e6d9a3c1b2fb78e1ca959e6a8c04d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/230",
+    "id": "VariableID:10032:86513",
+    "key": "ac8050dfde7146416476b1ee47bcc5a93edb037d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/240",
+    "id": "VariableID:10032:86514",
+    "key": "2a3ceabca84d95f9ef12d68dd625f97780328039",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/250",
+    "id": "VariableID:10032:86515",
+    "key": "fbf05ad04a5b816cd7fd762f9c37564936b1b503",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/260",
+    "id": "VariableID:10032:86516",
+    "key": "900b4dbb34cc10929eae6493fa29178e6b5356c1",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/270",
+    "id": "VariableID:10032:86517",
+    "key": "3abcd49a4e3eca3d5e00dfe1d60b893471ba3b22",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/280",
+    "id": "VariableID:10032:86518",
+    "key": "fc58473702c4b226991b2298bf3d4ad7022e7c4e",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/290",
+    "id": "VariableID:10032:86519",
+    "key": "06123718f6ea80c7cb9a1f21e3797852f7fc3921",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/300",
+    "id": "VariableID:10032:86520",
+    "key": "9597a290590ff62ed11a0828e450130f280c9359",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/310",
+    "id": "VariableID:10032:86521",
+    "key": "00aeabdd1dd8ac331399f2ab5b66ac2179fd8647",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/320",
+    "id": "VariableID:10032:86522",
+    "key": "191f7cfb988ccd16c973b32485834e80c4bf0ffa",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/330",
+    "id": "VariableID:10032:86523",
+    "key": "81180684bdadeab99a9852df5763515f0dede294",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/340",
+    "id": "VariableID:10032:86524",
+    "key": "ced487bb0b2a65197cffb488d51f84c4077c0dcf",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/350",
+    "id": "VariableID:10032:86525",
+    "key": "679bbcaba7e36a4cd9d7cbd4e1108e1d0b12b94f",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/360",
+    "id": "VariableID:10032:86526",
+    "key": "c3657f5129b45834b8550d296bcfb88823ee58f7",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/370",
+    "id": "VariableID:10032:86527",
+    "key": "b22fbfd3be9da40e4243c48b48da3c8f439e1dd9",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/380",
+    "id": "VariableID:10032:86528",
+    "key": "e9032d50f7b8e5255c421597792d21795ff4731c",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/390",
+    "id": "VariableID:10032:86529",
+    "key": "09ae7cc266fe371363c3fc2072f363a0729d6eb9",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/400",
+    "id": "VariableID:10032:86530",
+    "key": "1dfd7a120cb4210af3f2f89a3161f2cd076d90db",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/410",
+    "id": "VariableID:10032:86531",
+    "key": "620ddec74f7fcfd9caf196f7774e3990cfe08208",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/420",
+    "id": "VariableID:10032:86532",
+    "key": "6e3f23febad543078e90e1a83cf370515982bfd0",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/430",
+    "id": "VariableID:10032:86533",
+    "key": "aae7d5b665d83a52366c1eea3f02c88b2879bbdd",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/440",
+    "id": "VariableID:10032:86534",
+    "key": "c33eb874d0d1d36033bc7c5165ae1d15eb3816bd",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/450",
+    "id": "VariableID:10032:86535",
+    "key": "faa2de3598e9fdfc1f132284b2bc9a5385392aa8",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/460",
+    "id": "VariableID:10032:86536",
+    "key": "a8c7c44b5f1c976bc8818d4211f893d379ed1de8",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/470",
+    "id": "VariableID:10032:86537",
+    "key": "30a8014855e0851af3034380454622618cd4c6ae",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/480",
+    "id": "VariableID:10032:86538",
+    "key": "cad37c9d89c8bd0a4bf3a821997b8e2b45194ac9",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/490",
+    "id": "VariableID:10032:86539",
+    "key": "3b36bc60468ec6f6b1c2d292f832763f661e8a3d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/500",
+    "id": "VariableID:10032:86540",
+    "key": "6c9a5f9ea9e5fd84f941dcdf16bf3f1105f5bead",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/510",
+    "id": "VariableID:10032:86541",
+    "key": "cdf015c5fe1f2bf98ad3f60347f260a7a8bb84af",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/520",
+    "id": "VariableID:10032:86542",
+    "key": "6f2d2fcea1dae79385c69450a786ae2e5f1a010f",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/530",
+    "id": "VariableID:10032:86543",
+    "key": "b572acd9fd971c54a81629ab5b15b07bf2227517",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/540",
+    "id": "VariableID:10032:86544",
+    "key": "64ba973ad2747addb8034ad514d1802c5456d189",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/550",
+    "id": "VariableID:10032:86545",
+    "key": "ee8b0f725879aded096108fbfa505354215ff90b",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/560",
+    "id": "VariableID:10032:86546",
+    "key": "3a4ae8ff2105c786b061e54d063b771827e3e543",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/570",
+    "id": "VariableID:10032:86547",
+    "key": "6989194d3c4d543bf8ca22c50b42bc99c67240ef",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/580",
+    "id": "VariableID:10032:86548",
+    "key": "8ef0647dcf56944bec4f124557ddf90ef5463eef",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/590",
+    "id": "VariableID:10032:86549",
+    "key": "23b8de4c3eb79d2b897a989a611501edd6ff335d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/600",
+    "id": "VariableID:10032:86550",
+    "key": "f798f28eaaccaac28eb6a94a02b10d986c2d0e3b",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/610",
+    "id": "VariableID:10032:86551",
+    "key": "007e01aac86bf21065af251261b4fd638efa4cb8",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/620",
+    "id": "VariableID:10032:86552",
+    "key": "f28cbd719621a9142df05a7dba1bdfd67b6eda30",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/630",
+    "id": "VariableID:10032:86553",
+    "key": "fa7e90f706fea4c3b209993a442f789f2fb26729",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/640",
+    "id": "VariableID:10032:86554",
+    "key": "04e00e92ead9f01f4cb5e623a7d527021faf756f",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/650",
+    "id": "VariableID:10032:86555",
+    "key": "cf5822aa931dfd1e74bc3adf7bfaca2f4599c76d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/660",
+    "id": "VariableID:10032:86556",
+    "key": "f1449ba55ea08f6731d7bd576c69c74c9f3f9eba",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/670",
+    "id": "VariableID:10032:86557",
+    "key": "65cf1a95503de3363ec3abfe120415ba1291e8c2",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/680",
+    "id": "VariableID:10032:86558",
+    "key": "a1620e28b52ecd66df17916c2687fe1dd19d00eb",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/690",
+    "id": "VariableID:10032:86559",
+    "key": "3474f6de84c3c8f2d00e0b78b484f41bc031dd96",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/700",
+    "id": "VariableID:10032:86560",
+    "key": "ab339f0214a6b533989ee4be9e89d9e20a688d39",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/710",
+    "id": "VariableID:10032:86561",
+    "key": "a483818e4257c824e9bfa9e63792848e6114c716",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/720",
+    "id": "VariableID:10032:86562",
+    "key": "2281548db29ba5a45dcc5c22646b43f950727d40",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/730",
+    "id": "VariableID:10032:86563",
+    "key": "5d6d4b4266e66016417d9f5359955e03f7ac9155",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/740",
+    "id": "VariableID:10032:86564",
+    "key": "d63e47676bc44805c04cd2718364463b471771ce",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/750",
+    "id": "VariableID:10032:86565",
+    "key": "e9e8995c9fd363b78e3b407f44283ccc03c343ab",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/760",
+    "id": "VariableID:10032:86566",
+    "key": "0ea7bb4a28bc717be0a89acf285dcfdf10a383db",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/770",
+    "id": "VariableID:10032:86567",
+    "key": "7e321cacbf838e9d49d58a69f926609c79b57f6d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/780",
+    "id": "VariableID:10032:86568",
+    "key": "6c276844e54ab1b68228a07e89814a6b94ef6bd3",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/790",
+    "id": "VariableID:10032:86569",
+    "key": "1d7233c6c22b1e2de4d6b2f354056e6071ea840a",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/800",
+    "id": "VariableID:10032:86570",
+    "key": "00fae5ce9e61984c134a4b30db6d197d5e0d1ddc",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/810",
+    "id": "VariableID:10032:86571",
+    "key": "d8857aedf30bec7d5760ae0cc6244a55e5d9c34c",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/820",
+    "id": "VariableID:10032:86572",
+    "key": "e276e0a56687d449aaa0f106d13a2bc57589c5e6",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/830",
+    "id": "VariableID:10032:86573",
+    "key": "4dae1b05b7f2ed9f6fe4c211d9901b3526411b4f",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/840",
+    "id": "VariableID:10032:86574",
+    "key": "11421848cfb57dd9a2705210d5bc20bf6ddbc519",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/850",
+    "id": "VariableID:10032:86575",
+    "key": "54f1da66955eed0b63a79d42dc76b5ce54ade457",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/860",
+    "id": "VariableID:10032:86576",
+    "key": "4c661080360764ff4ec969599d0caecd8f2da19d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/870",
+    "id": "VariableID:10032:86577",
+    "key": "ab48eba38a9766dbc298d126b8893e50c3b5c0cf",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/880",
+    "id": "VariableID:10032:86578",
+    "key": "dc34ed8c92e17751a1f8c1b3a26d517719f44933",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/890",
+    "id": "VariableID:10032:86579",
+    "key": "f2387ee905b31f03cf236739b946dc2b30146067",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/900",
+    "id": "VariableID:10032:86580",
+    "key": "69d53700dba5fd60d65e698971f7bc8cc16eed20",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/910",
+    "id": "VariableID:10032:86581",
+    "key": "6b3898b710dee5bade7d710f9536959a50cb938c",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/920",
+    "id": "VariableID:10032:86582",
+    "key": "7bafc7393032dedd7870ac35630b74226f8bc0f3",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/930",
+    "id": "VariableID:10032:86583",
+    "key": "7dfd8b27abfb096f4511f58049f483e06dcc7052",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/940",
+    "id": "VariableID:10032:86584",
+    "key": "a9f274a69ef46c3a0422ab95ab60f92f0bc415be",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/950",
+    "id": "VariableID:10032:86585",
+    "key": "548fbb22edefade96edda009f8fba5499c31522c",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/960",
+    "id": "VariableID:10032:86586",
+    "key": "cfb3fc716728e87c6b16c81d9c9c40590ca417b7",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/970",
+    "id": "VariableID:10032:86587",
+    "key": "3c66c6743148602790f0904e668cfb5716f525df",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/980",
+    "id": "VariableID:10032:86588",
+    "key": "685196d1bc82da5858fe74020e8d77d464fa8929",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/990",
+    "id": "VariableID:10032:86589",
+    "key": "eaaa9b3488a071a6c03e25a91394339562444926",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Green/1000",
+    "id": "VariableID:10032:86590",
+    "key": "802a2f57ac283f8289abeb01b020bddec0ca304e",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/0",
+    "id": "VariableID:10134:82935",
+    "key": "ff0d77659ce746fd9656ecfbb3d888c629be847e",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/10",
+    "id": "VariableID:10134:82936",
+    "key": "94b7734d1d79e912bf77787ad331301aa1e73179",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/20",
+    "id": "VariableID:10134:82937",
+    "key": "6ebb29deb55b1283a19efc4afe3be033268da48f",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/30",
+    "id": "VariableID:10134:82938",
+    "key": "04bce9864d035d936275d9b1c286723e12e79eb9",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/40",
+    "id": "VariableID:10134:82939",
+    "key": "5dbcd50657fbc821b0a1c1773a94058f91c46916",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/50",
+    "id": "VariableID:10134:82940",
+    "key": "a490d94ad776f0889727e3411a728e7b65fc41d6",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/60",
+    "id": "VariableID:10134:82941",
+    "key": "9d208a7344f6926c3157aba87382487b8078b8fa",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/70",
+    "id": "VariableID:10134:82942",
+    "key": "8a8047a97f716fddd8ae92c659eeed91cc563ee2",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/80",
+    "id": "VariableID:10134:82943",
+    "key": "adea160677afc8bbdab2e51d1c4b9f190631231b",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/90",
+    "id": "VariableID:10134:82944",
+    "key": "4019a3f535f7dca18fe012344a28b9a2f4211ede",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/100",
+    "id": "VariableID:9501:34534",
+    "key": "5564c11667f939fbf7f0021234069d212c23d7aa",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/110",
+    "id": "VariableID:10134:82946",
+    "key": "9ddc3eeef3ee1e3d3c6c86d7bfab503a2ec9cd8f",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/120",
+    "id": "VariableID:9581:60467",
+    "key": "f58a6774020e9f0e726c8c0e29b53616d4a1f1fb",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/130",
+    "id": "VariableID:10134:82948",
+    "key": "33e19dad0c4b1e59403278ee837d25deb5a98879",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/140",
+    "id": "VariableID:10134:82949",
+    "key": "c9c054f8a46db602a83f1f6e60cac4aef0ff4706",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/150",
+    "id": "VariableID:9501:34535",
+    "key": "c814732a9662f6fca5936d8089cf5dded8906e8a",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/160",
+    "id": "VariableID:10134:82951",
+    "key": "5f7f25faa951bcb7ef72ec2164140eaf21067bcc",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/170",
+    "id": "VariableID:10134:82952",
+    "key": "d72a72c1f24d746e654f972b78c541c90281cb7f",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/180",
+    "id": "VariableID:10134:82953",
+    "key": "e85c514bb27a58cd72c0b42f42b936a294ca3bdb",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/190",
+    "id": "VariableID:10134:82954",
+    "key": "b5d403af9b85d9a42ee19ed76a232d4883ea5ba3",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/200",
+    "id": "VariableID:9501:34536",
+    "key": "7c9be20807cfe59d7bcbc0f5f61590066e37dd77",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/210",
+    "id": "VariableID:10134:82956",
+    "key": "6222a52958398f3c2c5667cafb1f9a24bbe55322",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/220",
+    "id": "VariableID:10134:82957",
+    "key": "a598b41d866b8ff7d076818ebe822c8ee043b0af",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/230",
+    "id": "VariableID:10134:82958",
+    "key": "fe0351da971f1f0491044ad90223998b42ec9655",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/240",
+    "id": "VariableID:10134:82959",
+    "key": "0ea166fec327648ee352847b57394407e6985d28",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/250",
+    "id": "VariableID:9501:34537",
+    "key": "b724a08353c629d8a2206976961a43e58d04cb58",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/260",
+    "id": "VariableID:10134:82961",
+    "key": "7171372d0f71a89ac180db83df7c7be37a3b254e",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/270",
+    "id": "VariableID:10134:82962",
+    "key": "8fec815a15f7cc1541d4b463241a930cfa56e20d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/280",
+    "id": "VariableID:10134:82963",
+    "key": "fa92824b608a2543db222c981cac0d7cf105a72d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/290",
+    "id": "VariableID:10134:82964",
+    "key": "97c6b7b4b1b612797eb19a8142ba162269bb953a",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/300",
+    "id": "VariableID:9501:34538",
+    "key": "4c34e36260b58b17e9c03e6291b91a5c21db1a1e",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/310",
+    "id": "VariableID:10134:82966",
+    "key": "a916b5e84ef982f6ee60b741c27720317f7acf77",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/320",
+    "id": "VariableID:10134:82967",
+    "key": "b08af0b3e72df18ceacbbf2d9339339c027b7058",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/330",
+    "id": "VariableID:10134:82968",
+    "key": "ec060a2b2943c388c7f25e9100de1619f295072f",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/340",
+    "id": "VariableID:10134:82969",
+    "key": "48ef2c28b0783eea7bf5e8caaab872a384653ee7",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/350",
+    "id": "VariableID:10134:82970",
+    "key": "a0a9f35ae1915903cc49c81bd930f0f230a9311a",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/360",
+    "id": "VariableID:10134:82971",
+    "key": "758cb45066931df982e9d1473675b1ad39d7e9ce",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/370",
+    "id": "VariableID:10134:82972",
+    "key": "0be78f64ba6143230204c24e5a2215e28095dd38",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/380",
+    "id": "VariableID:10134:82973",
+    "key": "6962bd7c888d26c867f7c8c9c75ddb6b5e5ed502",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/390",
+    "id": "VariableID:10134:82974",
+    "key": "f69c77d3260ce4490405df5f8bf3c5fbe57b040a",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/400",
+    "id": "VariableID:10134:82975",
+    "key": "1d8b14cb3f4b2fdf6d2ff6651a00c70e909f873a",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/410",
+    "id": "VariableID:10134:82976",
+    "key": "fe1f009b1370d26d1df7d99435d3a7c7582db705",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/420",
+    "id": "VariableID:10134:82977",
+    "key": "b8418d0e4f7686d38fbb35ed5e97c0a60da989a5",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/430",
+    "id": "VariableID:10134:82978",
+    "key": "36b5a05f67ae6844b8fbf17a945000ee1c38c203",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/440",
+    "id": "VariableID:10134:82979",
+    "key": "1930bc25623b929fc900644e25415208fc75bc5e",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/450",
+    "id": "VariableID:10134:82980",
+    "key": "6dd43dac5506a59f3ae838f6796c21f83c48e218",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/460",
+    "id": "VariableID:10134:82981",
+    "key": "c67f63a4ce46ab273b79837b0ecd9e26bc857ab0",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/470",
+    "id": "VariableID:10134:82982",
+    "key": "cbaef61f505f7f756cc53cb5f67ba23c3c891e72",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/480",
+    "id": "VariableID:10134:82983",
+    "key": "789809c70eb9c50b8e75fabf387b98452e67feba",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/490",
+    "id": "VariableID:10134:82984",
+    "key": "9d9f1df567e0a6f1004c91932e76bcb8bddea6e6",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/500",
+    "id": "VariableID:10134:82985",
+    "key": "bd0a04e675abc91e1cec531811e865679a65c7bd",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/510",
+    "id": "VariableID:10134:82986",
+    "key": "e4a9be1a4f3d67f3c310571cd95f22be65ad612a",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/520",
+    "id": "VariableID:10134:82987",
+    "key": "e66de2d02c44897a413ab8e35410c407f37471af",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/530",
+    "id": "VariableID:10134:82988",
+    "key": "15ff0bd32285f174c1078d144b06c4830a8fc9a6",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/540",
+    "id": "VariableID:10134:82989",
+    "key": "ddcde092dad70be36d6433bd4bba324b5f0c9cf3",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/550",
+    "id": "VariableID:10134:82990",
+    "key": "d8f2fb24fe1e474f226c9d17b0b119ca0ee15299",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/560",
+    "id": "VariableID:10134:82991",
+    "key": "4440aa6f4e071b7088d86ee834c18732a953f005",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/570",
+    "id": "VariableID:9501:34539",
+    "key": "95def11b8947b7f63fd31698b05a067c825299da",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/580",
+    "id": "VariableID:10134:82993",
+    "key": "82730b903aa36e7342425a387e1afaa9142efa98",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/590",
+    "id": "VariableID:10134:82994",
+    "key": "90aed9b43352a45b12e790cb4dd9ea804ecb5397",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/600",
+    "id": "VariableID:10134:82995",
+    "key": "508770284355e8c07a9699c3fc7d9d13fe68be10",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/610",
+    "id": "VariableID:10134:82996",
+    "key": "02483f4ed3d88ace6c1dc7bb5b572e8a738d3032",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/620",
+    "id": "VariableID:9501:34540",
+    "key": "cb25745b427b2d2292e2c7c277ca9bfb2ce46761",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/630",
+    "id": "VariableID:10134:82998",
+    "key": "bf05980bb824e3adee0fb944716f93bd25c62564",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/640",
+    "id": "VariableID:10134:82999",
+    "key": "559e598c9386583d250c26f8beeab37ad26b04a1",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/650",
+    "id": "VariableID:10134:83000",
+    "key": "72c50c3a2621d19c861b0b027b89b8c5559f59f1",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/660",
+    "id": "VariableID:9501:34541",
+    "key": "b64ab7c735df92235180024ef87283a0dccc7e51",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/670",
+    "id": "VariableID:10134:83002",
+    "key": "7b195fae34437a1116bf4d43a4d928eb78f8ba43",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/680",
+    "id": "VariableID:10134:83003",
+    "key": "126ba19ef89bbeb8343c44cd8c8c794762f5edc9",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/690",
+    "id": "VariableID:10134:83004",
+    "key": "e0f46bb6d31329424fc2a844b2ac6c0e688a2315",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/700",
+    "id": "VariableID:10134:83005",
+    "key": "250a8d182dd130b8b160494ecf41cfbcc6d3559d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/710",
+    "id": "VariableID:10134:83006",
+    "key": "352192ae976e4203c52f69a8040fbbebc234c2c6",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/720",
+    "id": "VariableID:10134:83007",
+    "key": "48625369399eacbf9e9d04ff06c66908dcc3ad51",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/730",
+    "id": "VariableID:10134:83008",
+    "key": "d0d8439f4206555f458fbd00db807ede7904453b",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/740",
+    "id": "VariableID:10134:83009",
+    "key": "5d6ad578fe6fed54885578a6b0bcb8067b5678b9",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/750",
+    "id": "VariableID:10134:83010",
+    "key": "28e5b8aad23ca144e31e3cad4d4718669ec78a30",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/760",
+    "id": "VariableID:10134:83011",
+    "key": "1eef5af4a1052a5e3cf878be5befdb75c1f5aff8",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/770",
+    "id": "VariableID:10134:83012",
+    "key": "36cdfd3a233ed853a419a843edcf9142ff9edefd",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/780",
+    "id": "VariableID:10134:83013",
+    "key": "717a6d0e7059f4ddc84c7f345624dc50d343e2ae",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/790",
+    "id": "VariableID:10134:83014",
+    "key": "3decc580e262cf880cf9f595dd282049d76cca04",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/800",
+    "id": "VariableID:9501:34542",
+    "key": "0b6a4db02d8e30a49d4ddb96461eee805ade3bd0",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/810",
+    "id": "VariableID:10134:83016",
+    "key": "655ede01cc18a89b106edf22d72c6ba637e62b22",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/820",
+    "id": "VariableID:10134:83017",
+    "key": "bba1f5f2a0b20360e75b291a143bb055c2f4aa0c",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/830",
+    "id": "VariableID:10134:83018",
+    "key": "0ff2e4f1af44083bf9b8f7417233286a7ecb8036",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/840",
+    "id": "VariableID:10134:83019",
+    "key": "beb75440a43c2852143a851f3e29338ed6775428",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/850",
+    "id": "VariableID:10134:83020",
+    "key": "7fbf9fd276ffd551733c68208dcae33257d4615c",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/860",
+    "id": "VariableID:10134:83021",
+    "key": "c5232d03457af838a582ed709ae9e4553428a6c3",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/870",
+    "id": "VariableID:10134:83022",
+    "key": "4e6054a6070a77f9ad51eb4b027970557d92f3e5",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/880",
+    "id": "VariableID:10134:83023",
+    "key": "f666ad6c68a15a37afe4d4421622429bc3aa0978",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/890",
+    "id": "VariableID:9501:34543",
+    "key": "757b74a3702aed4495bb40d202afce3b2aaf1cad",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/900",
+    "id": "VariableID:10134:83025",
+    "key": "0444dbd6fb0140749f9732f2d485b434cd359fee",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/910",
+    "id": "VariableID:10134:83026",
+    "key": "6c17788de8fa26fab2387dc5c69b26ec244b48af",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/920",
+    "id": "VariableID:10134:83027",
+    "key": "c37778598a751f42d7b46e7d711c776b82c10d2a",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/930",
+    "id": "VariableID:10134:83028",
+    "key": "3a556e5cc0923999f7aa95946193f92d34c9f478",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/940",
+    "id": "VariableID:10134:83029",
+    "key": "32952c6b32c52fb622aa934d73f5ac2606a359bb",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/950",
+    "id": "VariableID:10134:83030",
+    "key": "fa3278cf9fddd052164d7317e1e6ee503d5b2813",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/960",
+    "id": "VariableID:10134:83031",
+    "key": "f6a3b9dc482a63ce5a11642b7b54ffc809cb9503",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/970",
+    "id": "VariableID:10134:83032",
+    "key": "d8091f3b65c225b93b300a4e588bc8cbb9156a66",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/980",
+    "id": "VariableID:10134:83033",
+    "key": "dd5f304e59a1fe0125f9bf9e2adc8b2a48609781",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/990",
+    "id": "VariableID:10134:83034",
+    "key": "8ed6eea9f291003523a4c2f24aa443bdce50e805",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Yellow/1000",
+    "id": "VariableID:10134:83035",
+    "key": "2c116664871f03a6b83eecaf6399b136d80c86d0",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/0",
+    "id": "VariableID:10027:58880",
+    "key": "90d6e5db49a3227f7bf5c150db9ecaf3a968bbc4",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/10",
+    "id": "VariableID:10027:58881",
+    "key": "6b2c53b1cdf808f2c1ca89d90bb490859083ac41",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/20",
+    "id": "VariableID:10027:58882",
+    "key": "5764baff7c4217476385a6c1fa8a8bceaadd8db2",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/30",
+    "id": "VariableID:10027:58883",
+    "key": "abacdcd6802b1f230fe68369fca51a9808e54385",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/40",
+    "id": "VariableID:10027:58884",
+    "key": "d225f807343dd0b35ded8a413b683296019751ce",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/50",
+    "id": "VariableID:10027:58885",
+    "key": "25b50d441d5fc2323726632c56e29c6daa46318c",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/60",
+    "id": "VariableID:10027:58886",
+    "key": "ca25f829dbc80f6c5776d44acc12cc58705ec2e6",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/70",
+    "id": "VariableID:10027:58887",
+    "key": "cf55750b4a0b0552161e2d0a53eff91755bfa7b7",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/80",
+    "id": "VariableID:10027:58888",
+    "key": "a783f510b0967ec11530eb4e8f29b9a3c9458850",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/90",
+    "id": "VariableID:10027:58889",
+    "key": "8619d092378706825a26e260b4247399b36fb6aa",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/100",
+    "id": "VariableID:10027:58890",
+    "key": "3ef9c729f29f6925570acb729529bd74f59460a7",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/110",
+    "id": "VariableID:10027:58891",
+    "key": "22175c81d4d203db5746ff0208c52caa491c65ab",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/120",
+    "id": "VariableID:10027:58892",
+    "key": "cc3b6a9bf615eab88e50a553cc9f4822c6d170f1",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/130",
+    "id": "VariableID:10027:58893",
+    "key": "e71c96a0cd8822893ff51bac71c382c1577fd4eb",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/140",
+    "id": "VariableID:10027:58894",
+    "key": "a5833139d2526831dc4f04e2fbf6a856b8ba8070",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/150",
+    "id": "VariableID:10027:58895",
+    "key": "ae58f633cb9248c0e4426020b2b24d3967576e20",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/160",
+    "id": "VariableID:10027:58896",
+    "key": "a5f61088cac4dc17133e3a1a49c163ea142252a9",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/170",
+    "id": "VariableID:10027:58897",
+    "key": "0d9a66615744e63cf129200309cb328b9a0494dd",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/180",
+    "id": "VariableID:10027:58898",
+    "key": "7f2104e66a9c27134134f5b94831a040badee7a9",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/190",
+    "id": "VariableID:10027:58899",
+    "key": "4f140785140e8bcc6f205d9482c4a4de42dd786f",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/200",
+    "id": "VariableID:10027:58900",
+    "key": "a0a4690bf9274a74ba99eaffeb482707bbca7b25",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/210",
+    "id": "VariableID:10027:58901",
+    "key": "365151c762697055c96a2fa3368cce880566c713",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/220",
+    "id": "VariableID:10027:58902",
+    "key": "e8fdd0ffe408b37628c210bb81be4d1f45249bc9",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/230",
+    "id": "VariableID:10027:58903",
+    "key": "ea7d0eb188189cd9b05ccb4ecb32d440fdabdff9",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/240",
+    "id": "VariableID:10027:58904",
+    "key": "1e80bd17df4e0b244a103fafa45566e3dc260f18",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/250",
+    "id": "VariableID:10027:58905",
+    "key": "a17cb93a1c15298875cb17647642f4537ce82b22",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/260",
+    "id": "VariableID:10027:58906",
+    "key": "f278abea88b1a890f5d800c8513dab2009e540d1",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/270",
+    "id": "VariableID:10027:58907",
+    "key": "64ccd36060beef7942fa0c659b2a2a11d6de53ab",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/280",
+    "id": "VariableID:10027:58908",
+    "key": "474dbd84ddb4b62ce33db66b67afa2af1082e407",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/290",
+    "id": "VariableID:10027:58909",
+    "key": "77f8c6fde1a9c3b76489920476d8688f3fb8212b",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/300",
+    "id": "VariableID:10027:58910",
+    "key": "28dd266dfadaf8e7e1c37cc3223d6b45454550df",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/310",
+    "id": "VariableID:10027:58911",
+    "key": "332863642f116322b093b113612f03c3c1b85d1a",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/320",
+    "id": "VariableID:10027:58912",
+    "key": "799fec970c2bfd80546ef6cb64600a23496b955e",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/330",
+    "id": "VariableID:10027:58913",
+    "key": "c37bc856ac03f5f3c4e7f039da5c61f273836127",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/340",
+    "id": "VariableID:10027:58914",
+    "key": "86739609f91ba55e6508cee452e639a6d1bfe636",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/350",
+    "id": "VariableID:10027:58915",
+    "key": "1d91f718b7345714c25e677cc94b9a8a12f19e31",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/360",
+    "id": "VariableID:10027:58916",
+    "key": "d74d0ce62165d6625ecad5a5a8efcf28fa4d9209",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/370",
+    "id": "VariableID:10027:58917",
+    "key": "d634a1bcbf933be7209d3fdeb43bc573331965c7",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/380",
+    "id": "VariableID:10027:58918",
+    "key": "1e354a8f4b695da4031733aa2493350346c48202",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/390",
+    "id": "VariableID:10027:58919",
+    "key": "e4789eebc93742f2ee9049c8b96e0c5c51711477",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/400",
+    "id": "VariableID:10027:58920",
+    "key": "bdc0b84d38d8881bff035fdb49f3cca6855b37e0",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/410",
+    "id": "VariableID:10027:58921",
+    "key": "5d067970868d4023c0a3456e9d1e497160086040",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/420",
+    "id": "VariableID:10027:58922",
+    "key": "b14fbb22e1a58c6b9d2e837e1cd453085ce20c11",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/430",
+    "id": "VariableID:10027:58923",
+    "key": "5a15c51274443ccf8bc6ed1011ce258e27d5e00e",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/440",
+    "id": "VariableID:10027:58924",
+    "key": "b017b8ec56a99f3082ffc9501e5d587b34a4b64f",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/450",
+    "id": "VariableID:10027:58925",
+    "key": "46b3d172e2004c3d202f6acddd151437fe4cd9b7",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/460",
+    "id": "VariableID:10027:58926",
+    "key": "6908a4a500e222b3107fbf2d7de5bbe981955522",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/470",
+    "id": "VariableID:10027:58927",
+    "key": "8d28fa6cfcb94d8921ec5b9302d00e9b343f6f2b",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/480",
+    "id": "VariableID:10027:58928",
+    "key": "61ed99b370ce29d1c893c24e5ed8eb543f4d195c",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/490",
+    "id": "VariableID:10027:58929",
+    "key": "ae3208cd2164b253ba2dea762fcee1a5a27eb214",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/500",
+    "id": "VariableID:10027:58930",
+    "key": "ed2626d266980987a46fb2bf1852a47cd0109f4f",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/510",
+    "id": "VariableID:10027:58931",
+    "key": "ecf5f070feb1c211f048b271f394e81c7b99e3ee",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/520",
+    "id": "VariableID:10027:58932",
+    "key": "fbe3e754ab11d6b3347319e1ca4f125edddacb04",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/530",
+    "id": "VariableID:10027:58933",
+    "key": "986ca0b497b4fcf2e32c6d0f36f13ca31668f52e",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/540",
+    "id": "VariableID:10027:58934",
+    "key": "e15e00ad43a6797a3615cd4eb84e6a3c8d4ad066",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/550",
+    "id": "VariableID:10027:58935",
+    "key": "40e531cc1b69eb4b3b57e46b66a7149d2fd29b3d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/560",
+    "id": "VariableID:10027:58936",
+    "key": "a72ee7e1606af97ede32e9821942c58ca12d38de",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/570",
+    "id": "VariableID:10027:58937",
+    "key": "6bd78d701dd192762423b37bc2be3ad7131a78e6",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/580",
+    "id": "VariableID:10027:58938",
+    "key": "4ff3be4c14cf92984cd5f1da1cee2b5cb2a38da9",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/590",
+    "id": "VariableID:10027:58939",
+    "key": "dc6d63338d0c27713a9197d94f472aa942269a07",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/600",
+    "id": "VariableID:10027:58940",
+    "key": "b60a5cf8e33a6cb34491420dfc78bf3bc0339a05",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/610",
+    "id": "VariableID:10027:58941",
+    "key": "e05b8f4398f951a236fae42e2a46675ee2636a2d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/620",
+    "id": "VariableID:10027:58942",
+    "key": "2ba34bf3d8aac59d6423acd5df1e055cd9ba9681",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/630",
+    "id": "VariableID:10027:58943",
+    "key": "851a1d3beef0474e1a24d74068112a270d61d6d0",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/640",
+    "id": "VariableID:10027:58944",
+    "key": "545c373ceb03660ba8868b755189796928c268fa",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/650",
+    "id": "VariableID:10027:58945",
+    "key": "1d948ff2633b440c9861684bc50522860c0888d7",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/660",
+    "id": "VariableID:10027:58946",
+    "key": "6d9cd813307413237190dab635eb89843ad05828",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/670",
+    "id": "VariableID:10027:58947",
+    "key": "b80e90a2bfdab8c6f99f620af1186a18f09c8282",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/680",
+    "id": "VariableID:10027:58948",
+    "key": "c8dd519c283ee7a5fcc04a684f35bb159332e4e4",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/690",
+    "id": "VariableID:10027:58949",
+    "key": "212529bf314cfd97686dd64170824601bc4ce1f7",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/700",
+    "id": "VariableID:10027:58950",
+    "key": "0f5a25e9388a9313d2da225bea66297f7a48b848",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/710",
+    "id": "VariableID:10027:58951",
+    "key": "3a15e5711e22edfd2308668a79951dadba0cc136",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/720",
+    "id": "VariableID:10027:58952",
+    "key": "60fa4c3d94cb36ffec7470e4430a1de3229918b8",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/730",
+    "id": "VariableID:10027:58953",
+    "key": "9974652415c438f38534f8546d99d9e91302287b",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/740",
+    "id": "VariableID:10027:58954",
+    "key": "091838fbbed8bfed97ba0f31619b95fdcc1729a8",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/750",
+    "id": "VariableID:10027:58955",
+    "key": "068aa15b034e118095989de54514a9d5f8be8702",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/760",
+    "id": "VariableID:10027:58956",
+    "key": "7a6a8b394e77a9ac7e74e4c38bafc4eec974d7e4",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/770",
+    "id": "VariableID:10027:58957",
+    "key": "e617a4617bd94130a6ef518b0581be56b743ab1f",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/780",
+    "id": "VariableID:10027:58958",
+    "key": "99d7b6d2d2d8eb3b00baaa583f6073fcb79e8794",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/790",
+    "id": "VariableID:10027:58959",
+    "key": "cd5a6dd068e87a9bc9a499f77c58ae9752ea4f3f",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/800",
+    "id": "VariableID:10027:58960",
+    "key": "3ac78c3de270c73e784c19c36164c1bea0ac6aa7",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/810",
+    "id": "VariableID:10027:58961",
+    "key": "5adcc59863e672633f99e45a719a82d69b877793",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/820",
+    "id": "VariableID:10027:58962",
+    "key": "cdfc38bbb2c051c66e5b6de2d65fb9a179aa5b96",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/830",
+    "id": "VariableID:10027:58963",
+    "key": "8f8bcf2cec5cfb51df266f35e53d84408fa90ec0",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/840",
+    "id": "VariableID:10027:58964",
+    "key": "3ad3ac820a8b7c162e121cf1446c39d8396ab7b2",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/850",
+    "id": "VariableID:10027:58965",
+    "key": "16a325791a0b030c4f0aef1295e664d853af5d9d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/860",
+    "id": "VariableID:10027:58966",
+    "key": "916d83d7255ff4a9e83e802f5ee96419b15fb89d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/870",
+    "id": "VariableID:10027:58967",
+    "key": "3d37b30caf83c6504a6b4b3f0edd46ec1f4d76d8",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/880",
+    "id": "VariableID:10027:58968",
+    "key": "8db1910ac6306de4bcec03d9643dcceebb9adcc5",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/890",
+    "id": "VariableID:10027:58969",
+    "key": "58e12b64327e5e7e0bced3ed13da7f136d2f50bc",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/900",
+    "id": "VariableID:10027:58970",
+    "key": "29f6882f480e144e7cbabab1bc3bfe886131c26e",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/910",
+    "id": "VariableID:10027:58971",
+    "key": "4be8455edb311db2b89c668ceb8ea091e6add97c",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/920",
+    "id": "VariableID:10027:58972",
+    "key": "2b8804737af3cfba0123c7f8150a164ae111785b",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/930",
+    "id": "VariableID:10027:58973",
+    "key": "6b75712aba3724962291553a1f82e2382c649d94",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/940",
+    "id": "VariableID:10027:58974",
+    "key": "b1858c6fa59299902df0f70ddea2bf70de63cedc",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/950",
+    "id": "VariableID:10027:58975",
+    "key": "8e564c9ef66ffc3fdeb72f99161696911fb142fc",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/960",
+    "id": "VariableID:10027:58976",
+    "key": "811c8f45d9a8efeaed6805aaf5c3be51cfad9413",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/970",
+    "id": "VariableID:10027:58977",
+    "key": "8cdb0a2f7ac04b4e649ab4271c3a78bb219babfb",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/980",
+    "id": "VariableID:10027:58978",
+    "key": "a787ee9a906e8e6a4b5beef07fcfaef2a21dc56d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/990",
+    "id": "VariableID:10027:58979",
+    "key": "d5f5056dc589423b6a5e2e65053021a0bf5dc9f3",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Red/1000",
+    "id": "VariableID:10027:58980",
+    "key": "52ae1e03151f6226be5e686d0295dc7e6aecb963",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Gray/50",
+    "id": "VariableID:9910:62061",
+    "key": "625a4520a2a58a049528f5d1c7bb4fa9647a74a2",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Gray/100",
+    "id": "VariableID:9910:62060",
+    "key": "47f2d3bf8e515534f238eb2d7bd1738c02e6b9ae",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Gray/150",
+    "id": "VariableID:9910:62062",
+    "key": "6b2c6e7bc646704cc68044155f420477746690bf",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Gray/800",
+    "id": "VariableID:9910:62063",
+    "key": "87ee480a4cf524a5381d58592e484ad5598166a8",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Gray/920",
+    "id": "VariableID:9910:62064",
+    "key": "d699a9732d461a846be905cf3f0282a89036b830",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Primitives",
+    "name": "Gray/970",
+    "id": "VariableID:9910:62065",
+    "key": "59d486686e9f254f8d656199b5a29801ef0e25b9",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Theme",
+    "name": "Light/Theme/base-c-theme",
+    "id": "VariableID:8257:22675",
+    "key": "52d6cab38e85b08fbb2eacf6ce870d23805c22c9",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Theme",
+    "name": "Light/Theme/theme-1",
+    "id": "VariableID:8257:22677",
+    "key": "10f046a6594047080610e6c23c84f8ab972af728",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Theme",
+    "name": "Light/Theme/theme-2",
+    "id": "VariableID:8257:22681",
+    "key": "84cfb3e0654b8a8ce05310282fe72a9e26c54860",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Theme",
+    "name": "Light/Theme/theme-3",
+    "id": "VariableID:8257:22682",
+    "key": "d71f0497d725cae8d75b246718f8709b53f42613",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Theme",
+    "name": "Light/Theme/theme-c-1",
+    "id": "VariableID:8257:22683",
+    "key": "59573a611ddcc7493afbec167b23b0608c17fcd9",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Theme",
+    "name": "Light/Theme/theme-c-2",
+    "id": "VariableID:8257:22684",
+    "key": "0c2635921e4cdf034f5ba543672b9799d165efa4",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Theme",
+    "name": "Light/Theme/theme-hc",
+    "id": "VariableID:8307:24598",
+    "key": "e7b5c2a1621ea8abf1704f9ed79557127b930ce9",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Theme",
+    "name": "Light/Theme/Fade/theme-fade",
+    "id": "VariableID:8257:22696",
+    "key": "d347bdaf0f106710a60ac9cd1af12c393190a64e",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Theme",
+    "name": "Light/Theme/Fade/theme-fade-c",
+    "id": "VariableID:8257:22697",
+    "key": "06b8b6cf4e9c5aa7d8077daef6c829f8c21317d0",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Theme",
+    "name": "Dark/Theme/base-c-theme",
+    "id": "VariableID:8257:22674",
+    "key": "c975c3f867396f9314ec8eed98dc438df7e8ebcc",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Theme",
+    "name": "Dark/Theme/theme-1",
+    "id": "VariableID:8257:22686",
+    "key": "5d79565f391cbe34aee5c51adfbe89f88768ca01",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Theme",
+    "name": "Dark/Theme/theme-2",
+    "id": "VariableID:8257:22687",
+    "key": "5d20953ac9e245b3870f228fc243dc0b0c009530",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Theme",
+    "name": "Dark/Theme/theme-3",
+    "id": "VariableID:8257:22688",
+    "key": "8de26e277333c8275d5fa93d37776c9c70b45fe0",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Theme",
+    "name": "Dark/Theme/theme-c-1",
+    "id": "VariableID:8257:22689",
+    "key": "3696ddc7406d6ac828dd48411ae50e8627c795c1",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Theme",
+    "name": "Dark/Theme/theme-c-2",
+    "id": "VariableID:8257:22690",
+    "key": "ff82e3cd110d3ea967f3a9735ab8a07fa318b4c4",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Theme",
+    "name": "Dark/Theme/theme-hc",
+    "id": "VariableID:8307:24600",
+    "key": "31853b5789c86abbba35967ba9f2ef1f7ce9e16c",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Theme",
+    "name": "Dark/Theme/Fade/theme-fade",
+    "id": "VariableID:8257:22691",
+    "key": "a4516908148266c592712a1c5a7db9e1e32dbdac",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Theme",
+    "name": "Dark/Theme/Fade/theme-fade-c",
+    "id": "VariableID:8257:22695",
+    "key": "1e3ac6eb6bf0f05d318c4561f00c63ecd67d2405",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Theme",
+    "name": "Selected theme",
+    "id": "VariableID:8441:219834",
+    "key": "a1e461899fd8f87f3df40190a8589484d75c5c2a",
+    "resolvedType": "STRING"
+  },
+  {
+    "collection": "Assigned",
+    "name": "Color-name",
+    "id": "VariableID:10134:86709",
+    "key": "c9cfa35b0c0cf27acfd121447476323e7d7553ea",
+    "resolvedType": "STRING"
+  },
+  {
+    "collection": "Assigned",
+    "name": "0",
+    "id": "VariableID:10134:80500",
+    "key": "09f8417219572927f605175c46aedd951b558ac8",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "10",
+    "id": "VariableID:10134:80501",
+    "key": "a53a6a38ae09dac3def6939ca02fea8ca70016e7",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "20",
+    "id": "VariableID:10134:80502",
+    "key": "2a53545f831fac165f49659d557605eab78472a2",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "30",
+    "id": "VariableID:10134:80503",
+    "key": "c59dbf46aa5cb8fcc7feec974913538976fae23e",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "40",
+    "id": "VariableID:10134:80504",
+    "key": "bc2181657a73fc6410559d32f2c88ab1072e90b4",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "50",
+    "id": "VariableID:10134:80505",
+    "key": "3c27d1b3fc5d72f267b762c2069fc718c2090e43",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "60",
+    "id": "VariableID:10134:80506",
+    "key": "6d6231493f5d1648952e850d0f36dcbb4aa7ac83",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "70",
+    "id": "VariableID:10134:80507",
+    "key": "78939dc73c364da5fdafcf5deff1366d2f9d2a26",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "80",
+    "id": "VariableID:10134:80508",
+    "key": "2da15e71ce7ca5be28aa6c7d3080141eb4704e13",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "90",
+    "id": "VariableID:10134:80509",
+    "key": "aee9449c1b37e3c03715fbeac0299846342eb129",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "100",
+    "id": "VariableID:10134:80510",
+    "key": "59b717faaefc0352c2ab0b0d9e35c90094abec82",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "110",
+    "id": "VariableID:10134:80511",
+    "key": "cefa74c50b9adecacde0c263234a10d3b62abd6b",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "120",
+    "id": "VariableID:10134:80512",
+    "key": "53fbdffa854035d5e3de9047d40c2ed14ed9dfbe",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "130",
+    "id": "VariableID:10134:80513",
+    "key": "2e44283b9ad745994f7384b7d77d0691e1cda28a",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "140",
+    "id": "VariableID:10134:80514",
+    "key": "45ce4a62ccf7d47e59e3ac0120cb0725010ed971",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "150",
+    "id": "VariableID:10134:80515",
+    "key": "0762d1f88a16789d4e019ba1ff7f568f4ad520e9",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "160",
+    "id": "VariableID:10134:80516",
+    "key": "8f6383ec7b3d3588414b12a75543a329c68c8453",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "170",
+    "id": "VariableID:10134:80517",
+    "key": "349f67b1367f7f8beb884074986b6ce2a62a22ef",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "180",
+    "id": "VariableID:10134:80518",
+    "key": "ceb21688af25e8bd421990c7657c7e31104fb9f1",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "190",
+    "id": "VariableID:10134:80519",
+    "key": "069993b1ef9b6cac51e0384346d99a06b58ef378",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "200",
+    "id": "VariableID:10134:80520",
+    "key": "1d8915a8d4e0c679d55926ed9d5a8af59a7c0e0b",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "210",
+    "id": "VariableID:10134:80521",
+    "key": "00381f9a141a415019e9f77489d339541e926d0c",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "220",
+    "id": "VariableID:10134:80522",
+    "key": "53d69cff4451a7f79de27d669c6caaf6d883bf54",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "230",
+    "id": "VariableID:10134:80523",
+    "key": "99da4e7f8aeb7483c9eb460e6fe50f1dc34693fb",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "240",
+    "id": "VariableID:10134:80524",
+    "key": "b0a0ad3e009fa18cf58840aa0955ee54ebac4a62",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "250",
+    "id": "VariableID:10134:80525",
+    "key": "053228bfd2021f26214e5bec1e5425859cda9df4",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "260",
+    "id": "VariableID:10134:80526",
+    "key": "c5c922785db28ca5d5dd410e34626b7b3d2876e8",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "270",
+    "id": "VariableID:10134:80527",
+    "key": "c787cdd739dd4eb117497922fdd8d49ec8c66fd0",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "280",
+    "id": "VariableID:10134:80528",
+    "key": "0b17eefd43060c26d341c45c476c406566e7f3c7",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "290",
+    "id": "VariableID:10134:80529",
+    "key": "7a5bb9b01a656b0f3d0bca850b8992ca55c5969d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "300",
+    "id": "VariableID:10134:80530",
+    "key": "2f060eea8eb50d9384d1d1e4abf804d1de76a37c",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "310",
+    "id": "VariableID:10134:80531",
+    "key": "dcf06a4a64aad0b5b12246ae5b6b9d3fb8bdf343",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "320",
+    "id": "VariableID:10134:80532",
+    "key": "20a0e1198c0dc99576c47210ef43f2de1172ba9d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "330",
+    "id": "VariableID:10134:80533",
+    "key": "c5edde3f35d96fd2f53d3f2dfef7223ae259ba4c",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "340",
+    "id": "VariableID:10134:80534",
+    "key": "106afbf77a207a4c008b3fe39f977847fed3150b",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "350",
+    "id": "VariableID:10134:80535",
+    "key": "f18ab7b41f74fdb6a22d68a310a12e4f976616a0",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "360",
+    "id": "VariableID:10134:80536",
+    "key": "1bc08633cf280db4f449e01757a06aea55f7bacf",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "370",
+    "id": "VariableID:10134:80537",
+    "key": "7f0dac4f2983d3ffa84d2cc167c26f120777e666",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "380",
+    "id": "VariableID:10134:80538",
+    "key": "8db22b96f436431cdf01ef1465332661f3f96abf",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "390",
+    "id": "VariableID:10134:80539",
+    "key": "b4062b5a9e4c130031aa45f1565b7966b2c2b674",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "400",
+    "id": "VariableID:10134:80540",
+    "key": "bb4b2b74d689fa0c464e6bba0d6233379a8a0bee",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "410",
+    "id": "VariableID:10134:80541",
+    "key": "0533006637f76451610e47304dca831dfaaa9e77",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "420",
+    "id": "VariableID:10134:80542",
+    "key": "be4c45877062647e04d519f7cf16921a96fe978e",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "430",
+    "id": "VariableID:10134:80543",
+    "key": "c33b9b38dd91eb2845d1cbea04b0de195fc01d48",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "440",
+    "id": "VariableID:10134:80544",
+    "key": "24f4f93b4f46b6d55be1f7ed7506c8eac90408bd",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "450",
+    "id": "VariableID:10134:80545",
+    "key": "e72d7a09aafc079506693fb5b486dd22f6b04c8e",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "460",
+    "id": "VariableID:10134:80546",
+    "key": "c3afc2bb6f0393558a4526981180ca6ca70ebd1b",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "470",
+    "id": "VariableID:10134:80547",
+    "key": "a923523faf002e99dd7fe428f0bf50885c5c43bf",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "480",
+    "id": "VariableID:10134:80548",
+    "key": "16f48ecf751a0f370a7689a0bea5c9a669f5ae25",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "490",
+    "id": "VariableID:10134:80549",
+    "key": "a067f8da7d8ae8830e322ce0a3b24a46b0222f41",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "500",
+    "id": "VariableID:10134:80550",
+    "key": "bef49300415f47eab4239fa91d8aa541263238be",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "510",
+    "id": "VariableID:10134:80551",
+    "key": "dbbb8e378372d34d3e55090ad1ccd987ebb50a78",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "520",
+    "id": "VariableID:10134:80552",
+    "key": "eaaf2a0f322e00d5321770f9a44c67fd74aed412",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "530",
+    "id": "VariableID:10134:80553",
+    "key": "8aeb9c8bd345b5c0d715ee9ee4c2646e6ceea447",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "540",
+    "id": "VariableID:10134:80554",
+    "key": "12ea92b026d207a699c0ea7dadffc340a9140103",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "550",
+    "id": "VariableID:10134:80555",
+    "key": "cfc3d79721a4e59fb71ea522602f5620da33a845",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "560",
+    "id": "VariableID:10134:80556",
+    "key": "2d8cc4a55814a4b8fedc51730255fced13523449",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "570",
+    "id": "VariableID:10134:80557",
+    "key": "fbc8a018bee2d662a385500e8b46c1796b437f3d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "580",
+    "id": "VariableID:10134:80558",
+    "key": "240de9e216b5de7c120afb5f731899680d029c3a",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "590",
+    "id": "VariableID:10134:80559",
+    "key": "dcb648efd5643ad495dcd6b72aa8cf468d8c6a87",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "600",
+    "id": "VariableID:10134:80560",
+    "key": "726353d4a95e67e8394c8b343131964cad06ae93",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "610",
+    "id": "VariableID:10134:80561",
+    "key": "1d88e6ec866a823c153e39df394bce585e87d2c2",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "620",
+    "id": "VariableID:10134:80562",
+    "key": "9c0a19bb4e02c604942ca256f7ff15c9da294597",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "630",
+    "id": "VariableID:10134:80563",
+    "key": "e3ae631172fda26b9e7fb396822df570a6126a7f",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "640",
+    "id": "VariableID:10134:80564",
+    "key": "d734fa1571fc0a059d06098adf6a9eba901572d0",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "650",
+    "id": "VariableID:10134:80565",
+    "key": "6f9d8d652c9738e1a7081ccfc2f12d3ed2faeaa4",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "660",
+    "id": "VariableID:10134:80566",
+    "key": "c60b9929851d2d3603027cd37a159b66dae26285",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "670",
+    "id": "VariableID:10134:80567",
+    "key": "5801bcda6f35ec7a70d64cf0dd89ff298aafd4f2",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "680",
+    "id": "VariableID:10134:80568",
+    "key": "3f226ac9596a1bfdd08c22134fb099c1a1a6697c",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "690",
+    "id": "VariableID:10134:80569",
+    "key": "582e1ce88578daa517f876143b70a2048d794308",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "700",
+    "id": "VariableID:10134:80570",
+    "key": "c1aafbd80db9b7821fb703e3738bfba677c29aeb",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "710",
+    "id": "VariableID:10134:80571",
+    "key": "8415a226c34ed177205d22b40614886d9ef8ea31",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "720",
+    "id": "VariableID:10134:80572",
+    "key": "4203476099249cc1c413bf6e0e0d6eb5bbe94655",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "730",
+    "id": "VariableID:10134:80573",
+    "key": "8a9b120ecc90ae5bf52202ae0f66c39329bbf71a",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "740",
+    "id": "VariableID:10134:80574",
+    "key": "6c9744f2aa8dcd17ae1a3f35e8b0eadb494ab74a",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "750",
+    "id": "VariableID:10134:80575",
+    "key": "2608566f44c46b2416142573b33887dcbe9f6295",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "760",
+    "id": "VariableID:10134:80576",
+    "key": "7e7faf4ef11fc213e8bcc2b0487c7e72ad57dedd",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "770",
+    "id": "VariableID:10134:80577",
+    "key": "cdeabe3368d7b3631540529b157e3240f2004dcc",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "780",
+    "id": "VariableID:10134:80578",
+    "key": "634e87629530723d2b6de110a032b76b58c64073",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "790",
+    "id": "VariableID:10134:80579",
+    "key": "11f21fa9b0ce77e7ca50c24367910b8fc91ad353",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "800",
+    "id": "VariableID:10134:80580",
+    "key": "968808ab97248a7def29e4201aef9b1d21cde35d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "810",
+    "id": "VariableID:10134:80581",
+    "key": "d1b0b9cc56aa6decf7304f83bfc4daf77a3aeea2",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "820",
+    "id": "VariableID:10134:80582",
+    "key": "11c689b72cad4a16f483fb5bfa30a46bfdf335e0",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "830",
+    "id": "VariableID:10134:80583",
+    "key": "ac83e689b479d190140494e878857cf90fa625b3",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "840",
+    "id": "VariableID:10134:80584",
+    "key": "5ecc111f238f76ef9e4e329629afc7c3188bd507",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "850",
+    "id": "VariableID:10134:80585",
+    "key": "06f2480c049ed40740ed62a0ad61da14a32043c5",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "860",
+    "id": "VariableID:10134:80586",
+    "key": "0424592624b30d075370d0970c4bd3ff588881d1",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "870",
+    "id": "VariableID:10134:80587",
+    "key": "791f7799a029526453c2840c7fd0b42063b3f030",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "880",
+    "id": "VariableID:10134:80588",
+    "key": "d943371e61edfa6c002a0049df05e81cd97e30c3",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "890",
+    "id": "VariableID:10134:80589",
+    "key": "f3746d8fd0b211db8710d8853a1f0c1152235f90",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "900",
+    "id": "VariableID:10134:80590",
+    "key": "acfae08b906e662a293e21ec533760c42d0aced2",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "910",
+    "id": "VariableID:10134:80591",
+    "key": "2b6dc9d3871ca5ef6d2c8124e59897e95656594d",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "920",
+    "id": "VariableID:10134:80592",
+    "key": "2bc1ca4441384309c5a39cd7914fb12510c690a2",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "930",
+    "id": "VariableID:10134:80593",
+    "key": "bf62a90d52578483495514fe8475247d0967281a",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "940",
+    "id": "VariableID:10134:80594",
+    "key": "bff14a1b8c8ab1f32dcde2a6c7b12a5c3e570877",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "950",
+    "id": "VariableID:10134:80595",
+    "key": "3872b63a28bc177d57929e82928358f117e15514",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "960",
+    "id": "VariableID:10134:80596",
+    "key": "1725baab4a6910e54007ac494b7f7f4ce7e2ad36",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "970",
+    "id": "VariableID:10134:80597",
+    "key": "2cf544cd65928f5f6e08c63712462f5404f1d566",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "980",
+    "id": "VariableID:10134:80598",
+    "key": "32f749b8b16a7f07121fb61dcf66fc6920abaf31",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "990",
+    "id": "VariableID:10134:80599",
+    "key": "bae44b09cd463ccf1fc67ef6aa219913625b97ba",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Assigned",
+    "name": "1000",
+    "id": "VariableID:10134:80600",
+    "key": "7120a6734c532795f7ba2190d0a739dead93c645",
+    "resolvedType": "COLOR"
+  },
+  {
+    "collection": "Breakpoint",
+    "name": "Layout/bf-page-padding",
+    "id": "VariableID:10618:87488",
+    "key": "0b6db8121305fb35cd25ff1dbbab20265cace1f2",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Breakpoint",
+    "name": "Viewport/Min-width",
+    "id": "VariableID:10618:87486",
+    "key": "001d9063be52b1b108a9765b8dccacbfcfd22a2e",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Breakpoint",
+    "name": "Viewport/Max-width",
+    "id": "VariableID:10618:87487",
+    "key": "10e40eb60afe160d2798009cff90eb414a1c7240",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Breakpoint",
+    "name": "Visibility/From/from-small",
+    "id": "VariableID:10618:87456",
+    "key": "e88f8e38fe689a89a8c6455fd9a5c44d97d3ff1e",
+    "resolvedType": "BOOLEAN"
+  },
+  {
+    "collection": "Breakpoint",
+    "name": "Visibility/From/from-medium",
+    "id": "VariableID:10618:87460",
+    "key": "e55a7e0064d3110887a3c52b80f5cecbffeec284",
+    "resolvedType": "BOOLEAN"
+  },
+  {
+    "collection": "Breakpoint",
+    "name": "Visibility/From/from-large",
+    "id": "VariableID:10618:87462",
+    "key": "1250316f726633994e9d59df44185634e828982b",
+    "resolvedType": "BOOLEAN"
+  },
+  {
+    "collection": "Breakpoint",
+    "name": "Visibility/From/from-xl",
+    "id": "VariableID:10618:87464",
+    "key": "90b6f984edd1eed944e63f247c8d5ce130e61181",
+    "resolvedType": "BOOLEAN"
+  },
+  {
+    "collection": "Breakpoint",
+    "name": "Visibility/From/from-xxl",
+    "id": "VariableID:10618:87466",
+    "key": "291ac204959361f4bde2a63c3a8e87fcb8cb9211",
+    "resolvedType": "BOOLEAN"
+  },
+  {
+    "collection": "Breakpoint",
+    "name": "Visibility/To/to-small",
+    "id": "VariableID:10618:87458",
+    "key": "a323d8acc4027f5cf78c4ee7a49ba0a5b31b1651",
+    "resolvedType": "BOOLEAN"
+  },
+  {
+    "collection": "Breakpoint",
+    "name": "Visibility/To/to-medium",
+    "id": "VariableID:10618:87461",
+    "key": "60d9dc55e70cb980f7ee390a3da998c95baebc71",
+    "resolvedType": "BOOLEAN"
+  },
+  {
+    "collection": "Breakpoint",
+    "name": "Visibility/To/to-large",
+    "id": "VariableID:10618:87463",
+    "key": "2724e0023d7f9a248ba2025084459869a31d341e",
+    "resolvedType": "BOOLEAN"
+  },
+  {
+    "collection": "Breakpoint",
+    "name": "Visibility/To/to-xl",
+    "id": "VariableID:10618:87465",
+    "key": "093bfa0f7887c580f7878b2b9a7382d61d26d70e",
+    "resolvedType": "BOOLEAN"
+  },
+  {
+    "collection": "Breakpoint",
+    "name": "Visibility/To/to-xxl",
+    "id": "VariableID:10618:87467",
+    "key": "ab2de8e4b753285ee831e7254ff932569006b544",
+    "resolvedType": "BOOLEAN"
+  },
+  {
+    "collection": "Breakpoint",
+    "name": "Visibility/From and to/from-small-to-medium",
+    "id": "VariableID:10618:87468",
+    "key": "297dd6335c772c01b42c1c1f6103787fb8aa4742",
+    "resolvedType": "BOOLEAN"
+  },
+  {
+    "collection": "Breakpoint",
+    "name": "Visibility/From and to/from-small-to-large",
+    "id": "VariableID:10618:87469",
+    "key": "f8ec72d09780ba3c628f86840855243e971aadc3",
+    "resolvedType": "BOOLEAN"
+  },
+  {
+    "collection": "Breakpoint",
+    "name": "Visibility/From and to/from-small-to-xl",
+    "id": "VariableID:10618:87470",
+    "key": "e0b46aada4fa7c336ca26d8f106f6c72d32c7afa",
+    "resolvedType": "BOOLEAN"
+  },
+  {
+    "collection": "Breakpoint",
+    "name": "Visibility/From and to/from-small-to-xxl",
+    "id": "VariableID:10618:87471",
+    "key": "e57950894b4102da34064166af48a24626275c57",
+    "resolvedType": "BOOLEAN"
+  },
+  {
+    "collection": "Breakpoint",
+    "name": "Visibility/From and to/from-medium-to-large",
+    "id": "VariableID:10618:87473",
+    "key": "70269a8a0d8720e69039289652df1acf4045a339",
+    "resolvedType": "BOOLEAN"
+  },
+  {
+    "collection": "Breakpoint",
+    "name": "Visibility/From and to/from-medium-to-xl",
+    "id": "VariableID:10618:87474",
+    "key": "0af61cba2a5dff5fa8496d9ade330911b80de4f6",
+    "resolvedType": "BOOLEAN"
+  },
+  {
+    "collection": "Breakpoint",
+    "name": "Visibility/From and to/from-medium-to-xxl",
+    "id": "VariableID:10618:87475",
+    "key": "1751eb327eb057f9a4ca63438ca23c71d9cbe985",
+    "resolvedType": "BOOLEAN"
+  },
+  {
+    "collection": "Breakpoint",
+    "name": "Visibility/From and to/from-large-to-xl",
+    "id": "VariableID:10618:87479",
+    "key": "95da071d66327c0fb479e11deb90404a1cf19d2b",
+    "resolvedType": "BOOLEAN"
+  },
+  {
+    "collection": "Breakpoint",
+    "name": "Visibility/From and to/from-large-to-xxl",
+    "id": "VariableID:10618:87478",
+    "key": "26a1845d9202ab3edea0738d57f5cfa012adf7b4",
+    "resolvedType": "BOOLEAN"
+  },
+  {
+    "collection": "Breakpoint",
+    "name": "Visibility/From and to/from-xl-to-xxl",
+    "id": "VariableID:10618:87480",
+    "key": "427ce222b0e03c2b42a49d0f01d0c755c015b327",
+    "resolvedType": "BOOLEAN"
+  },
+  {
+    "collection": "Breakpoint",
+    "name": "Components/Header/header-gap",
+    "id": "VariableID:10671:87321",
+    "key": "0a88ba81dc0b69960a0b597c6709170ae648b179",
+    "resolvedType": "FLOAT"
+  },
+  {
+    "collection": "Breakpoint",
+    "name": "Components/Header/illustration-padding-offset",
+    "id": "VariableID:10673:87323",
+    "key": "4e47d0d775aba74a1219c896cf12c7aa1166d06f",
+    "resolvedType": "FLOAT"
+  }
+]

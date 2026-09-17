@@ -1,0 +1,1076 @@
+[
+  {
+    "name": "S/Open Sans/Regular/Text",
+    "id": "S:e06033c26863db6cd5a0ae9cfafb16f05c1915c1,",
+    "key": "e06033c26863db6cd5a0ae9cfafb16f05c1915c1",
+    "fontSize": 12,
+    "fontFamily": "Open Sans",
+    "fontStyle": "Regular",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "S/Open Sans/Regular/Link",
+    "id": "S:e8c2bb5b4055e90f88547ef82094c4dc67217757,",
+    "key": "e8c2bb5b4055e90f88547ef82094c4dc67217757",
+    "fontSize": 12,
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "S/Open Sans/Semibold/Text",
+    "id": "S:801e66a2ca1a3624614d210ce9d75a0cae8fcc87,",
+    "key": "801e66a2ca1a3624614d210ce9d75a0cae8fcc87",
+    "fontSize": 12,
+    "fontFamily": "Open Sans",
+    "fontStyle": "Semibold",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "S/Open Sans/Semibold/Link",
+    "id": "S:39c33205ca43c6433adc725b30da16438481ae00,",
+    "key": "39c33205ca43c6433adc725b30da16438481ae00",
+    "fontSize": 12,
+    "fontFamily": "Open Sans",
+    "fontStyle": "Semibold",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "S/Open Sans/Italic/Text",
+    "id": "S:90c470e68a7ac8efc1f1e15073c1816f8f51442f,",
+    "key": "90c470e68a7ac8efc1f1e15073c1816f8f51442f",
+    "fontSize": 12,
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "S/Open Sans/Italic/Link",
+    "id": "S:112dea6ecba1269eefc4cb4e35db62fa96033ed0,",
+    "key": "112dea6ecba1269eefc4cb4e35db62fa96033ed0",
+    "fontSize": 12,
+    "fontFamily": "Open Sans",
+    "fontStyle": "Italic",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "S/Open Sans/Semibold italic/Text",
+    "id": "S:683cf22c0bbd75066ea5bd43954f3c1ac075b2e1,",
+    "key": "683cf22c0bbd75066ea5bd43954f3c1ac075b2e1",
+    "fontSize": 12,
+    "fontFamily": "Open Sans",
+    "fontStyle": "Semibold Italic",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "S/Open Sans/Semibold italic/Link",
+    "id": "S:b82cb3dfa105913308db894b7855348eb9dc6e16,",
+    "key": "b82cb3dfa105913308db894b7855348eb9dc6e16",
+    "fontSize": 12,
+    "fontFamily": "Open Sans",
+    "fontStyle": "Semibold Italic",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "S/Font Awesome/Regular",
+    "id": "S:f9332288e63a8d541c7a3e8cf14c4005d8fc1ccf,",
+    "key": "f9332288e63a8d541c7a3e8cf14c4005d8fc1ccf",
+    "fontSize": 12,
+    "fontFamily": "Font Awesome 7 Pro",
+    "fontStyle": "Regular",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "S/Font Awesome/Solid",
+    "id": "S:10fea049a0cef73591af080de8dce6639473a8bd,",
+    "key": "10fea049a0cef73591af080de8dce6639473a8bd",
+    "fontSize": 12,
+    "fontFamily": "Font Awesome 7 Pro",
+    "fontStyle": "Solid",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "S/Font Awesome/Duotone",
+    "id": "S:2499ad8477df42669beb53a16451e9b6d446397f,",
+    "key": "2499ad8477df42669beb53a16451e9b6d446397f",
+    "fontSize": 12,
+    "fontFamily": "Font Awesome 7 Duotone",
+    "fontStyle": "Solid",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "S/Font Awesome/Brands",
+    "id": "S:30ce4f629fd0800b0a788d889de76f8f21a6fb9a,",
+    "key": "30ce4f629fd0800b0a788d889de76f8f21a6fb9a",
+    "fontSize": 12,
+    "fontFamily": "Font Awesome 7 Brands",
+    "fontStyle": "Regular",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "M/Open Sans/Regular/Text",
+    "id": "S:9b03ed68b5d739e5c3c02eb0bacaa568f7e0335f,",
+    "key": "9b03ed68b5d739e5c3c02eb0bacaa568f7e0335f",
+    "fontSize": 14,
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "M/Open Sans/Regular/Link",
+    "id": "S:f503d18cb499469087b15e6576597578919cf778,",
+    "key": "f503d18cb499469087b15e6576597578919cf778",
+    "fontSize": 14,
+    "fontFamily": "Open Sans",
+    "fontStyle": "Regular",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "M/Open Sans/Semibold/Text",
+    "id": "S:d3e6decf5544710c281ba7bcad4d7105dcf18029,",
+    "key": "d3e6decf5544710c281ba7bcad4d7105dcf18029",
+    "fontSize": 14,
+    "fontFamily": "Open Sans",
+    "fontStyle": "Semibold",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "M/Open Sans/Semibold/Link",
+    "id": "S:955332efe682c15b1efc20ca22c14169e3c50890,",
+    "key": "955332efe682c15b1efc20ca22c14169e3c50890",
+    "fontSize": 14,
+    "fontFamily": "Open Sans",
+    "fontStyle": "Semibold",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "M/Open Sans/Italic/Text",
+    "id": "S:2ebaed06530d6debeaf874ed192cf0036fd5e81a,",
+    "key": "2ebaed06530d6debeaf874ed192cf0036fd5e81a",
+    "fontSize": 14,
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "M/Open Sans/Italic/Link",
+    "id": "S:a9278b758b01882ec933a2c10b048585b627e05e,",
+    "key": "a9278b758b01882ec933a2c10b048585b627e05e",
+    "fontSize": 14,
+    "fontFamily": "Open Sans",
+    "fontStyle": "Italic",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "M/Open Sans/Semibold italic/Text",
+    "id": "S:f04b8debafc8d53f7c5d38249e8deb5b191fb639,",
+    "key": "f04b8debafc8d53f7c5d38249e8deb5b191fb639",
+    "fontSize": 14,
+    "fontFamily": "Open Sans",
+    "fontStyle": "Semibold Italic",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "M/Open Sans/Semibold italic/Link",
+    "id": "S:a54dd6e36d1e4569c80a7057d589906da48f1204,",
+    "key": "a54dd6e36d1e4569c80a7057d589906da48f1204",
+    "fontSize": 14,
+    "fontFamily": "Open Sans",
+    "fontStyle": "Semibold Italic",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "M/Font Awesome/Regular",
+    "id": "S:c6a38e7e1c6b475527b039daa81f5168c49e135e,",
+    "key": "c6a38e7e1c6b475527b039daa81f5168c49e135e",
+    "fontSize": 14,
+    "fontFamily": "Font Awesome 7 Pro",
+    "fontStyle": "Regular",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "M/Font Awesome/Solid",
+    "id": "S:94f5f62f0958411a389901a7a55889644aff9686,",
+    "key": "94f5f62f0958411a389901a7a55889644aff9686",
+    "fontSize": 14,
+    "fontFamily": "Font Awesome 7 Pro",
+    "fontStyle": "Solid",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "M/Font Awesome/Duotone",
+    "id": "S:c48a6bd82cc278f98622e34c484db851a7ba157c,",
+    "key": "c48a6bd82cc278f98622e34c484db851a7ba157c",
+    "fontSize": 14,
+    "fontFamily": "Font Awesome 7 Duotone",
+    "fontStyle": "Solid",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "M/Font Awesome/Brands",
+    "id": "S:b570c5279d5a2f25ea51c3a1f1f58acd5170b4d9,",
+    "key": "b570c5279d5a2f25ea51c3a1f1f58acd5170b4d9",
+    "fontSize": 14,
+    "fontFamily": "Font Awesome 7 Brands",
+    "fontStyle": "Regular",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "L/Open Sans/Regular/Text",
+    "id": "S:063c9f62fe72b06d8307a2cd3fe4581d848b448a,",
+    "key": "063c9f62fe72b06d8307a2cd3fe4581d848b448a",
+    "fontSize": 16,
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "L/Open Sans/Regular/Link",
+    "id": "S:683d24e0ee776314c683efff355258b61d9cd554,",
+    "key": "683d24e0ee776314c683efff355258b61d9cd554",
+    "fontSize": 16,
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "L/Open Sans/Semibold/Text",
+    "id": "S:4652c8d637a7ac8869c81e563dfa1f3eea682c3a,",
+    "key": "4652c8d637a7ac8869c81e563dfa1f3eea682c3a",
+    "fontSize": 16,
+    "fontFamily": "Open Sans",
+    "fontStyle": "Semibold",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "L/Open Sans/Semibold/Link",
+    "id": "S:3cc50f0943052a16e34e57ec5c8d6896391b2ba9,",
+    "key": "3cc50f0943052a16e34e57ec5c8d6896391b2ba9",
+    "fontSize": 16,
+    "fontFamily": "Open Sans",
+    "fontStyle": "Semibold",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "L/Open Sans/Italic/Text",
+    "id": "S:4903223b5e5e18bd1b580fc0ce49b9d2c3863582,",
+    "key": "4903223b5e5e18bd1b580fc0ce49b9d2c3863582",
+    "fontSize": 16,
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "L/Open Sans/Italic/Link",
+    "id": "S:ce5a4975fe751103a11df670d6aae406868a2a40,",
+    "key": "ce5a4975fe751103a11df670d6aae406868a2a40",
+    "fontSize": 16,
+    "fontFamily": "Open Sans",
+    "fontStyle": "Italic",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "L/Open Sans/Semibold italic/Text",
+    "id": "S:41d56fc18e3936a9d3713e97cb1f97ae25df1496,",
+    "key": "41d56fc18e3936a9d3713e97cb1f97ae25df1496",
+    "fontSize": 16,
+    "fontFamily": "Open Sans",
+    "fontStyle": "Semibold Italic",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "L/Open Sans/Semibold italic/Link",
+    "id": "S:500fe7800cfd1c09ed13cb34d5ed2faca4288107,",
+    "key": "500fe7800cfd1c09ed13cb34d5ed2faca4288107",
+    "fontSize": 16,
+    "fontFamily": "Open Sans",
+    "fontStyle": "Semibold Italic",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "L/Font Awesome/Regular",
+    "id": "S:14e0e0c6f18287e0e9a6103a8aede9d6f66dbb1a,",
+    "key": "14e0e0c6f18287e0e9a6103a8aede9d6f66dbb1a",
+    "fontSize": 16,
+    "fontFamily": "Font Awesome 7 Pro",
+    "fontStyle": "Regular",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "L/Font Awesome/Solid",
+    "id": "S:1d7f5ff9f4782528ee464fa9f9b2362162daefce,",
+    "key": "1d7f5ff9f4782528ee464fa9f9b2362162daefce",
+    "fontSize": 16,
+    "fontFamily": "Font Awesome 7 Pro",
+    "fontStyle": "Solid",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "L/Font Awesome/Duotone",
+    "id": "S:5544f622867a5602ee255da25aa0af1637406386,",
+    "key": "5544f622867a5602ee255da25aa0af1637406386",
+    "fontSize": 16,
+    "fontFamily": "Font Awesome 7 Duotone",
+    "fontStyle": "Solid",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "L/Font Awesome/Brands",
+    "id": "S:d2cd31ce11eca0ceb8108addd7dfb776e92180c0,",
+    "key": "d2cd31ce11eca0ceb8108addd7dfb776e92180c0",
+    "fontSize": 16,
+    "fontFamily": "Font Awesome 7 Brands",
+    "fontStyle": "Regular",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 150
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "H5/Satoshi/Text",
+    "id": "S:9a4c7ae8dbf89291a8f5066cbdd50752e66699f4,",
+    "key": "9a4c7ae8dbf89291a8f5066cbdd50752e66699f4",
+    "fontSize": 18,
+    "fontFamily": "Satoshi Variable",
+    "fontStyle": "Medium",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 136.00000143051147
+    },
+    "letterSpacing": {
+      "unit": "PIXELS",
+      "value": 0
+    }
+  },
+  {
+    "name": "H5/Satoshi/Link",
+    "id": "S:c4a6d93b3ca5002eb38fcf663246852693443246,",
+    "key": "c4a6d93b3ca5002eb38fcf663246852693443246",
+    "fontSize": 18,
+    "fontFamily": "Satoshi Variable",
+    "fontStyle": "Medium",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 136.00000143051147
+    },
+    "letterSpacing": {
+      "unit": "PIXELS",
+      "value": 0
+    }
+  },
+  {
+    "name": "H5/Font Awesome/Regular",
+    "id": "S:b588d096ac43c7b6a45d248e5344e8dbc2d8cfeb,",
+    "key": "b588d096ac43c7b6a45d248e5344e8dbc2d8cfeb",
+    "fontSize": 18,
+    "fontFamily": "Font Awesome 7 Pro",
+    "fontStyle": "Regular",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 136.00000143051147
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "H5/Font Awesome/Solid",
+    "id": "S:228260f920c788b266667474e04ea542a804cc66,",
+    "key": "228260f920c788b266667474e04ea542a804cc66",
+    "fontSize": 18,
+    "fontFamily": "Font Awesome 7 Pro",
+    "fontStyle": "Solid",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 136.00000143051147
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "H5/Font Awesome/Duotone",
+    "id": "S:238393c839c385e57791ba899fbf52a63bf4d8e9,",
+    "key": "238393c839c385e57791ba899fbf52a63bf4d8e9",
+    "fontSize": 18,
+    "fontFamily": "Font Awesome 7 Duotone",
+    "fontStyle": "Solid",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 136.00000143051147
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "H5/Font Awesome/Brands",
+    "id": "S:4b09c809c81fd58346aac0acff3e623e4b28daca,",
+    "key": "4b09c809c81fd58346aac0acff3e623e4b28daca",
+    "fontSize": 18,
+    "fontFamily": "Font Awesome 7 Brands",
+    "fontStyle": "Regular",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 136.00000143051147
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "H4/Satoshi/Text",
+    "id": "S:7ea8e2fd86e2d8c8f1dba8ce978c4496e7772e81,",
+    "key": "7ea8e2fd86e2d8c8f1dba8ce978c4496e7772e81",
+    "fontSize": 20,
+    "fontFamily": "Satoshi Variable",
+    "fontStyle": "Bold",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 147.00000286102295
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "H4/Satoshi/Link",
+    "id": "S:ce7eebe0201cf88f1065747d29d0664865f0445f,",
+    "key": "ce7eebe0201cf88f1065747d29d0664865f0445f",
+    "fontSize": 20,
+    "fontFamily": "Satoshi Variable",
+    "fontStyle": "Bold",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 147.00000286102295
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "H4/Font Awesome/Regular",
+    "id": "S:ba1dc852d9ba7bdd284457ee40b085666020dc9e,",
+    "key": "ba1dc852d9ba7bdd284457ee40b085666020dc9e",
+    "fontSize": 20,
+    "fontFamily": "Font Awesome 7 Pro",
+    "fontStyle": "Regular",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 147.00000286102295
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "H4/Font Awesome/Solid",
+    "id": "S:38c483003c050441e533a18d721f54f3309973f8,",
+    "key": "38c483003c050441e533a18d721f54f3309973f8",
+    "fontSize": 20,
+    "fontFamily": "Font Awesome 7 Pro",
+    "fontStyle": "Solid",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 147.00000286102295
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "H4/Font Awesome/Duotone",
+    "id": "S:2dc5b7f2f3fe5260374d45868b05d2c5a3d12d30,",
+    "key": "2dc5b7f2f3fe5260374d45868b05d2c5a3d12d30",
+    "fontSize": 20,
+    "fontFamily": "Font Awesome 7 Duotone",
+    "fontStyle": "Solid",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 147.00000286102295
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "H4/Font Awesome/Brands",
+    "id": "S:7370f8ae9e221fc028c0993e1b1c624649530260,",
+    "key": "7370f8ae9e221fc028c0993e1b1c624649530260",
+    "fontSize": 20,
+    "fontFamily": "Font Awesome 7 Brands",
+    "fontStyle": "Regular",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 147.00000286102295
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "H3/Satoshi/Text",
+    "id": "S:1af48c9d263e752f8f4cdc062d3ae53836b82edf,",
+    "key": "1af48c9d263e752f8f4cdc062d3ae53836b82edf",
+    "fontSize": 24,
+    "fontFamily": "Satoshi Variable",
+    "fontStyle": "Bold",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 138.99999856948853
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "H3/Satoshi/Link",
+    "id": "S:c00f34e6f1b982dcf4344adbdd33f247200bd361,",
+    "key": "c00f34e6f1b982dcf4344adbdd33f247200bd361",
+    "fontSize": 24,
+    "fontFamily": "Satoshi Variable",
+    "fontStyle": "Bold",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 138.99999856948853
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "H3/Font Awesome/Regular",
+    "id": "S:d16259792a147d32b934febd2c7f4e2b6c227b05,",
+    "key": "d16259792a147d32b934febd2c7f4e2b6c227b05",
+    "fontSize": 24,
+    "fontFamily": "Font Awesome 7 Pro",
+    "fontStyle": "Regular",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 138.99999856948853
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "H3/Font Awesome/Solid",
+    "id": "S:a8205b7c8cff88871a4cb15111e3620c888fdf06,",
+    "key": "a8205b7c8cff88871a4cb15111e3620c888fdf06",
+    "fontSize": 24,
+    "fontFamily": "Font Awesome 7 Pro",
+    "fontStyle": "Solid",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 138.99999856948853
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "H3/Font Awesome/Duotone",
+    "id": "S:b9840b9b3ed612d9e81bf8125141031b92bf66dd,",
+    "key": "b9840b9b3ed612d9e81bf8125141031b92bf66dd",
+    "fontSize": 24,
+    "fontFamily": "Font Awesome 7 Duotone",
+    "fontStyle": "Solid",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 138.99999856948853
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "H3/Font Awesome/Brands",
+    "id": "S:b587b3dae5e5f53a37481a5bbeffd7be9e9e3af2,",
+    "key": "b587b3dae5e5f53a37481a5bbeffd7be9e9e3af2",
+    "fontSize": 24,
+    "fontFamily": "Font Awesome 7 Brands",
+    "fontStyle": "Regular",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 138.99999856948853
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "H2/Satoshi/Text",
+    "id": "S:c0f7afcfe6fa129a8734c9b192c34d97e3e478b4,",
+    "key": "c0f7afcfe6fa129a8734c9b192c34d97e3e478b4",
+    "fontSize": 29,
+    "fontFamily": "Satoshi Variable",
+    "fontStyle": "Regular",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 136.00000143051147
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "H2/Satoshi/Link",
+    "id": "S:4659411d7747cac9306ee50e4e510220ab0aef08,",
+    "key": "4659411d7747cac9306ee50e4e510220ab0aef08",
+    "fontSize": 29,
+    "fontFamily": "Satoshi Variable",
+    "fontStyle": "Bold",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 136.00000143051147
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "H2/Font Awesome/Light",
+    "id": "S:535de17c71471e0bbbbdc4943f3af617e26c3024,",
+    "key": "535de17c71471e0bbbbdc4943f3af617e26c3024",
+    "fontSize": 29,
+    "fontFamily": "Font Awesome 7 Pro",
+    "fontStyle": "Light",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 136.00000143051147
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "H2/Font Awesome/Regular",
+    "id": "S:e0c0e337012eaddfd2a6939f60b161ef927ced6e,",
+    "key": "e0c0e337012eaddfd2a6939f60b161ef927ced6e",
+    "fontSize": 29,
+    "fontFamily": "Font Awesome 7 Pro",
+    "fontStyle": "Regular",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 136.00000143051147
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "H2/Font Awesome/Solid",
+    "id": "S:988a2ff33b0fb8fd65544f6df39b147c887f706b,",
+    "key": "988a2ff33b0fb8fd65544f6df39b147c887f706b",
+    "fontSize": 29,
+    "fontFamily": "Font Awesome 7 Pro",
+    "fontStyle": "Solid",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 136.00000143051147
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "H2/Font Awesome/Duotone",
+    "id": "S:ca7b86db9398306b8ebda447f34ad8085b2a5abf,",
+    "key": "ca7b86db9398306b8ebda447f34ad8085b2a5abf",
+    "fontSize": 29,
+    "fontFamily": "Font Awesome 7 Duotone",
+    "fontStyle": "Solid",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 136.00000143051147
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "H2/Font Awesome/Brands",
+    "id": "S:0500cb4f81517e3006fe736c5898539c5453a4ae,",
+    "key": "0500cb4f81517e3006fe736c5898539c5453a4ae",
+    "fontSize": 29,
+    "fontFamily": "Font Awesome 7 Brands",
+    "fontStyle": "Regular",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 136.00000143051147
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "H1/Satoshi/Text",
+    "id": "S:0b7d814285e0a41214951f2ff09130277283f93c,",
+    "key": "0b7d814285e0a41214951f2ff09130277283f93c",
+    "fontSize": 32,
+    "fontFamily": "Satoshi Variable",
+    "fontStyle": "Regular",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 125.99999904632568
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "H1/Satoshi/Link",
+    "id": "S:f0e02a1a1ba724fa2e9d8e5a2dd15e2a5ab1d334,",
+    "key": "f0e02a1a1ba724fa2e9d8e5a2dd15e2a5ab1d334",
+    "fontSize": 32,
+    "fontFamily": "Satoshi Variable",
+    "fontStyle": "Bold",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 125.99999904632568
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "H1/Font Awesome/Light",
+    "id": "S:57d76d94587a98bb1cb63d550f776bdfe0a7de55,",
+    "key": "57d76d94587a98bb1cb63d550f776bdfe0a7de55",
+    "fontSize": 32,
+    "fontFamily": "Font Awesome 7 Pro",
+    "fontStyle": "Light",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 125.99999904632568
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "H1/Font Awesome/Regular",
+    "id": "S:e7f2058b5d1062171577311170f52e399aff3b18,",
+    "key": "e7f2058b5d1062171577311170f52e399aff3b18",
+    "fontSize": 32,
+    "fontFamily": "Font Awesome 7 Pro",
+    "fontStyle": "Regular",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 125.99999904632568
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "H1/Font Awesome/Solid",
+    "id": "S:acc8e4539f03b06cf5f06ed749fe4eb3378a143a,",
+    "key": "acc8e4539f03b06cf5f06ed749fe4eb3378a143a",
+    "fontSize": 32,
+    "fontFamily": "Font Awesome 7 Pro",
+    "fontStyle": "Solid",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 125.99999904632568
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "H1/Font Awesome/Duotone",
+    "id": "S:98a8a8a3e4f4da11eac3006380d8254ba648687f,",
+    "key": "98a8a8a3e4f4da11eac3006380d8254ba648687f",
+    "fontSize": 32,
+    "fontFamily": "Font Awesome 7 Duotone",
+    "fontStyle": "Solid",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 125.99999904632568
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  },
+  {
+    "name": "H1/Font Awesome/Brands",
+    "id": "S:24cedabc95c4fab4735a45e2153191983aab4d81,",
+    "key": "24cedabc95c4fab4735a45e2153191983aab4d81",
+    "fontSize": 32,
+    "fontFamily": "Font Awesome 7 Brands",
+    "fontStyle": "Regular",
+    "lineHeight": {
+      "unit": "PERCENT",
+      "value": 125.99999904632568
+    },
+    "letterSpacing": {
+      "unit": "PERCENT",
+      "value": 0
+    }
+  }
+]
