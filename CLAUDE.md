@@ -1,95 +1,90 @@
-# Bifrost Figma Shortcuts Plugin
+# Bifrost Figma Plugin
 
-A Figma plugin that binds Bifrost design tokens (fill colors, spacing, radius, text styles) to selected objects, and inserts Bifrost components, via menu commands, so they can be bound to macOS keyboard shortcuts (and from there, a Stream Deck).
+A keyboard-first Figma plugin: running it opens a command palette window where typed commands (`pm gs rl`, `f brand`, `h1`, `button`) or browsable groups apply Bifrost tokens (fill, padding, gap, radius, text styles) to the selection or insert Bifrost components.
 
-Full context and setup steps are in `README.md`. This file is for working on the plugin itself.
+User-facing usage and the Figma export snippets are in `README.md`. This file is for working on the plugin itself.
 
-## Architecture: this is a generator, not a hand-written app
+## Architecture: a generator plus plain source files
 
-Nothing here has a build step. Figma runs `code.js` directly. But `code.js` and `manifest.json` are meant to be *generated*, not edited by hand, from three data sources:
+Figma runs `code.js` directly, with no build step on its side. `code.js` and `manifest.json` are **generated**; never edit them by hand.
 
 ```
 bifrost-variables.json + bifrost-text-styles.json + bifrost-components.json
-        │  node generate.js
+src/ui.html + src/parse.js + src/runtime.js
+        │  node generate.js bifrost-variables.json . bifrost-text-styles.json bifrost-components.json
         ▼
 manifest.json + code.js
-        │  node gen-scripts.js
-        ▼
-setup-shortcut-placeholders.sh + undo-shortcuts.sh
 ```
 
-- `bifrost-variables.json` / `bifrost-text-styles.json` / `bifrost-components.json`: raw exports pulled from Figma's plugin console (see README step 4 for the exact console snippets). Components come from a different file (the Bifrost "Components" library) than variables and text styles.
-- `generate.js`: classifies variables (COLOR → fill, `Spacing/*` → padding + gap, `Border radius/*` → radius) text styles and components, then emits `manifest.json` (menu structure) and `code.js` (a `VARIABLE_MAP` slug → `{id, key, name, kind, type, isSet?}` lookup, plus the runtime logic that applies each kind to the current selection).
-- `gen-scripts.js`: reads `manifest.json`'s menu list and emits the two `.sh` files, one placeholder row per menu command.
+- `generate.js` classifies the exports (COLOR → fill, `Spacing/*` → padding + gap, `Border radius/*` → radius, text styles, components) into `VARIABLE_MAP` (slug → `{id, key, name, kind, type, isSet?}`), then writes `code.js` = `VARIABLE_MAP` + `UI_HTML` + `src/parse.js` + `src/runtime.js`, concatenated as one classic script (no modules; later files use globals from earlier ones). `UI_HTML` is `src/ui.html` as a JSON string with `src/parse.js` inlined at `/*PARSE_JS*/`, because the palette parses as you type.
+- `src/parse.js` is pure: no `figma` API and no DOM. It runs in three places (plugin sandbox, palette iframe, Node tests via `vm`), so it must stay that way. Top-level `function` declarations are what the test can reach.
+- Display names are decided in the generator: `textStyleLabel` turns `H1/Satoshi/Text` into `H1`, `componentLabel` prefixes the page name (`Modal/Image`) unless the name already starts with it.
 
-## Generator is authoritative (as of 2026-09-22)
-
-`generate.js`'s `codeJs` template now includes the padding/radius field-picker popup (`FIELD_SETS`, `buildPickerHtml`, `promptFieldChoice`, `applyFieldsToSelection`, `applyPaddingOrRadius`, and the `withSelectionGuard(variable, nodes, fn)` signature). Running `node generate.js bifrost-variables.json . bifrost-text-styles.json bifrost-components.json` reproduces the current `code.js` byte-for-byte (verified by diffing generator output against the committed file).
-
-**When adding runtime features to `code.js` by hand again, port them into `generate.js`'s template string in the same change** (or immediately after), so the two don't drift apart again. Verify with a diff against fresh generator output before committing, the same check used here:
+After any change to `src/` or `generate.js`, regenerate and check:
 
 ```bash
-T=$(mktemp -d) && node generate.js bifrost-variables.json "$T" bifrost-text-styles.json bifrost-components.json \
-  && diff "$T/code.js" code.js && diff "$T/manifest.json" manifest.json
+node generate.js bifrost-variables.json . bifrost-text-styles.json bifrost-components.json
+node --check code.js && node --test test/
 ```
-
-The preferred workflow is the reverse: edit `generate.js`, then regenerate `code.js` + `manifest.json` into the repo root.
-
-## Editing the `codeJs` template
-
-`codeJs` in `generate.js` is one big template literal, so runtime code inside it needs escaping: write `\``, `\${`, and `\\` for anything that should end up literally in `code.js`. Plain `${...}` is evaluated at generation time (used only for `VARIABLE_MAP`). The picker HTML is a template nested inside that, which is why it has double-escaped backticks.
-
-## Adding a new kind (e.g. stroke color, effect style)
-
-A "kind" is a category of menu command. Touch points, all in `generate.js` unless noted:
-
-1. Classify the source data and add an entry to `KINDS` (`label` becomes the menu prefix via `menuName`, which also replaces `:` with ` - `; slug prefix goes into `uniqueSlug`). A `Search - <label>` command is added automatically.
-2. If it isn't a variable, map it in `TYPE_BY_KIND` and make sure `RESOLVE_FN` (in the template) has a resolver for that type. `resolveStyle` currently hardcodes `importStyleByKeyAsync(key, "TEXT")`, so non-text styles need that generalized.
-3. Write an `applyX(target)` in the template and register it in `APPLY_FN`. For kinds that act on the selection, snapshot `figma.currentPage.selection` once and pass it to `withSelectionGuard(target, nodes, fn)`; `fn` returns how many nodes it touched.
-4. Add the slug prefix to `PREFIXES` in `gen-scripts.js`, otherwise the `.sh` files skip the new commands (see the curation warning below before regenerating them).
-5. Update the counts in `README.md`.
 
 ## Runtime model
 
-Each menu command is a separate plugin run: Figma starts `code.js` fresh with `figma.command` set to the slug, the plugin does one thing, then calls `figma.closePlugin()`. No state survives between runs. Every code path must end in `closePlugin()` (directly or via `withSelectionGuard`), or the plugin hangs open. `Component - ...` is the exception to "acts on the selection": `insertComponent` doesn't require a selection, uses only the first selected node as an anchor (`placeInstance`: inside an auto-layout frame, else as next sibling, else viewport center), and selects the new instance. Component sets insert their `defaultVariant`. The padding/radius picker is the only UI; it resolves on click, number key, Enter/Esc, or window blur (all non-number exits mean "All").
+- The manifest has no menu and no parameters: running the plugin (Actions menu → `bif` → Enter) calls `figma.showUI(UI_HTML, { themeColors: true })` and the palette takes over. It replaced Figma's native parameter list (2026-10-02) because that list can't show a right-hand column or open nested groups.
+- Message protocol is documented at the top of `runtime.js`. The UI parses locally (instant) and sends `apply {ops, keepOpen}`; the plugin side applies, then either closes (Enter) or replies with `state` (Shift+Enter). Ops carry slugs and labels, so the plugin side never re-parses.
+- The palette needs keyboard focus on open (`window.focus()` + `q.focus()`). Not yet verified in Figma whether that works without a click.
+- `selectionchange` is forwarded as `selection {count, hasText, hasAutoLayout}`; the UI re-renders live and orders groups by it.
+- Palette navigation (in `ui.html`): Enter applies/opens, Tab opens a group or copies the row's `shorthand` into the input for chaining, Esc/Backspace leave a group. Inside a group, input is prefixed with `GROUPS[].prefix` ("m" in Padding parses as "pm").
+- Right-hand keys per row = `parser.shorthand(ops)` + user aliases whose expansion produces the same label (`aliasIndex`).
+- The ✓ marks the focused action row (what Enter applies), not the parse result. Re-renders from `state`/`selection` messages call `render(true)`, which keeps focus on the same row (matched by `rowId`) so Shift+Enter doesn't jump back to the top.
+- "Run last plugin" (⌘⌥P) isn't usable, so **recents are the repeat mechanism**: `remember()` stores the last 8 commands in `clientStorage`; the palette shows the first 3 runnable ones on top, so Enter right after opening repeats.
+- Aliases (`{name: expansion}`, names may be digits like `1`) live in `clientStorage` (per user and machine, not synced; hence Export/Import in the help window). `aliasError` rejects names that are built-in syntax.
+- With nothing selected, the palette hides every row where `needsSelection(ops)` (first op isn't a component), including recents, aliases and every group except Component, and shows "Select at least one layer first" if nothing is left.
+- `applyOps` switches its target nodes to the new instance after a component op, so ops after a component apply to it (`button pm`).
+- The loading toast only appears if resolving takes over 400 ms (first import from a library). Figma's own "Running Bifrost" indicator can't be controlled.
 
-`runForSlug` shows a command-specific `figma.notify` ("Inserting Button…", "Applying fill …") with `timeout: Infinity` while the token/component is resolved, and cancels it before applying (so it never overlaps the picker). Figma's own running indicator only shows the plugin name (`manifest.json` `name`: "Bifrost Shortcuts"); add a `LOADING_TEXT` entry for every new kind.
+## Parser rules (src/parse.js)
+
+- `SIDE_OPS` maps op keys (`p`, `px`, `rtl`, ...) to `[kind, side]`; sides map to node fields via `FIELD_SETS` in `runtime.js`.
+- Glued values (`pm`) and two-word values (`p m`) are equivalent. For ambiguous glued input the **shortest op wins** (`pxl` = Padding XL, `pl` = Padding L) and the other readings become alternatives. Two-word form wins when the second word is a valid value (`pl m` = Padding left M).
+- Aliases expand inside the parse loop, only where an op can start (never in a value position), one level deep (`aliasEnd`).
+- `f`/`bg`/`t` take one fuzzy word; `+` consumes the rest of the input as a component name.
+- Any other word starts a name search over `SEARCH_KINDS` (components, text styles, colors). The **longest run of words that matches a name wins, as long as the words after it still parse**: `basic input pm` = Basic input · Padding M, `box rm` = Box · Radius M (nothing matches "box rm"), `icon button` = one name. While typing the last word, op and alias completions come before name matches.
+- Fuzzy ranking (`matchScore`): exact path segment, last-segment prefix, substring or every query word starting a word in the name (any order), then subsequence within one path segment starting at a word start; ties go to non-Font-Awesome names, then kind order, then shorter names. Keep the "word start" rules: looser matching made `box rm` hit "Checkbox-indete**rm**inate". Text-style ranking is known to be weak (`t open` picks Italic before Regular).
+- `aliasError` checks names against op syntax only (`createParser(..., { search: false })`), so aliases may shadow name search (`cta`) but not ops (`p`, `pm`, `h1`).
+- `SYNTAX` is the help view's Guide tab: sections of `[examples[], meaning]`. Every example is a clickable chip that prefills the palette, so each must parse (enforced by the "every help example parses" test). Keep it in sync with `parse()` and the README table.
+
+## Adding a new kind (e.g. stroke color, effect style)
+
+1. Classify it in `generate.js` (`KINDS`) and map its `type` in `TYPE_BY_KIND` if it isn't a variable.
+2. Make sure `RESOLVE_FN` in `runtime.js` can resolve that type.
+3. Add a `KIND_LABEL`, an op (in `SIDE_OPS` or `FUZZY_OPS`), a `GROUPS` entry and a `SYNTAX` row in `parse.js`, and a placeholder in `ui.html`.
+4. Handle it in `applyOp` in `runtime.js` (return how many nodes it touched).
+5. Add a parser test case, and update the README table and counts.
 
 ## File map
 
 | File | Role |
 |---|---|
-| `manifest.json` | Figma plugin manifest, defines every menu command (generated) |
-| `code.js` | Plugin runtime logic, run directly by Figma (generated) |
-| `bifrost-variables.json` | Raw variable export from Figma (colors, spacing, radius) |
-| `bifrost-text-styles.json` | Raw text style export from Figma |
-| `bifrost-components.json` | Filtered component export from the Bifrost Components library (public, non-demo, Bifrost section only) |
-| `generate.js` | Produces `manifest.json` + `code.js` from the three JSON files above |
-| `gen-scripts.js` | Produces the two `.sh` files from `manifest.json` |
-| `setup-shortcut-placeholders.sh` | Adds empty placeholder rows to macOS System Settings so shortcuts can be bound (hand-curated, see below) |
-| `undo-shortcuts.sh` | Deletes selected rows permanently (destructive by default, comment out lines with `#` to keep them) |
+| `manifest.json`, `code.js` | Generated plugin, run by Figma |
+| `generate.js` | Builds both from the JSON exports and `src/` |
+| `src/parse.js` | Prompt syntax parser (pure) |
+| `src/runtime.js` | Resolvers, `applyOp`, recents, aliases, palette messages, `!vars` |
+| `src/ui.html` | Palette window (groups, typed commands, key column) and help view (`?`): Guide / Aliases / Recent tabs, ←/→ to switch, Esc back. The alias form validates live with `aliasError` before saving; clicking an alias row loads it for editing |
+| `bifrost-variables.json`, `bifrost-text-styles.json` | Exports from the Bifrost variables file |
+| `bifrost-components.json` | Filtered export from the Bifrost Components file (public, non-demo, Bifrost section only) |
+| `test/parse.test.js` | Focused parser tests, `node --test test/` |
 
-No `package.json`, no `node_modules`, no test suite. Node is only used to run the two generator scripts locally.
+No `package.json` and no dependencies; Node is only used to generate and test.
 
-## Working with the macOS shortcut scripts
+## History
 
-These write directly to Figma's preferences plist (`~/Library/Preferences/com.figma.Desktop.plist` via `defaults`/`PlistBuddy`). Treat them as destructive:
-
-- Always fully quit System Settings (Cmd+Q) before running either script. If it's open, it caches old state and overwrites the script's changes on quit.
-- Both scripts take an automatic backup first (`~/figma-shortcuts-backup-<timestamp>-<pid>.plist`). Restore with `defaults import com.figma.Desktop <backup-file>`.
-- Menu command *names* can't contain `:` (PlistBuddy's path separator, also breaks macOS's own shortcut matching). `generate.js` uses `" - "` instead.
-- `setup-shortcut-placeholders.sh` is idempotent (uses PlistBuddy `Add`, which fails harmlessly if the row exists), so it never clobbers a shortcut you've already bound.
-- `undo-shortcuts.sh` deletes every row in its list unless commented out with `#`. It currently has nothing commented out and matches `gen-scripts.js` output exactly.
-- `setup-shortcut-placeholders.sh` is **hand-curated**: 746 `Fill - ...`, 60 `Text - ...` and 64 `Component - ...` rows are commented out on purpose, leaving 129 active placeholders. For components, only a core set of 22 everyday components (Button, Badge, Tag, form controls, Modal, Drawer, Tooltip, Icon S/M/L, etc.) is active. For text, only `Text - H1` to `Text - H5` (renamed from `H?/Satoshi/Text` by `textStyleLabel` in `generate.js`) and S/M/L Open Sans Regular are active. Don't uncomment them without asking why they were excluded.
-- **Running `gen-scripts.js` overwrites both `.sh` files from scratch and wipes that curation.** If a new kind needs placeholders, generate into a temp dir and merge only the new rows into the committed files by hand.
-- Bundle ID is assumed to be `com.figma.Desktop`. Verify with `osascript -e 'id of app "Figma"'` if things stop matching.
+Until 2026-10-02 the plugin had ~1000 menu commands bound to keys through macOS System Settings (plist scripts, curated placeholder lists). That was removed in favor of the prompt, and the user's placeholder rows were deleted from `com.figma.Desktop.plist`. The old setup is in git history if it's ever needed. The throwaway prototype of the prompt lives on the local branch `prototype/prompt`.
 
 ## Deploying to Figma
 
-Figma runs the plugin from a local folder registered via **Plugins → Development → New Plugin**, not from this repo directly. After changing `code.js`/`manifest.json`, copy them into that registered folder and re-run the plugin once from Figma to confirm it still resolves variables. Resolvers try the local `id` first, then import by global `key`, so this usually works unchanged across files using the same published Bifrost library. Components must be published and the library enabled in the target file.
+The plugin is registered via **Plugins → Development → Import plugin from manifest…** pointing at this repo's `manifest.json`, so regenerating is enough. Resolvers try the local `id` first, then import by global `key`; the Bifrost libraries must be enabled in the target file.
 
 ## Conventions
 
-- Everything is in English: menu names, `figma.notify` messages, popup HTML, code comments, shell script output and docs. (The repo was switched from Norwegian on 2026-10-02.)
-- Renaming menu items renames the macOS shortcut rows (keys in `NSUserKeyEquivalents` are the exact menu titles), so a bound shortcut silently stops working. Migrate bound rows to the new names whenever a menu label changes. Slugs (`command`) are derived from the source names, not the labels, so they're the stable id to map old names to new ones.
-- Comments in `code.js` explain non-obvious *why* (e.g. the selection-snapshot comment in `applyPaddingOrRadius`), not what the code does.
+- Everything is in English: suggestions, `figma.notify` messages, help UI, code comments, docs.
+- Comments explain non-obvious *why*, not what the code does.

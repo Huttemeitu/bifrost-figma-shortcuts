@@ -1,76 +1,95 @@
-# Bifrost Shortcuts for Figma
+# Bifrost for Figma
 
-In short: a Figma plugin that binds Bifrost design tokens (colors, spacing,
-radius, text styles) to selected objects, and inserts Bifrost components, via
-its own menu commands. Those commands can be bound to regular macOS keyboard
-shortcuts (and from there a Stream Deck, since it just sends keystrokes).
+A keyboard-first Figma plugin for applying Bifrost design tokens (fill colors,
+padding, gap, radius, text styles) to the selection and inserting Bifrost
+components, from a small command palette. No macOS shortcut setup needed.
 
-The plugin currently has 1006 menu commands: 814 fill colors, 12 padding
-variables, 12 gap variables, 7 radius variables, 68 text styles, 86
-components, plus 6 "Search - ..." commands (one per category, so you don't
-have to scroll a long shortcut list) and one "List variables (JSON)" command
-for debugging.
+It covers 814 fill colors, 12 spacing values (padding and gap), 7 radius
+values, 68 text styles and 86 components.
 
-## Files
+## Using it
 
-| File | What it is |
+1. Open the Actions menu (⌘K, ⌘/ or ⌘, depending on your keyboard layout).
+2. Type `bif` and press Enter. The Bifrost palette opens.
+3. Either type a command and press Enter (the `✓` row shows how your input was
+   understood), or open a group (Padding, Gap, Radius, Fill, Text, Component)
+   with Tab or Enter to browse its actions.
+
+Every row shows its shorthand and your aliases on the right, so browsing a
+group also teaches you what to type next time.
+
+| Key | Does |
 |---|---|
-| `manifest.json` | The Figma plugin manifest; defines every menu command |
-| `code.js` | The plugin logic (run directly by Figma, no build step) |
-| `bifrost-variables.json` | Raw export of Bifrost variables (colors, spacing, radius) from Figma |
-| `bifrost-text-styles.json` | Raw export of Bifrost text styles from Figma |
-| `bifrost-components.json` | Filtered export of Bifrost components from the Components library |
-| `generate.js` | Generates `manifest.json` + `code.js` from the three JSON files above |
-| `gen-scripts.js` | Generates `setup-shortcut-placeholders.sh` + `undo-shortcuts.sh` from `manifest.json` |
-| `setup-shortcut-placeholders.sh` | Adds the menu commands as empty rows in macOS System Settings, ready to be bound (hand-curated list) |
-| `undo-shortcuts.sh` | Permanently deletes selected rows (everything is active by default, see the warning below) |
+| ↑ ↓ | Move between rows |
+| Enter | Apply the row (or open a group) and close |
+| Shift+Enter | Apply and keep the palette open |
+| Tab | Open a group, or copy a row's shorthand to the input to chain more (`pm`, Tab, `gs`) |
+| Esc / Backspace | Leave a group; Esc on an empty palette closes it |
 
-## Step 1: Check whether you can use the files as they are
 
-If you have access to **the same published Bifrost library** in Figma
-(likely, since it's an internal design system), you can probably use
-`manifest.json` and `code.js` **unchanged**. Variables, styles and components
-are identified by a global `key` that's the same no matter which file or
-person uses them, so you don't need to run `generate.js` again.
+| Type | Does |
+|---|---|
+| `pm` or `p m` | Padding M on all sides |
+| `px l`, `py s` | Padding horizontal / vertical |
+| `pt m`, `pb m`, `pl m`, `pr m` | Padding on one side |
+| `gs` | Gap S |
+| `rl`, `r full` | Radius on all corners |
+| `rt m`, `rtl s`, `rbr m` | Radius on two corners / one corner |
+| `f brand`, `bg base-1` | Fill, fuzzy match on the color name |
+| `h1` … `h5`, `t regular` | Text style |
+| `button`, `btn`, `basic input`, `brand` | Search components, text styles and colors by name |
+| `+button`, `+icon button` | Insert a component (the rest of the input is its name) |
+| `pm gs rl` | Several at once |
+| `button pm` | Insert a Button and give it padding M |
+| `=cta f brand` | Save the alias `cta` (`=cta` alone deletes it) |
+| `?` | Help, aliases and recents |
 
-Just do Step 2 and see if it works. Regenerate first (Step 4) if it doesn't,
-or if you want to add or remove tokens.
+Inside a group, leave out the group's key: in Padding, `m` is Padding M and
+`x l` is Padding horizontal L.
 
-## Step 2: Register the plugin in Figma
+Some details:
 
-1. Figma desktop app → **Plugins → Development → New Plugin...**
-2. Pick any template and save it in its own local folder.
-3. Overwrite the two generated files (`manifest.json`, `code.js`) in that
-   folder with the files from here.
-4. Run the plugin once from **Plugins → Development → Bifrost Shortcuts** in
-   a file where the Bifrost library is enabled, to confirm that tokens
-   actually resolve (try one of the `Fill - ...` commands on a selected
-   object).
+- **Repeat:** the last three commands are listed first on the empty palette,
+  so Enter right after opening it repeats the last one on the new selection.
+- **Nothing selected:** only commands that don't need a selection are shown
+  (the Component group, and recents like `button pm`). The palette updates
+  live when the selection changes.
+- **Glued values:** the shortest op wins, so `pxl` is Padding XL and you need
+  `px l` for Padding horizontal L. `pl` is Padding L; `pl m` is Padding left M.
+  The rows below the `✓` row show the other readings.
+- **Components** insert the default variant. With an auto-layout frame
+  selected the instance is added as its last child, with anything else
+  selected it's added right after it, and with nothing selected it lands in
+  the center of the viewport. The new instance gets selected, and anything
+  after the component in the same command applies to it.
+- **Aliases** can be words or numbers (`=1 pm gs`), and work anywhere a
+  command can start, so `cta rl` works if `cta` is an alias. They never
+  replace a value, so an alias named `m` doesn't break `p m`.
+  They're stored per user and per machine (Figma's `clientStorage`); use
+  **Copy as JSON** / **Import…** in the help view's Aliases tab (`?`) to back
+  them up or share them. The Aliases tab also checks a new alias live and lets
+  you click an existing one to edit it.
+- The Bifrost libraries must be enabled in the file you're working in.
 
-## Step 3: Bind keyboard shortcuts
+### Stream Deck
 
-1. Confirm Figma's bundle id (normally the same for everyone, but check):
-   ```bash
-   osascript -e 'id of app "Figma"'
-   ```
-   If it differs from `com.figma.Desktop`, change the `BUNDLE_ID` variable at
-   the top of both `.sh` files (and in `gen-scripts.js` if you regenerate them).
-2. **Fully quit System Settings** (Cmd+Q). This is critical, see "Pitfalls"
-   below.
-3. Run:
-   ```bash
-   chmod +x setup-shortcut-placeholders.sh
-   bash setup-shortcut-placeholders.sh
-   ```
-4. Open **System Settings → Keyboard → Keyboard Shortcuts → App Shortcuts → Figma**.
-   You should see one row per active menu command, with an empty key combination.
-5. Double-click the row you want a shortcut for and press the key combination.
+Use a text or multi-action key that types the whole sequence, e.g.
+⌘K → `bif` → Enter → `pm gs` → Enter.
 
-## Step 4: Regenerate when the Bifrost library changes (or you use another library)
+## Setup
+
+1. Figma desktop app → **Plugins → Development → Import plugin from manifest…**
+2. Pick `manifest.json` in this repo. Figma runs the plugin straight from this
+   folder, so there's nothing to copy after regenerating.
+
+If you registered an earlier version of the plugin from another folder, remove
+that one first (same plugin id).
+
+## Regenerating when the Bifrost library changes
 
 1. Open the file where the variables and text styles are defined.
-2. Run the plugin's `List variables (JSON)` command, or paste this into the
-   plugin console (**Plugins → Development → Open Console**):
+2. Type `!vars` in the palette, or paste this into the plugin console
+   (**Plugins → Development → Open Console**):
    ```js
    (async () => {
      const collections = await figma.variables.getLocalVariableCollectionsAsync();
@@ -86,7 +105,7 @@ or if you want to add or remove tokens.
    })();
    ```
    Right-click the log → **Copy string contents** → save as `bifrost-variables.json`.
-3. For text styles (not variables), paste this instead:
+3. For text styles, paste this instead and save as `bifrost-text-styles.json`:
    ```js
    (async () => {
      const styles = await figma.getLocalTextStylesAsync();
@@ -98,9 +117,9 @@ or if you want to add or remove tokens.
      console.log(JSON.stringify(result, null, 2));
    })();
    ```
-   Save as `bifrost-text-styles.json`.
 4. For components, open the Bifrost **Components** file (where the components
-   are defined, not a file that uses the library) and paste:
+   are defined, not a file that uses the library), paste this and save as
+   `bifrost-components.json`:
    ```js
    (async () => {
      await figma.loadAllPagesAsync();
@@ -123,46 +142,21 @@ or if you want to add or remove tokens.
    The filter only includes the Bifrost section (not Gjallarbru, Toolkit or
    Patterns), and skips private (`_`/`.`), demo, example, template and
    deprecated components, the experimental Header page and DatePicker's
-   internal parts. Save as `bifrost-components.json`.
-5. Run (Node.js must be installed, no other dependencies needed):
+   internal parts.
+5. Regenerate (Node.js only, no dependencies):
    ```bash
    node generate.js bifrost-variables.json . bifrost-text-styles.json bifrost-components.json
    ```
-   The last two files are optional. Don't run `gen-scripts.js` straight into
-   the repo: it overwrites the hand-curated list in
-   `setup-shortcut-placeholders.sh` (see `CLAUDE.md`).
-6. Run the plugin once in Figma to confirm the new `code.js` works, and run
-   `setup-shortcut-placeholders.sh` again (Step 3.2 to 3.3) to add
-   placeholders for any new commands.
 
-## Components
+## Files
 
-`Component - ...` inserts an instance of the component (the default variant
-for component sets) and selects it:
-
-- Auto-layout frame selected: the instance is added as its last child.
-- Anything else selected: the instance is added right after the selected object.
-- Nothing selected: the instance is placed in the center of the viewport.
-
-The Bifrost Components library must be published and enabled in the file
-you're working in.
-
-## Pitfalls (learned the hard way)
-
-- **Always fully quit System Settings before running `setup-shortcut-placeholders.sh` or `undo-shortcuts.sh`.**
-  If it has been open, it caches an old state and writes it back to disk
-  when it quits, overwriting what the script just did.
-- **Menu names can't contain `:`**. It's PlistBuddy's path separator, and it
-  also seems to break macOS's own shortcut matching. `generate.js` uses
-  `" - "` instead.
-- **Don't try to "unassign" a shortcut back to empty in the UI**
-  (double-click + Delete); it doesn't work reliably. Use `undo-shortcuts.sh`
-  (deletes the row completely) and then run `setup-shortcut-placeholders.sh`
-  again (adds it back empty).
-- `undo-shortcuts.sh` deletes **every** row in its list unless you comment
-  out the lines you want to keep with `#` first. It can't be undone beyond
-  the backup it takes.
-- Both `.sh` scripts automatically take a full backup of Figma's preferences
-  first (`~/figma-shortcuts-backup-<timestamp>-<pid>.plist`). Use
-  `defaults import com.figma.Desktop <backup-file>` to roll back if something
-  goes wrong.
+| File | What it is |
+|---|---|
+| `manifest.json` | Plugin manifest (generated) |
+| `code.js` | Plugin code run by Figma (generated, don't edit) |
+| `src/parse.js` | Command syntax parser (pure, tested; also runs inside the palette) |
+| `src/runtime.js` | Resolving and applying tokens, recents, aliases, palette messages |
+| `src/ui.html` | The palette window and its help view |
+| `generate.js` | Builds `manifest.json` + `code.js` from the JSON exports and `src/` |
+| `bifrost-*.json` | Exports of variables, text styles and components from Figma |
+| `test/parse.test.js` | Parser tests: `node --test test/` |
