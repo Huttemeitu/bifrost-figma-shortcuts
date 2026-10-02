@@ -6,5 +6,3 @@ node_modules
 # macOS
 .DS_Store
 
-# Local backup files created by the shortcut scripts
-figma-shortcuts-backup-*.plist
