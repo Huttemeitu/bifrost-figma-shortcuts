@@ -1,5 +1,5 @@
 {
-  "name": "Bifrost Fill Shortcuts",
+  "name": "Bifrost Shortcuts",
   "id": "bifrost-fill-shortcuts",
   "api": "1.0.0",
   "main": "code.js",
@@ -8,3318 +8,3329 @@
   ],
   "menu": [
     {
-      "name": "List variabler (JSON)",
+      "name": "List variables (JSON)",
       "command": "list-variables"
     },
     {
-      "name": "Søk - Fyll",
+      "name": "Search - Fill",
       "command": "search-fill",
       "parameters": [
         {
-          "name": "Variabel",
+          "name": "Variable",
           "key": "variable",
           "allowFreeform": false
         }
       ]
     },
     {
-      "name": "Søk - Padding",
+      "name": "Search - Padding",
       "command": "search-padding",
       "parameters": [
         {
-          "name": "Variabel",
+          "name": "Variable",
           "key": "variable",
           "allowFreeform": false
         }
       ]
     },
     {
-      "name": "Søk - Gap",
+      "name": "Search - Gap",
       "command": "search-gap",
       "parameters": [
         {
-          "name": "Variabel",
+          "name": "Variable",
           "key": "variable",
           "allowFreeform": false
         }
       ]
     },
     {
-      "name": "Søk - Radius",
+      "name": "Search - Radius",
       "command": "search-radius",
       "parameters": [
         {
-          "name": "Variabel",
+          "name": "Variable",
           "key": "variable",
           "allowFreeform": false
         }
       ]
     },
     {
-      "name": "Søk - Text",
+      "name": "Search - Text",
       "command": "search-textstyle",
       "parameters": [
         {
-          "name": "Variabel",
+          "name": "Variable",
           "key": "variable",
           "allowFreeform": false
         }
       ]
     },
     {
-      "name": "Fyll - Base/bfc-base-1",
+      "name": "Search - Component",
+      "command": "search-component",
+      "parameters": [
+        {
+          "name": "Variable",
+          "key": "variable",
+          "allowFreeform": false
+        }
+      ]
+    },
+    {
+      "name": "Fill - Base/bfc-base-1",
       "command": "fill-base-bfc-base-1"
     },
     {
-      "name": "Fyll - Base/bfc-base-2",
+      "name": "Fill - Base/bfc-base-2",
       "command": "fill-base-bfc-base-2"
     },
     {
-      "name": "Fyll - Base/bfc-base-3",
+      "name": "Fill - Base/bfc-base-3",
       "command": "fill-base-bfc-base-3"
     },
     {
-      "name": "Fyll - Base/bfc-base-dimmed",
+      "name": "Fill - Base/bfc-base-dimmed",
       "command": "fill-base-bfc-base-dimmed"
     },
     {
-      "name": "Fyll - Base/bfc-base-dimmed-2",
+      "name": "Fill - Base/bfc-base-dimmed-2",
       "command": "fill-base-bfc-base-dimmed-2"
     },
     {
-      "name": "Fyll - Base/bfc-base-dimmed-3",
+      "name": "Fill - Base/bfc-base-dimmed-3",
       "command": "fill-base-bfc-base-dimmed-3"
     },
     {
-      "name": "Fyll - Base/bfc-base-disabled",
+      "name": "Fill - Base/bfc-base-disabled",
       "command": "fill-base-bfc-base-disabled"
     },
     {
-      "name": "Fyll - Base/bfc-base-c-1",
+      "name": "Fill - Base/bfc-base-c-1",
       "command": "fill-base-bfc-base-c-1"
     },
     {
-      "name": "Fyll - Base/bfc-base-c-2",
+      "name": "Fill - Base/bfc-base-c-2",
       "command": "fill-base-bfc-base-c-2"
     },
     {
-      "name": "Fyll - Base/bfc-base-c-theme",
+      "name": "Fill - Base/bfc-base-c-theme",
       "command": "fill-base-bfc-base-c-theme"
     },
     {
-      "name": "Fyll - Base/bfc-base-c-brand",
+      "name": "Fill - Base/bfc-base-c-brand",
       "command": "fill-base-bfc-base-c-brand"
     },
     {
-      "name": "Fyll - Base/bfc-base-c-chill",
+      "name": "Fill - Base/bfc-base-c-chill",
       "command": "fill-base-bfc-base-c-chill"
     },
     {
-      "name": "Fyll - Base/bfc-base-c-attn",
+      "name": "Fill - Base/bfc-base-c-attn",
       "command": "fill-base-bfc-base-c-attn"
     },
     {
-      "name": "Fyll - Base/bfc-base-c-success",
+      "name": "Fill - Base/bfc-base-c-success",
       "command": "fill-base-bfc-base-c-success"
     },
     {
-      "name": "Fyll - Base/bfc-base-c-warning",
+      "name": "Fill - Base/bfc-base-c-warning",
       "command": "fill-base-bfc-base-c-warning"
     },
     {
-      "name": "Fyll - Base/bfc-base-c-alert",
+      "name": "Fill - Base/bfc-base-c-alert",
       "command": "fill-base-bfc-base-c-alert"
     },
     {
-      "name": "Fyll - Base/bfc-base-c-wcag",
+      "name": "Fill - Base/bfc-base-c-wcag",
       "command": "fill-base-bfc-base-c-wcag"
     },
     {
-      "name": "Fyll - Base/bfc-base-c-dimmed",
+      "name": "Fill - Base/bfc-base-c-dimmed",
       "command": "fill-base-bfc-base-c-dimmed"
     },
     {
-      "name": "Fyll - Base/bfc-base-c-disabled",
+      "name": "Fill - Base/bfc-base-c-disabled",
       "command": "fill-base-bfc-base-c-disabled"
     },
     {
-      "name": "Fyll - Base/bfc-base-c-inverted-1",
+      "name": "Fill - Base/bfc-base-c-inverted-1",
       "command": "fill-base-bfc-base-c-inverted-1"
     },
     {
-      "name": "Fyll - Base/bfc-base-c-inverted-2",
+      "name": "Fill - Base/bfc-base-c-inverted-2",
       "command": "fill-base-bfc-base-c-inverted-2"
     },
     {
-      "name": "Fyll - Base/bfc-base-c-inverted-3",
+      "name": "Fill - Base/bfc-base-c-inverted-3",
       "command": "fill-base-bfc-base-c-inverted-3"
     },
     {
-      "name": "Fyll - Theme/bfc-theme-1",
+      "name": "Fill - Theme/bfc-theme-1",
       "command": "fill-theme-bfc-theme-1"
     },
     {
-      "name": "Fyll - Theme/bfc-theme-2",
+      "name": "Fill - Theme/bfc-theme-2",
       "command": "fill-theme-bfc-theme-2"
     },
     {
-      "name": "Fyll - Theme/bfc-theme-3",
+      "name": "Fill - Theme/bfc-theme-3",
       "command": "fill-theme-bfc-theme-3"
     },
     {
-      "name": "Fyll - Theme/bfc-theme-c-1",
+      "name": "Fill - Theme/bfc-theme-c-1",
       "command": "fill-theme-bfc-theme-c-1"
     },
     {
-      "name": "Fyll - Theme/bfc-theme-c-2",
+      "name": "Fill - Theme/bfc-theme-c-2",
       "command": "fill-theme-bfc-theme-c-2"
     },
     {
-      "name": "Fyll - Theme/bfc-theme-hc",
+      "name": "Fill - Theme/bfc-theme-hc",
       "command": "fill-theme-bfc-theme-hc"
     },
     {
-      "name": "Fyll - Theme/bfc-theme-fade",
+      "name": "Fill - Theme/bfc-theme-fade",
       "command": "fill-theme-bfc-theme-fade"
     },
     {
-      "name": "Fyll - Theme/bfc-theme-fade-c",
+      "name": "Fill - Theme/bfc-theme-fade-c",
       "command": "fill-theme-bfc-theme-fade-c"
     },
     {
-      "name": "Fyll - Pop/Neutral/bfc-neutral",
+      "name": "Fill - Pop/Neutral/bfc-neutral",
       "command": "fill-pop-neutral-bfc-neutral"
     },
     {
-      "name": "Fyll - Pop/Neutral/bfc-neutral-2",
+      "name": "Fill - Pop/Neutral/bfc-neutral-2",
       "command": "fill-pop-neutral-bfc-neutral-2"
     },
     {
-      "name": "Fyll - Pop/Neutral/bfc-neutral-c",
+      "name": "Fill - Pop/Neutral/bfc-neutral-c",
       "command": "fill-pop-neutral-bfc-neutral-c"
     },
     {
-      "name": "Fyll - Pop/Neutral/bfc-neutral-hc",
+      "name": "Fill - Pop/Neutral/bfc-neutral-hc",
       "command": "fill-pop-neutral-bfc-neutral-hc"
     },
     {
-      "name": "Fyll - Pop/Neutral/bfc-neutral-fade",
+      "name": "Fill - Pop/Neutral/bfc-neutral-fade",
       "command": "fill-pop-neutral-bfc-neutral-fade"
     },
     {
-      "name": "Fyll - Pop/Neutral/bfc-neutral-fade-c",
+      "name": "Fill - Pop/Neutral/bfc-neutral-fade-c",
       "command": "fill-pop-neutral-bfc-neutral-fade-c"
     },
     {
-      "name": "Fyll - Pop/Brand/bfc-brand",
+      "name": "Fill - Pop/Brand/bfc-brand",
       "command": "fill-pop-brand-bfc-brand"
     },
     {
-      "name": "Fyll - Pop/Brand/bfc-brand-c",
+      "name": "Fill - Pop/Brand/bfc-brand-c",
       "command": "fill-pop-brand-bfc-brand-c"
     },
     {
-      "name": "Fyll - Pop/Brand/bfc-brand-hc",
+      "name": "Fill - Pop/Brand/bfc-brand-hc",
       "command": "fill-pop-brand-bfc-brand-hc"
     },
     {
-      "name": "Fyll - Pop/Brand/bfc-brand-fade",
+      "name": "Fill - Pop/Brand/bfc-brand-fade",
       "command": "fill-pop-brand-bfc-brand-fade"
     },
     {
-      "name": "Fyll - Pop/Brand/bfc-brand-fade-c",
+      "name": "Fill - Pop/Brand/bfc-brand-fade-c",
       "command": "fill-pop-brand-bfc-brand-fade-c"
     },
     {
-      "name": "Fyll - Pop/Chill/bfc-chill",
+      "name": "Fill - Pop/Chill/bfc-chill",
       "command": "fill-pop-chill-bfc-chill"
     },
     {
-      "name": "Fyll - Pop/Chill/bfc-chill-c",
+      "name": "Fill - Pop/Chill/bfc-chill-c",
       "command": "fill-pop-chill-bfc-chill-c"
     },
     {
-      "name": "Fyll - Pop/Chill/bfc-chill-hc",
+      "name": "Fill - Pop/Chill/bfc-chill-hc",
       "command": "fill-pop-chill-bfc-chill-hc"
     },
     {
-      "name": "Fyll - Pop/Chill/bfc-chill-fade",
+      "name": "Fill - Pop/Chill/bfc-chill-fade",
       "command": "fill-pop-chill-bfc-chill-fade"
     },
     {
-      "name": "Fyll - Pop/Chill/bfc-chill-fade-c",
+      "name": "Fill - Pop/Chill/bfc-chill-fade-c",
       "command": "fill-pop-chill-bfc-chill-fade-c"
     },
     {
-      "name": "Fyll - Pop/Attention/bfc-attn",
+      "name": "Fill - Pop/Attention/bfc-attn",
       "command": "fill-pop-attention-bfc-attn"
     },
     {
-      "name": "Fyll - Pop/Success/bfc-success",
+      "name": "Fill - Pop/Success/bfc-success",
       "command": "fill-pop-success-bfc-success"
     },
     {
-      "name": "Fyll - Pop/Success/bfc-success-c",
+      "name": "Fill - Pop/Success/bfc-success-c",
       "command": "fill-pop-success-bfc-success-c"
     },
     {
-      "name": "Fyll - Pop/Success/bfc-success-hc",
+      "name": "Fill - Pop/Success/bfc-success-hc",
       "command": "fill-pop-success-bfc-success-hc"
     },
     {
-      "name": "Fyll - Pop/Success/bfc-success-fade",
+      "name": "Fill - Pop/Success/bfc-success-fade",
       "command": "fill-pop-success-bfc-success-fade"
     },
     {
-      "name": "Fyll - Pop/Success/bfc-success-fade-c",
+      "name": "Fill - Pop/Success/bfc-success-fade-c",
       "command": "fill-pop-success-bfc-success-fade-c"
     },
     {
-      "name": "Fyll - Pop/Attention/bfc-attn-c",
+      "name": "Fill - Pop/Attention/bfc-attn-c",
       "command": "fill-pop-attention-bfc-attn-c"
     },
     {
-      "name": "Fyll - Pop/Attention/bfc-attn-hc",
+      "name": "Fill - Pop/Attention/bfc-attn-hc",
       "command": "fill-pop-attention-bfc-attn-hc"
     },
     {
-      "name": "Fyll - Pop/Attention/bfc-attn-fade",
+      "name": "Fill - Pop/Attention/bfc-attn-fade",
       "command": "fill-pop-attention-bfc-attn-fade"
     },
     {
-      "name": "Fyll - Pop/Attention/bfc-attn-fade-c",
+      "name": "Fill - Pop/Attention/bfc-attn-fade-c",
       "command": "fill-pop-attention-bfc-attn-fade-c"
     },
     {
-      "name": "Fyll - Pop/Warning/bfc-warning",
+      "name": "Fill - Pop/Warning/bfc-warning",
       "command": "fill-pop-warning-bfc-warning"
     },
     {
-      "name": "Fyll - Pop/Warning/bfc-warning-c",
+      "name": "Fill - Pop/Warning/bfc-warning-c",
       "command": "fill-pop-warning-bfc-warning-c"
     },
     {
-      "name": "Fyll - Pop/Warning/bfc-warning-hc",
+      "name": "Fill - Pop/Warning/bfc-warning-hc",
       "command": "fill-pop-warning-bfc-warning-hc"
     },
     {
-      "name": "Fyll - Pop/Warning/bfc-warning-fade",
+      "name": "Fill - Pop/Warning/bfc-warning-fade",
       "command": "fill-pop-warning-bfc-warning-fade"
     },
     {
-      "name": "Fyll - Pop/Warning/bfc-warning-fade-c",
+      "name": "Fill - Pop/Warning/bfc-warning-fade-c",
       "command": "fill-pop-warning-bfc-warning-fade-c"
     },
     {
-      "name": "Fyll - Pop/Alert/bfc-alert",
+      "name": "Fill - Pop/Alert/bfc-alert",
       "command": "fill-pop-alert-bfc-alert"
     },
     {
-      "name": "Fyll - Pop/Alert/bfc-alert-2",
+      "name": "Fill - Pop/Alert/bfc-alert-2",
       "command": "fill-pop-alert-bfc-alert-2"
     },
     {
-      "name": "Fyll - Pop/Alert/bfc-alert-c",
+      "name": "Fill - Pop/Alert/bfc-alert-c",
       "command": "fill-pop-alert-bfc-alert-c"
     },
     {
-      "name": "Fyll - Pop/Alert/bfc-alert-hc",
+      "name": "Fill - Pop/Alert/bfc-alert-hc",
       "command": "fill-pop-alert-bfc-alert-hc"
     },
     {
-      "name": "Fyll - Pop/Alert/bfc-alert-fade",
+      "name": "Fill - Pop/Alert/bfc-alert-fade",
       "command": "fill-pop-alert-bfc-alert-fade"
     },
     {
-      "name": "Fyll - Pop/Alert/bfc-alert-fade-c",
+      "name": "Fill - Pop/Alert/bfc-alert-fade-c",
       "command": "fill-pop-alert-bfc-alert-fade-c"
     },
     {
-      "name": "Fyll - Pop/Alert/bfc-alert-fade-2",
+      "name": "Fill - Pop/Alert/bfc-alert-fade-2",
       "command": "fill-pop-alert-bfc-alert-fade-2"
     },
     {
-      "name": "Fyll - Pop/Alert/bfc-alert-fade-2-c",
+      "name": "Fill - Pop/Alert/bfc-alert-fade-2-c",
       "command": "fill-pop-alert-bfc-alert-fade-2-c"
     },
     {
-      "name": "Fyll - Miscellaneous/bfc-overlay",
+      "name": "Fill - Miscellaneous/bfc-overlay",
       "command": "fill-miscellaneous-bfc-overlay"
     },
     {
-      "name": "Fyll - Miscellaneous/bfc-overlay-c",
+      "name": "Fill - Miscellaneous/bfc-overlay-c",
       "command": "fill-miscellaneous-bfc-overlay-c"
     },
     {
-      "name": "Fyll - Miscellaneous/ios-browser-bg",
+      "name": "Fill - Miscellaneous/ios-browser-bg",
       "command": "fill-miscellaneous-ios-browser-bg"
     },
     {
-      "name": "Fyll - Miscellaneous/transparent-base-3",
+      "name": "Fill - Miscellaneous/transparent-base-3",
       "command": "fill-miscellaneous-transparent-base-3"
     },
     {
-      "name": "Fyll - Miscellaneous/transparent-base-2",
+      "name": "Fill - Miscellaneous/transparent-base-2",
       "command": "fill-miscellaneous-transparent-base-2"
     },
     {
-      "name": "Fyll - Miscellaneous/transparent-base-1",
+      "name": "Fill - Miscellaneous/transparent-base-1",
       "command": "fill-miscellaneous-transparent-base-1"
     },
     {
-      "name": "Fyll - Miscellaneous/transparent-base-dimmed",
+      "name": "Fill - Miscellaneous/transparent-base-dimmed",
       "command": "fill-miscellaneous-transparent-base-dimmed"
     },
     {
-      "name": "Fyll - Miscellaneous/high-contrast",
+      "name": "Fill - Miscellaneous/high-contrast",
       "command": "fill-miscellaneous-high-contrast"
     },
     {
-      "name": "Fyll - Miscellaneous/high-contrast-inv",
+      "name": "Fill - Miscellaneous/high-contrast-inv",
       "command": "fill-miscellaneous-high-contrast-inv"
     },
     {
-      "name": "Fyll - Effect variables/Shadows/Opacity/bfc-theme-1-40",
+      "name": "Fill - Effect variables/Shadows/Opacity/bfc-theme-1-40",
       "command": "fill-effect-variables-shadows-opacity-bfc-theme-1-40"
     },
     {
-      "name": "Fyll - Effect variables/Shadows/Opacity/bfc-shadow",
+      "name": "Fill - Effect variables/Shadows/Opacity/bfc-shadow",
       "command": "fill-effect-variables-shadows-opacity-bfc-shadow"
     },
     {
-      "name": "Fyll - Effect variables/Shadows/Opacity/200",
+      "name": "Fill - Effect variables/Shadows/Opacity/200",
       "command": "fill-effect-variables-shadows-opacity-200"
     },
     {
-      "name": "Fyll - Effect variables/Shadows/Opacity/300",
+      "name": "Fill - Effect variables/Shadows/Opacity/300",
       "command": "fill-effect-variables-shadows-opacity-300"
     },
     {
-      "name": "Fyll - Effect variables/Shadows/Opacity/400",
+      "name": "Fill - Effect variables/Shadows/Opacity/400",
       "command": "fill-effect-variables-shadows-opacity-400"
     },
     {
-      "name": "Fyll - Teal/0",
+      "name": "Fill - Teal/0",
       "command": "fill-teal-0"
     },
     {
-      "name": "Fyll - Teal/10",
+      "name": "Fill - Teal/10",
       "command": "fill-teal-10"
     },
     {
-      "name": "Fyll - Teal/20",
+      "name": "Fill - Teal/20",
       "command": "fill-teal-20"
     },
     {
-      "name": "Fyll - Teal/30",
+      "name": "Fill - Teal/30",
       "command": "fill-teal-30"
     },
     {
-      "name": "Fyll - Teal/40",
+      "name": "Fill - Teal/40",
       "command": "fill-teal-40"
     },
     {
-      "name": "Fyll - Teal/50",
+      "name": "Fill - Teal/50",
       "command": "fill-teal-50"
     },
     {
-      "name": "Fyll - Teal/60",
+      "name": "Fill - Teal/60",
       "command": "fill-teal-60"
     },
     {
-      "name": "Fyll - Teal/70",
+      "name": "Fill - Teal/70",
       "command": "fill-teal-70"
     },
     {
-      "name": "Fyll - Teal/80",
+      "name": "Fill - Teal/80",
       "command": "fill-teal-80"
     },
     {
-      "name": "Fyll - Teal/90",
+      "name": "Fill - Teal/90",
       "command": "fill-teal-90"
     },
     {
-      "name": "Fyll - Teal/100",
+      "name": "Fill - Teal/100",
       "command": "fill-teal-100"
     },
     {
-      "name": "Fyll - Teal/110",
+      "name": "Fill - Teal/110",
       "command": "fill-teal-110"
     },
     {
-      "name": "Fyll - Teal/120",
+      "name": "Fill - Teal/120",
       "command": "fill-teal-120"
     },
     {
-      "name": "Fyll - Teal/130",
+      "name": "Fill - Teal/130",
       "command": "fill-teal-130"
     },
     {
-      "name": "Fyll - Teal/140",
+      "name": "Fill - Teal/140",
       "command": "fill-teal-140"
     },
     {
-      "name": "Fyll - Teal/150",
+      "name": "Fill - Teal/150",
       "command": "fill-teal-150"
     },
     {
-      "name": "Fyll - Teal/160",
+      "name": "Fill - Teal/160",
       "command": "fill-teal-160"
     },
     {
-      "name": "Fyll - Teal/170",
+      "name": "Fill - Teal/170",
       "command": "fill-teal-170"
     },
     {
-      "name": "Fyll - Teal/180",
+      "name": "Fill - Teal/180",
       "command": "fill-teal-180"
     },
     {
-      "name": "Fyll - Teal/190",
+      "name": "Fill - Teal/190",
       "command": "fill-teal-190"
     },
     {
-      "name": "Fyll - Teal/200",
+      "name": "Fill - Teal/200",
       "command": "fill-teal-200"
     },
     {
-      "name": "Fyll - Teal/210",
+      "name": "Fill - Teal/210",
       "command": "fill-teal-210"
     },
     {
-      "name": "Fyll - Teal/220",
+      "name": "Fill - Teal/220",
       "command": "fill-teal-220"
     },
     {
-      "name": "Fyll - Teal/230",
+      "name": "Fill - Teal/230",
       "command": "fill-teal-230"
     },
     {
-      "name": "Fyll - Teal/240",
+      "name": "Fill - Teal/240",
       "command": "fill-teal-240"
     },
     {
-      "name": "Fyll - Teal/250",
+      "name": "Fill - Teal/250",
       "command": "fill-teal-250"
     },
     {
-      "name": "Fyll - Teal/260",
+      "name": "Fill - Teal/260",
       "command": "fill-teal-260"
     },
     {
-      "name": "Fyll - Teal/270",
+      "name": "Fill - Teal/270",
       "command": "fill-teal-270"
     },
     {
-      "name": "Fyll - Teal/280",
+      "name": "Fill - Teal/280",
       "command": "fill-teal-280"
     },
     {
-      "name": "Fyll - Teal/290",
+      "name": "Fill - Teal/290",
       "command": "fill-teal-290"
     },
     {
-      "name": "Fyll - Teal/300",
+      "name": "Fill - Teal/300",
       "command": "fill-teal-300"
     },
     {
-      "name": "Fyll - Teal/310",
+      "name": "Fill - Teal/310",
       "command": "fill-teal-310"
     },
     {
-      "name": "Fyll - Teal/320",
+      "name": "Fill - Teal/320",
       "command": "fill-teal-320"
     },
     {
-      "name": "Fyll - Teal/330",
+      "name": "Fill - Teal/330",
       "command": "fill-teal-330"
     },
     {
-      "name": "Fyll - Teal/340",
+      "name": "Fill - Teal/340",
       "command": "fill-teal-340"
     },
     {
-      "name": "Fyll - Teal/350",
+      "name": "Fill - Teal/350",
       "command": "fill-teal-350"
     },
     {
-      "name": "Fyll - Teal/360",
+      "name": "Fill - Teal/360",
       "command": "fill-teal-360"
     },
     {
-      "name": "Fyll - Teal/370",
+      "name": "Fill - Teal/370",
       "command": "fill-teal-370"
     },
     {
-      "name": "Fyll - Teal/380",
+      "name": "Fill - Teal/380",
       "command": "fill-teal-380"
     },
     {
-      "name": "Fyll - Teal/390",
+      "name": "Fill - Teal/390",
       "command": "fill-teal-390"
     },
     {
-      "name": "Fyll - Teal/400",
+      "name": "Fill - Teal/400",
       "command": "fill-teal-400"
     },
     {
-      "name": "Fyll - Teal/410",
+      "name": "Fill - Teal/410",
       "command": "fill-teal-410"
     },
     {
-      "name": "Fyll - Teal/420",
+      "name": "Fill - Teal/420",
       "command": "fill-teal-420"
     },
     {
-      "name": "Fyll - Teal/430",
+      "name": "Fill - Teal/430",
       "command": "fill-teal-430"
     },
     {
-      "name": "Fyll - Teal/440",
+      "name": "Fill - Teal/440",
       "command": "fill-teal-440"
     },
     {
-      "name": "Fyll - Teal/450",
+      "name": "Fill - Teal/450",
       "command": "fill-teal-450"
     },
     {
-      "name": "Fyll - Teal/460",
+      "name": "Fill - Teal/460",
       "command": "fill-teal-460"
     },
     {
-      "name": "Fyll - Teal/470",
+      "name": "Fill - Teal/470",
       "command": "fill-teal-470"
     },
     {
-      "name": "Fyll - Teal/480",
+      "name": "Fill - Teal/480",
       "command": "fill-teal-480"
     },
     {
-      "name": "Fyll - Teal/490",
+      "name": "Fill - Teal/490",
       "command": "fill-teal-490"
     },
     {
-      "name": "Fyll - Teal/500",
+      "name": "Fill - Teal/500",
       "command": "fill-teal-500"
     },
     {
-      "name": "Fyll - Teal/510",
+      "name": "Fill - Teal/510",
       "command": "fill-teal-510"
     },
     {
-      "name": "Fyll - Teal/520",
+      "name": "Fill - Teal/520",
       "command": "fill-teal-520"
     },
     {
-      "name": "Fyll - Teal/530",
+      "name": "Fill - Teal/530",
       "command": "fill-teal-530"
     },
     {
-      "name": "Fyll - Teal/540",
+      "name": "Fill - Teal/540",
       "command": "fill-teal-540"
     },
     {
-      "name": "Fyll - Teal/550",
+      "name": "Fill - Teal/550",
       "command": "fill-teal-550"
     },
     {
-      "name": "Fyll - Teal/560",
+      "name": "Fill - Teal/560",
       "command": "fill-teal-560"
     },
     {
-      "name": "Fyll - Teal/570",
+      "name": "Fill - Teal/570",
       "command": "fill-teal-570"
     },
     {
-      "name": "Fyll - Teal/580",
+      "name": "Fill - Teal/580",
       "command": "fill-teal-580"
     },
     {
-      "name": "Fyll - Teal/590",
+      "name": "Fill - Teal/590",
       "command": "fill-teal-590"
     },
     {
-      "name": "Fyll - Teal/600",
+      "name": "Fill - Teal/600",
       "command": "fill-teal-600"
     },
     {
-      "name": "Fyll - Teal/610",
+      "name": "Fill - Teal/610",
       "command": "fill-teal-610"
     },
     {
-      "name": "Fyll - Teal/620",
+      "name": "Fill - Teal/620",
       "command": "fill-teal-620"
     },
     {
-      "name": "Fyll - Teal/630",
+      "name": "Fill - Teal/630",
       "command": "fill-teal-630"
     },
     {
-      "name": "Fyll - Teal/640",
+      "name": "Fill - Teal/640",
       "command": "fill-teal-640"
     },
     {
-      "name": "Fyll - Teal/650",
+      "name": "Fill - Teal/650",
       "command": "fill-teal-650"
     },
     {
-      "name": "Fyll - Teal/660",
+      "name": "Fill - Teal/660",
       "command": "fill-teal-660"
     },
     {
-      "name": "Fyll - Teal/670",
+      "name": "Fill - Teal/670",
       "command": "fill-teal-670"
     },
     {
-      "name": "Fyll - Teal/680",
+      "name": "Fill - Teal/680",
       "command": "fill-teal-680"
     },
     {
-      "name": "Fyll - Teal/690",
+      "name": "Fill - Teal/690",
       "command": "fill-teal-690"
     },
     {
-      "name": "Fyll - Teal/700",
+      "name": "Fill - Teal/700",
       "command": "fill-teal-700"
     },
     {
-      "name": "Fyll - Teal/710",
+      "name": "Fill - Teal/710",
       "command": "fill-teal-710"
     },
     {
-      "name": "Fyll - Teal/720",
+      "name": "Fill - Teal/720",
       "command": "fill-teal-720"
     },
     {
-      "name": "Fyll - Teal/730",
+      "name": "Fill - Teal/730",
       "command": "fill-teal-730"
     },
     {
-      "name": "Fyll - Teal/740",
+      "name": "Fill - Teal/740",
       "command": "fill-teal-740"
     },
     {
-      "name": "Fyll - Teal/750",
+      "name": "Fill - Teal/750",
       "command": "fill-teal-750"
     },
     {
-      "name": "Fyll - Teal/760",
+      "name": "Fill - Teal/760",
       "command": "fill-teal-760"
     },
     {
-      "name": "Fyll - Teal/770",
+      "name": "Fill - Teal/770",
       "command": "fill-teal-770"
     },
     {
-      "name": "Fyll - Teal/780",
+      "name": "Fill - Teal/780",
       "command": "fill-teal-780"
     },
     {
-      "name": "Fyll - Teal/790",
+      "name": "Fill - Teal/790",
       "command": "fill-teal-790"
     },
     {
-      "name": "Fyll - Teal/800",
+      "name": "Fill - Teal/800",
       "command": "fill-teal-800"
     },
     {
-      "name": "Fyll - Teal/810",
+      "name": "Fill - Teal/810",
       "command": "fill-teal-810"
     },
     {
-      "name": "Fyll - Teal/820",
+      "name": "Fill - Teal/820",
       "command": "fill-teal-820"
     },
     {
-      "name": "Fyll - Teal/830",
+      "name": "Fill - Teal/830",
       "command": "fill-teal-830"
     },
     {
-      "name": "Fyll - Teal/840",
+      "name": "Fill - Teal/840",
       "command": "fill-teal-840"
     },
     {
-      "name": "Fyll - Teal/850",
+      "name": "Fill - Teal/850",
       "command": "fill-teal-850"
     },
     {
-      "name": "Fyll - Teal/860",
+      "name": "Fill - Teal/860",
       "command": "fill-teal-860"
     },
     {
-      "name": "Fyll - Teal/870",
+      "name": "Fill - Teal/870",
       "command": "fill-teal-870"
     },
     {
-      "name": "Fyll - Teal/880",
+      "name": "Fill - Teal/880",
       "command": "fill-teal-880"
     },
     {
-      "name": "Fyll - Teal/890",
+      "name": "Fill - Teal/890",
       "command": "fill-teal-890"
     },
     {
-      "name": "Fyll - Teal/900",
+      "name": "Fill - Teal/900",
       "command": "fill-teal-900"
     },
     {
-      "name": "Fyll - Teal/910",
+      "name": "Fill - Teal/910",
       "command": "fill-teal-910"
     },
     {
-      "name": "Fyll - Teal/920",
+      "name": "Fill - Teal/920",
       "command": "fill-teal-920"
     },
     {
-      "name": "Fyll - Teal/930",
+      "name": "Fill - Teal/930",
       "command": "fill-teal-930"
     },
     {
-      "name": "Fyll - Teal/940",
+      "name": "Fill - Teal/940",
       "command": "fill-teal-940"
     },
     {
-      "name": "Fyll - Teal/950",
+      "name": "Fill - Teal/950",
       "command": "fill-teal-950"
     },
     {
-      "name": "Fyll - Teal/960",
+      "name": "Fill - Teal/960",
       "command": "fill-teal-960"
     },
     {
-      "name": "Fyll - Teal/970",
+      "name": "Fill - Teal/970",
       "command": "fill-teal-970"
     },
     {
-      "name": "Fyll - Teal/980",
+      "name": "Fill - Teal/980",
       "command": "fill-teal-980"
     },
     {
-      "name": "Fyll - Teal/990",
+      "name": "Fill - Teal/990",
       "command": "fill-teal-990"
     },
     {
-      "name": "Fyll - Teal/1000",
+      "name": "Fill - Teal/1000",
       "command": "fill-teal-1000"
     },
     {
-      "name": "Fyll - Purple/0",
+      "name": "Fill - Purple/0",
       "command": "fill-purple-0"
     },
     {
-      "name": "Fyll - Pink/0",
+      "name": "Fill - Pink/0",
       "command": "fill-pink-0"
     },
     {
-      "name": "Fyll - Pink/10",
+      "name": "Fill - Pink/10",
       "command": "fill-pink-10"
     },
     {
-      "name": "Fyll - Pink/20",
+      "name": "Fill - Pink/20",
       "command": "fill-pink-20"
     },
     {
-      "name": "Fyll - Pink/30",
+      "name": "Fill - Pink/30",
       "command": "fill-pink-30"
     },
     {
-      "name": "Fyll - Pink/40",
+      "name": "Fill - Pink/40",
       "command": "fill-pink-40"
     },
     {
-      "name": "Fyll - Pink/50",
+      "name": "Fill - Pink/50",
       "command": "fill-pink-50"
     },
     {
-      "name": "Fyll - Pink/60",
+      "name": "Fill - Pink/60",
       "command": "fill-pink-60"
     },
     {
-      "name": "Fyll - Pink/70",
+      "name": "Fill - Pink/70",
       "command": "fill-pink-70"
     },
     {
-      "name": "Fyll - Pink/80",
+      "name": "Fill - Pink/80",
       "command": "fill-pink-80"
     },
     {
-      "name": "Fyll - Pink/90",
+      "name": "Fill - Pink/90",
       "command": "fill-pink-90"
     },
     {
-      "name": "Fyll - Pink/100",
+      "name": "Fill - Pink/100",
       "command": "fill-pink-100"
     },
     {
-      "name": "Fyll - Pink/110",
+      "name": "Fill - Pink/110",
       "command": "fill-pink-110"
     },
     {
-      "name": "Fyll - Pink/120",
+      "name": "Fill - Pink/120",
       "command": "fill-pink-120"
     },
     {
-      "name": "Fyll - Pink/130",
+      "name": "Fill - Pink/130",
       "command": "fill-pink-130"
     },
     {
-      "name": "Fyll - Pink/140",
+      "name": "Fill - Pink/140",
       "command": "fill-pink-140"
     },
     {
-      "name": "Fyll - Pink/150",
+      "name": "Fill - Pink/150",
       "command": "fill-pink-150"
     },
     {
-      "name": "Fyll - Pink/160",
+      "name": "Fill - Pink/160",
       "command": "fill-pink-160"
     },
     {
-      "name": "Fyll - Pink/170",
+      "name": "Fill - Pink/170",
       "command": "fill-pink-170"
     },
     {
-      "name": "Fyll - Pink/180",
+      "name": "Fill - Pink/180",
       "command": "fill-pink-180"
     },
     {
-      "name": "Fyll - Pink/190",
+      "name": "Fill - Pink/190",
       "command": "fill-pink-190"
     },
     {
-      "name": "Fyll - Pink/200",
+      "name": "Fill - Pink/200",
       "command": "fill-pink-200"
     },
     {
-      "name": "Fyll - Pink/210",
+      "name": "Fill - Pink/210",
       "command": "fill-pink-210"
     },
     {
-      "name": "Fyll - Pink/220",
+      "name": "Fill - Pink/220",
       "command": "fill-pink-220"
     },
     {
-      "name": "Fyll - Pink/230",
+      "name": "Fill - Pink/230",
       "command": "fill-pink-230"
     },
     {
-      "name": "Fyll - Pink/240",
+      "name": "Fill - Pink/240",
       "command": "fill-pink-240"
     },
     {
-      "name": "Fyll - Pink/250",
+      "name": "Fill - Pink/250",
       "command": "fill-pink-250"
     },
     {
-      "name": "Fyll - Pink/260",
+      "name": "Fill - Pink/260",
       "command": "fill-pink-260"
     },
     {
-      "name": "Fyll - Pink/270",
+      "name": "Fill - Pink/270",
       "command": "fill-pink-270"
     },
     {
-      "name": "Fyll - Pink/280",
+      "name": "Fill - Pink/280",
       "command": "fill-pink-280"
     },
     {
-      "name": "Fyll - Pink/290",
+      "name": "Fill - Pink/290",
       "command": "fill-pink-290"
     },
     {
-      "name": "Fyll - Pink/300",
+      "name": "Fill - Pink/300",
       "command": "fill-pink-300"
     },
     {
-      "name": "Fyll - Pink/310",
+      "name": "Fill - Pink/310",
       "command": "fill-pink-310"
     },
     {
-      "name": "Fyll - Pink/320",
+      "name": "Fill - Pink/320",
       "command": "fill-pink-320"
     },
     {
-      "name": "Fyll - Pink/330",
+      "name": "Fill - Pink/330",
       "command": "fill-pink-330"
     },
     {
-      "name": "Fyll - Pink/340",
+      "name": "Fill - Pink/340",
       "command": "fill-pink-340"
     },
     {
-      "name": "Fyll - Pink/350",
+      "name": "Fill - Pink/350",
       "command": "fill-pink-350"
     },
     {
-      "name": "Fyll - Pink/360",
+      "name": "Fill - Pink/360",
       "command": "fill-pink-360"
     },
     {
-      "name": "Fyll - Pink/370",
+      "name": "Fill - Pink/370",
       "command": "fill-pink-370"
     },
     {
-      "name": "Fyll - Pink/380",
+      "name": "Fill - Pink/380",
       "command": "fill-pink-380"
     },
     {
-      "name": "Fyll - Pink/390",
+      "name": "Fill - Pink/390",
       "command": "fill-pink-390"
     },
     {
-      "name": "Fyll - Pink/400",
+      "name": "Fill - Pink/400",
       "command": "fill-pink-400"
     },
     {
-      "name": "Fyll - Pink/410",
+      "name": "Fill - Pink/410",
       "command": "fill-pink-410"
     },
     {
-      "name": "Fyll - Pink/420",
+      "name": "Fill - Pink/420",
       "command": "fill-pink-420"
     },
     {
-      "name": "Fyll - Pink/430",
+      "name": "Fill - Pink/430",
       "command": "fill-pink-430"
     },
     {
-      "name": "Fyll - Pink/440",
+      "name": "Fill - Pink/440",
       "command": "fill-pink-440"
     },
     {
-      "name": "Fyll - Pink/450",
+      "name": "Fill - Pink/450",
       "command": "fill-pink-450"
     },
     {
-      "name": "Fyll - Pink/460",
+      "name": "Fill - Pink/460",
       "command": "fill-pink-460"
     },
     {
-      "name": "Fyll - Pink/470",
+      "name": "Fill - Pink/470",
       "command": "fill-pink-470"
     },
     {
-      "name": "Fyll - Pink/480",
+      "name": "Fill - Pink/480",
       "command": "fill-pink-480"
     },
     {
-      "name": "Fyll - Pink/490",
+      "name": "Fill - Pink/490",
       "command": "fill-pink-490"
     },
     {
-      "name": "Fyll - Pink/500",
+      "name": "Fill - Pink/500",
       "command": "fill-pink-500"
     },
     {
-      "name": "Fyll - Pink/510",
+      "name": "Fill - Pink/510",
       "command": "fill-pink-510"
     },
     {
-      "name": "Fyll - Pink/520",
+      "name": "Fill - Pink/520",
       "command": "fill-pink-520"
     },
     {
-      "name": "Fyll - Pink/530",
+      "name": "Fill - Pink/530",
       "command": "fill-pink-530"
     },
     {
-      "name": "Fyll - Pink/540",
+      "name": "Fill - Pink/540",
       "command": "fill-pink-540"
     },
     {
-      "name": "Fyll - Pink/550",
+      "name": "Fill - Pink/550",
       "command": "fill-pink-550"
     },
     {
-      "name": "Fyll - Pink/560",
+      "name": "Fill - Pink/560",
       "command": "fill-pink-560"
     },
     {
-      "name": "Fyll - Pink/570",
+      "name": "Fill - Pink/570",
       "command": "fill-pink-570"
     },
     {
-      "name": "Fyll - Pink/580",
+      "name": "Fill - Pink/580",
       "command": "fill-pink-580"
     },
     {
-      "name": "Fyll - Pink/590",
+      "name": "Fill - Pink/590",
       "command": "fill-pink-590"
     },
     {
-      "name": "Fyll - Pink/600",
+      "name": "Fill - Pink/600",
       "command": "fill-pink-600"
     },
     {
-      "name": "Fyll - Pink/610",
+      "name": "Fill - Pink/610",
       "command": "fill-pink-610"
     },
     {
-      "name": "Fyll - Pink/620",
+      "name": "Fill - Pink/620",
       "command": "fill-pink-620"
     },
     {
-      "name": "Fyll - Pink/630",
+      "name": "Fill - Pink/630",
       "command": "fill-pink-630"
     },
     {
-      "name": "Fyll - Pink/640",
+      "name": "Fill - Pink/640",
       "command": "fill-pink-640"
     },
     {
-      "name": "Fyll - Pink/650",
+      "name": "Fill - Pink/650",
       "command": "fill-pink-650"
     },
     {
-      "name": "Fyll - Pink/660",
+      "name": "Fill - Pink/660",
       "command": "fill-pink-660"
     },
     {
-      "name": "Fyll - Pink/670",
+      "name": "Fill - Pink/670",
       "command": "fill-pink-670"
     },
     {
-      "name": "Fyll - Pink/680",
+      "name": "Fill - Pink/680",
       "command": "fill-pink-680"
     },
     {
-      "name": "Fyll - Pink/690",
+      "name": "Fill - Pink/690",
       "command": "fill-pink-690"
     },
     {
-      "name": "Fyll - Pink/700",
+      "name": "Fill - Pink/700",
       "command": "fill-pink-700"
     },
     {
-      "name": "Fyll - Pink/710",
+      "name": "Fill - Pink/710",
       "command": "fill-pink-710"
     },
     {
-      "name": "Fyll - Pink/720",
+      "name": "Fill - Pink/720",
       "command": "fill-pink-720"
     },
     {
-      "name": "Fyll - Pink/730",
+      "name": "Fill - Pink/730",
       "command": "fill-pink-730"
     },
     {
-      "name": "Fyll - Pink/740",
+      "name": "Fill - Pink/740",
       "command": "fill-pink-740"
     },
     {
-      "name": "Fyll - Pink/750",
+      "name": "Fill - Pink/750",
       "command": "fill-pink-750"
     },
     {
-      "name": "Fyll - Pink/760",
+      "name": "Fill - Pink/760",
       "command": "fill-pink-760"
     },
     {
-      "name": "Fyll - Pink/770",
+      "name": "Fill - Pink/770",
       "command": "fill-pink-770"
     },
     {
-      "name": "Fyll - Pink/780",
+      "name": "Fill - Pink/780",
       "command": "fill-pink-780"
     },
     {
-      "name": "Fyll - Pink/790",
+      "name": "Fill - Pink/790",
       "command": "fill-pink-790"
     },
     {
-      "name": "Fyll - Pink/800",
+      "name": "Fill - Pink/800",
       "command": "fill-pink-800"
     },
     {
-      "name": "Fyll - Pink/810",
+      "name": "Fill - Pink/810",
       "command": "fill-pink-810"
     },
     {
-      "name": "Fyll - Pink/820",
+      "name": "Fill - Pink/820",
       "command": "fill-pink-820"
     },
     {
-      "name": "Fyll - Pink/830",
+      "name": "Fill - Pink/830",
       "command": "fill-pink-830"
     },
     {
-      "name": "Fyll - Pink/840",
+      "name": "Fill - Pink/840",
       "command": "fill-pink-840"
     },
     {
-      "name": "Fyll - Pink/850",
+      "name": "Fill - Pink/850",
       "command": "fill-pink-850"
     },
     {
-      "name": "Fyll - Pink/860",
+      "name": "Fill - Pink/860",
       "command": "fill-pink-860"
     },
     {
-      "name": "Fyll - Pink/870",
+      "name": "Fill - Pink/870",
       "command": "fill-pink-870"
     },
     {
-      "name": "Fyll - Pink/880",
+      "name": "Fill - Pink/880",
       "command": "fill-pink-880"
     },
     {
-      "name": "Fyll - Pink/890",
+      "name": "Fill - Pink/890",
       "command": "fill-pink-890"
     },
     {
-      "name": "Fyll - Pink/900",
+      "name": "Fill - Pink/900",
       "command": "fill-pink-900"
     },
     {
-      "name": "Fyll - Pink/910",
+      "name": "Fill - Pink/910",
       "command": "fill-pink-910"
     },
     {
-      "name": "Fyll - Pink/920",
+      "name": "Fill - Pink/920",
       "command": "fill-pink-920"
     },
     {
-      "name": "Fyll - Pink/930",
+      "name": "Fill - Pink/930",
       "command": "fill-pink-930"
     },
     {
-      "name": "Fyll - Pink/940",
+      "name": "Fill - Pink/940",
       "command": "fill-pink-940"
     },
     {
-      "name": "Fyll - Pink/950",
+      "name": "Fill - Pink/950",
       "command": "fill-pink-950"
     },
     {
-      "name": "Fyll - Pink/960",
+      "name": "Fill - Pink/960",
       "command": "fill-pink-960"
     },
     {
-      "name": "Fyll - Pink/970",
+      "name": "Fill - Pink/970",
       "command": "fill-pink-970"
     },
     {
-      "name": "Fyll - Pink/980",
+      "name": "Fill - Pink/980",
       "command": "fill-pink-980"
     },
     {
-      "name": "Fyll - Pink/990",
+      "name": "Fill - Pink/990",
       "command": "fill-pink-990"
     },
     {
-      "name": "Fyll - Pink/1000",
+      "name": "Fill - Pink/1000",
       "command": "fill-pink-1000"
     },
     {
-      "name": "Fyll - Purple/10",
+      "name": "Fill - Purple/10",
       "command": "fill-purple-10"
     },
     {
-      "name": "Fyll - Purple/20",
+      "name": "Fill - Purple/20",
       "command": "fill-purple-20"
     },
     {
-      "name": "Fyll - Purple/30",
+      "name": "Fill - Purple/30",
       "command": "fill-purple-30"
     },
     {
-      "name": "Fyll - Purple/40",
+      "name": "Fill - Purple/40",
       "command": "fill-purple-40"
     },
     {
-      "name": "Fyll - Purple/50",
+      "name": "Fill - Purple/50",
       "command": "fill-purple-50"
     },
     {
-      "name": "Fyll - Purple/60",
+      "name": "Fill - Purple/60",
       "command": "fill-purple-60"
     },
     {
-      "name": "Fyll - Purple/70",
+      "name": "Fill - Purple/70",
       "command": "fill-purple-70"
     },
     {
-      "name": "Fyll - Purple/80",
+      "name": "Fill - Purple/80",
       "command": "fill-purple-80"
     },
     {
-      "name": "Fyll - Purple/90",
+      "name": "Fill - Purple/90",
       "command": "fill-purple-90"
     },
     {
-      "name": "Fyll - Purple/100",
+      "name": "Fill - Purple/100",
       "command": "fill-purple-100"
     },
     {
-      "name": "Fyll - Purple/110",
+      "name": "Fill - Purple/110",
       "command": "fill-purple-110"
     },
     {
-      "name": "Fyll - Purple/120",
+      "name": "Fill - Purple/120",
       "command": "fill-purple-120"
     },
     {
-      "name": "Fyll - Purple/130",
+      "name": "Fill - Purple/130",
       "command": "fill-purple-130"
     },
     {
-      "name": "Fyll - Purple/140",
+      "name": "Fill - Purple/140",
       "command": "fill-purple-140"
     },
     {
-      "name": "Fyll - Purple/150",
+      "name": "Fill - Purple/150",
       "command": "fill-purple-150"
     },
     {
-      "name": "Fyll - Purple/160",
+      "name": "Fill - Purple/160",
       "command": "fill-purple-160"
     },
     {
-      "name": "Fyll - Purple/170",
+      "name": "Fill - Purple/170",
       "command": "fill-purple-170"
     },
     {
-      "name": "Fyll - Purple/180",
+      "name": "Fill - Purple/180",
       "command": "fill-purple-180"
     },
     {
-      "name": "Fyll - Purple/190",
+      "name": "Fill - Purple/190",
       "command": "fill-purple-190"
     },
     {
-      "name": "Fyll - Purple/200",
+      "name": "Fill - Purple/200",
       "command": "fill-purple-200"
     },
     {
-      "name": "Fyll - Purple/210",
+      "name": "Fill - Purple/210",
       "command": "fill-purple-210"
     },
     {
-      "name": "Fyll - Purple/220",
+      "name": "Fill - Purple/220",
       "command": "fill-purple-220"
     },
     {
-      "name": "Fyll - Purple/230",
+      "name": "Fill - Purple/230",
       "command": "fill-purple-230"
     },
     {
-      "name": "Fyll - Purple/240",
+      "name": "Fill - Purple/240",
       "command": "fill-purple-240"
     },
     {
-      "name": "Fyll - Purple/250",
+      "name": "Fill - Purple/250",
       "command": "fill-purple-250"
     },
     {
-      "name": "Fyll - Purple/260",
+      "name": "Fill - Purple/260",
       "command": "fill-purple-260"
     },
     {
-      "name": "Fyll - Purple/270",
+      "name": "Fill - Purple/270",
       "command": "fill-purple-270"
     },
     {
-      "name": "Fyll - Purple/280",
+      "name": "Fill - Purple/280",
       "command": "fill-purple-280"
     },
     {
-      "name": "Fyll - Purple/290",
+      "name": "Fill - Purple/290",
       "command": "fill-purple-290"
     },
     {
-      "name": "Fyll - Purple/300",
+      "name": "Fill - Purple/300",
       "command": "fill-purple-300"
     },
     {
-      "name": "Fyll - Purple/310",
+      "name": "Fill - Purple/310",
       "command": "fill-purple-310"
     },
     {
-      "name": "Fyll - Purple/320",
+      "name": "Fill - Purple/320",
       "command": "fill-purple-320"
     },
     {
-      "name": "Fyll - Purple/330",
+      "name": "Fill - Purple/330",
       "command": "fill-purple-330"
     },
     {
-      "name": "Fyll - Purple/340",
+      "name": "Fill - Purple/340",
       "command": "fill-purple-340"
     },
     {
-      "name": "Fyll - Purple/350",
+      "name": "Fill - Purple/350",
       "command": "fill-purple-350"
     },
     {
-      "name": "Fyll - Purple/360",
+      "name": "Fill - Purple/360",
       "command": "fill-purple-360"
     },
     {
-      "name": "Fyll - Purple/370",
+      "name": "Fill - Purple/370",
       "command": "fill-purple-370"
     },
     {
-      "name": "Fyll - Purple/380",
+      "name": "Fill - Purple/380",
       "command": "fill-purple-380"
     },
     {
-      "name": "Fyll - Purple/390",
+      "name": "Fill - Purple/390",
       "command": "fill-purple-390"
     },
     {
-      "name": "Fyll - Purple/400",
+      "name": "Fill - Purple/400",
       "command": "fill-purple-400"
     },
     {
-      "name": "Fyll - Purple/410",
+      "name": "Fill - Purple/410",
       "command": "fill-purple-410"
     },
     {
-      "name": "Fyll - Purple/420",
+      "name": "Fill - Purple/420",
       "command": "fill-purple-420"
     },
     {
-      "name": "Fyll - Purple/430",
+      "name": "Fill - Purple/430",
       "command": "fill-purple-430"
     },
     {
-      "name": "Fyll - Purple/440",
+      "name": "Fill - Purple/440",
       "command": "fill-purple-440"
     },
     {
-      "name": "Fyll - Purple/450",
+      "name": "Fill - Purple/450",
       "command": "fill-purple-450"
     },
     {
-      "name": "Fyll - Purple/460",
+      "name": "Fill - Purple/460",
       "command": "fill-purple-460"
     },
     {
-      "name": "Fyll - Purple/470",
+      "name": "Fill - Purple/470",
       "command": "fill-purple-470"
     },
     {
-      "name": "Fyll - Purple/480",
+      "name": "Fill - Purple/480",
       "command": "fill-purple-480"
     },
     {
-      "name": "Fyll - Purple/490",
+      "name": "Fill - Purple/490",
       "command": "fill-purple-490"
     },
     {
-      "name": "Fyll - Purple/500",
+      "name": "Fill - Purple/500",
       "command": "fill-purple-500"
     },
     {
-      "name": "Fyll - Purple/510",
+      "name": "Fill - Purple/510",
       "command": "fill-purple-510"
     },
     {
-      "name": "Fyll - Purple/520",
+      "name": "Fill - Purple/520",
       "command": "fill-purple-520"
     },
     {
-      "name": "Fyll - Purple/530",
+      "name": "Fill - Purple/530",
       "command": "fill-purple-530"
     },
     {
-      "name": "Fyll - Purple/540",
+      "name": "Fill - Purple/540",
       "command": "fill-purple-540"
     },
     {
-      "name": "Fyll - Purple/550",
+      "name": "Fill - Purple/550",
       "command": "fill-purple-550"
     },
     {
-      "name": "Fyll - Purple/560",
+      "name": "Fill - Purple/560",
       "command": "fill-purple-560"
     },
     {
-      "name": "Fyll - Purple/570",
+      "name": "Fill - Purple/570",
       "command": "fill-purple-570"
     },
     {
-      "name": "Fyll - Purple/580",
+      "name": "Fill - Purple/580",
       "command": "fill-purple-580"
     },
     {
-      "name": "Fyll - Purple/590",
+      "name": "Fill - Purple/590",
       "command": "fill-purple-590"
     },
     {
-      "name": "Fyll - Purple/600",
+      "name": "Fill - Purple/600",
       "command": "fill-purple-600"
     },
     {
-      "name": "Fyll - Purple/610",
+      "name": "Fill - Purple/610",
       "command": "fill-purple-610"
     },
     {
-      "name": "Fyll - Purple/620",
+      "name": "Fill - Purple/620",
       "command": "fill-purple-620"
     },
     {
-      "name": "Fyll - Purple/630",
+      "name": "Fill - Purple/630",
       "command": "fill-purple-630"
     },
     {
-      "name": "Fyll - Purple/640",
+      "name": "Fill - Purple/640",
       "command": "fill-purple-640"
     },
     {
-      "name": "Fyll - Purple/650",
+      "name": "Fill - Purple/650",
       "command": "fill-purple-650"
     },
     {
-      "name": "Fyll - Purple/660",
+      "name": "Fill - Purple/660",
       "command": "fill-purple-660"
     },
     {
-      "name": "Fyll - Purple/670",
+      "name": "Fill - Purple/670",
       "command": "fill-purple-670"
     },
     {
-      "name": "Fyll - Purple/680",
+      "name": "Fill - Purple/680",
       "command": "fill-purple-680"
     },
     {
-      "name": "Fyll - Purple/690",
+      "name": "Fill - Purple/690",
       "command": "fill-purple-690"
     },
     {
-      "name": "Fyll - Purple/700",
+      "name": "Fill - Purple/700",
       "command": "fill-purple-700"
     },
     {
-      "name": "Fyll - Purple/710",
+      "name": "Fill - Purple/710",
       "command": "fill-purple-710"
     },
     {
-      "name": "Fyll - Purple/720",
+      "name": "Fill - Purple/720",
       "command": "fill-purple-720"
     },
     {
-      "name": "Fyll - Purple/730",
+      "name": "Fill - Purple/730",
       "command": "fill-purple-730"
     },
     {
-      "name": "Fyll - Purple/740",
+      "name": "Fill - Purple/740",
       "command": "fill-purple-740"
     },
     {
-      "name": "Fyll - Purple/750",
+      "name": "Fill - Purple/750",
       "command": "fill-purple-750"
     },
     {
-      "name": "Fyll - Purple/760",
+      "name": "Fill - Purple/760",
       "command": "fill-purple-760"
     },
     {
-      "name": "Fyll - Purple/770",
+      "name": "Fill - Purple/770",
       "command": "fill-purple-770"
     },
     {
-      "name": "Fyll - Purple/780",
+      "name": "Fill - Purple/780",
       "command": "fill-purple-780"
     },
     {
-      "name": "Fyll - Purple/790",
+      "name": "Fill - Purple/790",
       "command": "fill-purple-790"
     },
     {
-      "name": "Fyll - Purple/800",
+      "name": "Fill - Purple/800",
       "command": "fill-purple-800"
     },
     {
-      "name": "Fyll - Purple/810",
+      "name": "Fill - Purple/810",
       "command": "fill-purple-810"
     },
     {
-      "name": "Fyll - Purple/820",
+      "name": "Fill - Purple/820",
       "command": "fill-purple-820"
     },
     {
-      "name": "Fyll - Purple/830",
+      "name": "Fill - Purple/830",
       "command": "fill-purple-830"
     },
     {
-      "name": "Fyll - Purple/840",
+      "name": "Fill - Purple/840",
       "command": "fill-purple-840"
     },
     {
-      "name": "Fyll - Purple/850",
+      "name": "Fill - Purple/850",
       "command": "fill-purple-850"
     },
     {
-      "name": "Fyll - Purple/860",
+      "name": "Fill - Purple/860",
       "command": "fill-purple-860"
     },
     {
-      "name": "Fyll - Purple/870",
+      "name": "Fill - Purple/870",
       "command": "fill-purple-870"
     },
     {
-      "name": "Fyll - Purple/880",
+      "name": "Fill - Purple/880",
       "command": "fill-purple-880"
     },
     {
-      "name": "Fyll - Purple/890",
+      "name": "Fill - Purple/890",
       "command": "fill-purple-890"
     },
     {
-      "name": "Fyll - Purple/900",
+      "name": "Fill - Purple/900",
       "command": "fill-purple-900"
     },
     {
-      "name": "Fyll - Purple/910",
+      "name": "Fill - Purple/910",
       "command": "fill-purple-910"
     },
     {
-      "name": "Fyll - Purple/920",
+      "name": "Fill - Purple/920",
       "command": "fill-purple-920"
     },
     {
-      "name": "Fyll - Purple/930",
+      "name": "Fill - Purple/930",
       "command": "fill-purple-930"
     },
     {
-      "name": "Fyll - Purple/940",
+      "name": "Fill - Purple/940",
       "command": "fill-purple-940"
     },
     {
-      "name": "Fyll - Purple/950",
+      "name": "Fill - Purple/950",
       "command": "fill-purple-950"
     },
     {
-      "name": "Fyll - Purple/960",
+      "name": "Fill - Purple/960",
       "command": "fill-purple-960"
     },
     {
-      "name": "Fyll - Purple/970",
+      "name": "Fill - Purple/970",
       "command": "fill-purple-970"
     },
     {
-      "name": "Fyll - Purple/980",
+      "name": "Fill - Purple/980",
       "command": "fill-purple-980"
     },
     {
-      "name": "Fyll - Purple/990",
+      "name": "Fill - Purple/990",
       "command": "fill-purple-990"
     },
     {
-      "name": "Fyll - Purple/1000",
+      "name": "Fill - Purple/1000",
       "command": "fill-purple-1000"
     },
     {
-      "name": "Fyll - Green/0",
+      "name": "Fill - Green/0",
       "command": "fill-green-0"
     },
     {
-      "name": "Fyll - Green/10",
+      "name": "Fill - Green/10",
       "command": "fill-green-10"
     },
     {
-      "name": "Fyll - Green/20",
+      "name": "Fill - Green/20",
       "command": "fill-green-20"
     },
     {
-      "name": "Fyll - Green/30",
+      "name": "Fill - Green/30",
       "command": "fill-green-30"
     },
     {
-      "name": "Fyll - Green/40",
+      "name": "Fill - Green/40",
       "command": "fill-green-40"
     },
     {
-      "name": "Fyll - Green/50",
+      "name": "Fill - Green/50",
       "command": "fill-green-50"
     },
     {
-      "name": "Fyll - Green/60",
+      "name": "Fill - Green/60",
       "command": "fill-green-60"
     },
     {
-      "name": "Fyll - Green/70",
+      "name": "Fill - Green/70",
       "command": "fill-green-70"
     },
     {
-      "name": "Fyll - Green/80",
+      "name": "Fill - Green/80",
       "command": "fill-green-80"
     },
     {
-      "name": "Fyll - Green/90",
+      "name": "Fill - Green/90",
       "command": "fill-green-90"
     },
     {
-      "name": "Fyll - Green/100",
+      "name": "Fill - Green/100",
       "command": "fill-green-100"
     },
     {
-      "name": "Fyll - Green/110",
+      "name": "Fill - Green/110",
       "command": "fill-green-110"
     },
     {
-      "name": "Fyll - Green/120",
+      "name": "Fill - Green/120",
       "command": "fill-green-120"
     },
     {
-      "name": "Fyll - Green/130",
+      "name": "Fill - Green/130",
       "command": "fill-green-130"
     },
     {
-      "name": "Fyll - Green/140",
+      "name": "Fill - Green/140",
       "command": "fill-green-140"
     },
     {
-      "name": "Fyll - Green/150",
+      "name": "Fill - Green/150",
       "command": "fill-green-150"
     },
     {
-      "name": "Fyll - Green/160",
+      "name": "Fill - Green/160",
       "command": "fill-green-160"
     },
     {
-      "name": "Fyll - Green/170",
+      "name": "Fill - Green/170",
       "command": "fill-green-170"
     },
     {
-      "name": "Fyll - Green/180",
+      "name": "Fill - Green/180",
       "command": "fill-green-180"
     },
     {
-      "name": "Fyll - Green/190",
+      "name": "Fill - Green/190",
       "command": "fill-green-190"
     },
     {
-      "name": "Fyll - Green/200",
+      "name": "Fill - Green/200",
       "command": "fill-green-200"
     },
     {
-      "name": "Fyll - Green/210",
+      "name": "Fill - Green/210",
       "command": "fill-green-210"
     },
     {
-      "name": "Fyll - Green/220",
+      "name": "Fill - Green/220",
       "command": "fill-green-220"
     },
     {
-      "name": "Fyll - Green/230",
+      "name": "Fill - Green/230",
       "command": "fill-green-230"
     },
     {
-      "name": "Fyll - Green/240",
+      "name": "Fill - Green/240",
       "command": "fill-green-240"
     },
     {
-      "name": "Fyll - Green/250",
+      "name": "Fill - Green/250",
       "command": "fill-green-250"
     },
     {
-      "name": "Fyll - Green/260",
+      "name": "Fill - Green/260",
       "command": "fill-green-260"
     },
     {
-      "name": "Fyll - Green/270",
+      "name": "Fill - Green/270",
       "command": "fill-green-270"
     },
     {
-      "name": "Fyll - Green/280",
+      "name": "Fill - Green/280",
       "command": "fill-green-280"
     },
     {
-      "name": "Fyll - Green/290",
+      "name": "Fill - Green/290",
       "command": "fill-green-290"
     },
     {
-      "name": "Fyll - Green/300",
+      "name": "Fill - Green/300",
       "command": "fill-green-300"
     },
     {
-      "name": "Fyll - Green/310",
+      "name": "Fill - Green/310",
       "command": "fill-green-310"
     },
     {
-      "name": "Fyll - Green/320",
+      "name": "Fill - Green/320",
       "command": "fill-green-320"
     },
     {
-      "name": "Fyll - Green/330",
+      "name": "Fill - Green/330",
       "command": "fill-green-330"
     },
     {
-      "name": "Fyll - Green/340",
+      "name": "Fill - Green/340",
       "command": "fill-green-340"
     },
     {
-      "name": "Fyll - Green/350",
+      "name": "Fill - Green/350",
       "command": "fill-green-350"
     },
     {
-      "name": "Fyll - Green/360",
+      "name": "Fill - Green/360",
       "command": "fill-green-360"
     },
     {
-      "name": "Fyll - Green/370",
+      "name": "Fill - Green/370",
       "command": "fill-green-370"
     },
     {
-      "name": "Fyll - Green/380",
+      "name": "Fill - Green/380",
       "command": "fill-green-380"
     },
     {
-      "name": "Fyll - Green/390",
+      "name": "Fill - Green/390",
       "command": "fill-green-390"
     },
     {
-      "name": "Fyll - Green/400",
+      "name": "Fill - Green/400",
       "command": "fill-green-400"
     },
     {
-      "name": "Fyll - Green/410",
+      "name": "Fill - Green/410",
       "command": "fill-green-410"
     },
     {
-      "name": "Fyll - Green/420",
+      "name": "Fill - Green/420",
       "command": "fill-green-420"
     },
     {
-      "name": "Fyll - Green/430",
+      "name": "Fill - Green/430",
       "command": "fill-green-430"
     },
     {
-      "name": "Fyll - Green/440",
+      "name": "Fill - Green/440",
       "command": "fill-green-440"
     },
     {
-      "name": "Fyll - Green/450",
+      "name": "Fill - Green/450",
       "command": "fill-green-450"
     },
     {
-      "name": "Fyll - Green/460",
+      "name": "Fill - Green/460",
       "command": "fill-green-460"
     },
     {
-      "name": "Fyll - Green/470",
+      "name": "Fill - Green/470",
       "command": "fill-green-470"
     },
     {
-      "name": "Fyll - Green/480",
+      "name": "Fill - Green/480",
       "command": "fill-green-480"
     },
     {
-      "name": "Fyll - Green/490",
+      "name": "Fill - Green/490",
       "command": "fill-green-490"
     },
     {
-      "name": "Fyll - Green/500",
+      "name": "Fill - Green/500",
       "command": "fill-green-500"
     },
     {
-      "name": "Fyll - Green/510",
+      "name": "Fill - Green/510",
       "command": "fill-green-510"
     },
     {
-      "name": "Fyll - Green/520",
+      "name": "Fill - Green/520",
       "command": "fill-green-520"
     },
     {
-      "name": "Fyll - Green/530",
+      "name": "Fill - Green/530",
       "command": "fill-green-530"
     },
     {
-      "name": "Fyll - Green/540",
+      "name": "Fill - Green/540",
       "command": "fill-green-540"
     },
     {
-      "name": "Fyll - Green/550",
+      "name": "Fill - Green/550",
       "command": "fill-green-550"
     },
     {
-      "name": "Fyll - Green/560",
+      "name": "Fill - Green/560",
       "command": "fill-green-560"
     },
     {
-      "name": "Fyll - Green/570",
+      "name": "Fill - Green/570",
       "command": "fill-green-570"
     },
     {
-      "name": "Fyll - Green/580",
+      "name": "Fill - Green/580",
       "command": "fill-green-580"
     },
     {
-      "name": "Fyll - Green/590",
+      "name": "Fill - Green/590",
       "command": "fill-green-590"
     },
     {
-      "name": "Fyll - Green/600",
+      "name": "Fill - Green/600",
       "command": "fill-green-600"
     },
     {
-      "name": "Fyll - Green/610",
+      "name": "Fill - Green/610",
       "command": "fill-green-610"
     },
     {
-      "name": "Fyll - Green/620",
+      "name": "Fill - Green/620",
       "command": "fill-green-620"
     },
     {
-      "name": "Fyll - Green/630",
+      "name": "Fill - Green/630",
       "command": "fill-green-630"
     },
     {
-      "name": "Fyll - Green/640",
+      "name": "Fill - Green/640",
       "command": "fill-green-640"
     },
     {
-      "name": "Fyll - Green/650",
+      "name": "Fill - Green/650",
       "command": "fill-green-650"
     },
     {
-      "name": "Fyll - Green/660",
+      "name": "Fill - Green/660",
       "command": "fill-green-660"
     },
     {
-      "name": "Fyll - Green/670",
+      "name": "Fill - Green/670",
       "command": "fill-green-670"
     },
     {
-      "name": "Fyll - Green/680",
+      "name": "Fill - Green/680",
       "command": "fill-green-680"
     },
     {
-      "name": "Fyll - Green/690",
+      "name": "Fill - Green/690",
       "command": "fill-green-690"
     },
     {
-      "name": "Fyll - Green/700",
+      "name": "Fill - Green/700",
       "command": "fill-green-700"
     },
     {
-      "name": "Fyll - Green/710",
+      "name": "Fill - Green/710",
       "command": "fill-green-710"
     },
     {
-      "name": "Fyll - Green/720",
+      "name": "Fill - Green/720",
       "command": "fill-green-720"
     },
     {
-      "name": "Fyll - Green/730",
+      "name": "Fill - Green/730",
       "command": "fill-green-730"
     },
     {
-      "name": "Fyll - Green/740",
+      "name": "Fill - Green/740",
       "command": "fill-green-740"
     },
     {
-      "name": "Fyll - Green/750",
+      "name": "Fill - Green/750",
       "command": "fill-green-750"
     },
     {
-      "name": "Fyll - Green/760",
+      "name": "Fill - Green/760",
       "command": "fill-green-760"
     },
     {
-      "name": "Fyll - Green/770",
+      "name": "Fill - Green/770",
       "command": "fill-green-770"
     },
     {
-      "name": "Fyll - Green/780",
+      "name": "Fill - Green/780",
       "command": "fill-green-780"
     },
     {
-      "name": "Fyll - Green/790",
+      "name": "Fill - Green/790",
       "command": "fill-green-790"
     },
     {
-      "name": "Fyll - Green/800",
+      "name": "Fill - Green/800",
       "command": "fill-green-800"
     },
     {
-      "name": "Fyll - Green/810",
+      "name": "Fill - Green/810",
       "command": "fill-green-810"
     },
     {
-      "name": "Fyll - Green/820",
+      "name": "Fill - Green/820",
       "command": "fill-green-820"
     },
     {
-      "name": "Fyll - Green/830",
+      "name": "Fill - Green/830",
       "command": "fill-green-830"
     },
     {
-      "name": "Fyll - Green/840",
+      "name": "Fill - Green/840",
       "command": "fill-green-840"
     },
     {
-      "name": "Fyll - Green/850",
+      "name": "Fill - Green/850",
       "command": "fill-green-850"
     },
     {
-      "name": "Fyll - Green/860",
+      "name": "Fill - Green/860",
       "command": "fill-green-860"
     },
     {
-      "name": "Fyll - Green/870",
+      "name": "Fill - Green/870",
       "command": "fill-green-870"
     },
     {
-      "name": "Fyll - Green/880",
+      "name": "Fill - Green/880",
       "command": "fill-green-880"
     },
     {
-      "name": "Fyll - Green/890",
+      "name": "Fill - Green/890",
       "command": "fill-green-890"
     },
     {
-      "name": "Fyll - Green/900",
+      "name": "Fill - Green/900",
       "command": "fill-green-900"
     },
     {
-      "name": "Fyll - Green/910",
+      "name": "Fill - Green/910",
       "command": "fill-green-910"
     },
     {
-      "name": "Fyll - Green/920",
+      "name": "Fill - Green/920",
       "command": "fill-green-920"
     },
     {
-      "name": "Fyll - Green/930",
+      "name": "Fill - Green/930",
       "command": "fill-green-930"
     },
     {
-      "name": "Fyll - Green/940",
+      "name": "Fill - Green/940",
       "command": "fill-green-940"
     },
     {
-      "name": "Fyll - Green/950",
+      "name": "Fill - Green/950",
       "command": "fill-green-950"
     },
     {
-      "name": "Fyll - Green/960",
+      "name": "Fill - Green/960",
       "command": "fill-green-960"
     },
     {
-      "name": "Fyll - Green/970",
+      "name": "Fill - Green/970",
       "command": "fill-green-970"
     },
     {
-      "name": "Fyll - Green/980",
+      "name": "Fill - Green/980",
       "command": "fill-green-980"
     },
     {
-      "name": "Fyll - Green/990",
+      "name": "Fill - Green/990",
       "command": "fill-green-990"
     },
     {
-      "name": "Fyll - Green/1000",
+      "name": "Fill - Green/1000",
       "command": "fill-green-1000"
     },
     {
-      "name": "Fyll - Yellow/0",
+      "name": "Fill - Yellow/0",
       "command": "fill-yellow-0"
     },
     {
-      "name": "Fyll - Yellow/10",
+      "name": "Fill - Yellow/10",
       "command": "fill-yellow-10"
     },
     {
-      "name": "Fyll - Yellow/20",
+      "name": "Fill - Yellow/20",
       "command": "fill-yellow-20"
     },
     {
-      "name": "Fyll - Yellow/30",
+      "name": "Fill - Yellow/30",
       "command": "fill-yellow-30"
     },
     {
-      "name": "Fyll - Yellow/40",
+      "name": "Fill - Yellow/40",
       "command": "fill-yellow-40"
     },
     {
-      "name": "Fyll - Yellow/50",
+      "name": "Fill - Yellow/50",
       "command": "fill-yellow-50"
     },
     {
-      "name": "Fyll - Yellow/60",
+      "name": "Fill - Yellow/60",
       "command": "fill-yellow-60"
     },
     {
-      "name": "Fyll - Yellow/70",
+      "name": "Fill - Yellow/70",
       "command": "fill-yellow-70"
     },
     {
-      "name": "Fyll - Yellow/80",
+      "name": "Fill - Yellow/80",
       "command": "fill-yellow-80"
     },
     {
-      "name": "Fyll - Yellow/90",
+      "name": "Fill - Yellow/90",
       "command": "fill-yellow-90"
     },
     {
-      "name": "Fyll - Yellow/100",
+      "name": "Fill - Yellow/100",
       "command": "fill-yellow-100"
     },
     {
-      "name": "Fyll - Yellow/110",
+      "name": "Fill - Yellow/110",
       "command": "fill-yellow-110"
     },
     {
-      "name": "Fyll - Yellow/120",
+      "name": "Fill - Yellow/120",
       "command": "fill-yellow-120"
     },
     {
-      "name": "Fyll - Yellow/130",
+      "name": "Fill - Yellow/130",
       "command": "fill-yellow-130"
     },
     {
-      "name": "Fyll - Yellow/140",
+      "name": "Fill - Yellow/140",
       "command": "fill-yellow-140"
     },
     {
-      "name": "Fyll - Yellow/150",
+      "name": "Fill - Yellow/150",
       "command": "fill-yellow-150"
     },
     {
-      "name": "Fyll - Yellow/160",
+      "name": "Fill - Yellow/160",
       "command": "fill-yellow-160"
     },
     {
-      "name": "Fyll - Yellow/170",
+      "name": "Fill - Yellow/170",
       "command": "fill-yellow-170"
     },
     {
-      "name": "Fyll - Yellow/180",
+      "name": "Fill - Yellow/180",
       "command": "fill-yellow-180"
     },
     {
-      "name": "Fyll - Yellow/190",
+      "name": "Fill - Yellow/190",
       "command": "fill-yellow-190"
     },
     {
-      "name": "Fyll - Yellow/200",
+      "name": "Fill - Yellow/200",
       "command": "fill-yellow-200"
     },
     {
-      "name": "Fyll - Yellow/210",
+      "name": "Fill - Yellow/210",
       "command": "fill-yellow-210"
     },
     {
-      "name": "Fyll - Yellow/220",
+      "name": "Fill - Yellow/220",
       "command": "fill-yellow-220"
     },
     {
-      "name": "Fyll - Yellow/230",
+      "name": "Fill - Yellow/230",
       "command": "fill-yellow-230"
     },
     {
-      "name": "Fyll - Yellow/240",
+      "name": "Fill - Yellow/240",
       "command": "fill-yellow-240"
     },
     {
-      "name": "Fyll - Yellow/250",
+      "name": "Fill - Yellow/250",
       "command": "fill-yellow-250"
     },
     {
-      "name": "Fyll - Yellow/260",
+      "name": "Fill - Yellow/260",
       "command": "fill-yellow-260"
     },
     {
-      "name": "Fyll - Yellow/270",
+      "name": "Fill - Yellow/270",
       "command": "fill-yellow-270"
     },
     {
-      "name": "Fyll - Yellow/280",
+      "name": "Fill - Yellow/280",
       "command": "fill-yellow-280"
     },
     {
-      "name": "Fyll - Yellow/290",
+      "name": "Fill - Yellow/290",
       "command": "fill-yellow-290"
     },
     {
-      "name": "Fyll - Yellow/300",
+      "name": "Fill - Yellow/300",
       "command": "fill-yellow-300"
     },
     {
-      "name": "Fyll - Yellow/310",
+      "name": "Fill - Yellow/310",
       "command": "fill-yellow-310"
     },
     {
-      "name": "Fyll - Yellow/320",
+      "name": "Fill - Yellow/320",
       "command": "fill-yellow-320"
     },
     {
-      "name": "Fyll - Yellow/330",
+      "name": "Fill - Yellow/330",
       "command": "fill-yellow-330"
     },
     {
-      "name": "Fyll - Yellow/340",
+      "name": "Fill - Yellow/340",
       "command": "fill-yellow-340"
     },
     {
-      "name": "Fyll - Yellow/350",
+      "name": "Fill - Yellow/350",
       "command": "fill-yellow-350"
     },
     {
-      "name": "Fyll - Yellow/360",
+      "name": "Fill - Yellow/360",
       "command": "fill-yellow-360"
     },
     {
-      "name": "Fyll - Yellow/370",
+      "name": "Fill - Yellow/370",
       "command": "fill-yellow-370"
     },
     {
-      "name": "Fyll - Yellow/380",
+      "name": "Fill - Yellow/380",
       "command": "fill-yellow-380"
     },
     {
-      "name": "Fyll - Yellow/390",
+      "name": "Fill - Yellow/390",
       "command": "fill-yellow-390"
     },
     {
-      "name": "Fyll - Yellow/400",
+      "name": "Fill - Yellow/400",
       "command": "fill-yellow-400"
     },
     {
-      "name": "Fyll - Yellow/410",
+      "name": "Fill - Yellow/410",
       "command": "fill-yellow-410"
     },
     {
-      "name": "Fyll - Yellow/420",
+      "name": "Fill - Yellow/420",
       "command": "fill-yellow-420"
     },
     {
-      "name": "Fyll - Yellow/430",
+      "name": "Fill - Yellow/430",
       "command": "fill-yellow-430"
     },
     {
-      "name": "Fyll - Yellow/440",
+      "name": "Fill - Yellow/440",
       "command": "fill-yellow-440"
     },
     {
-      "name": "Fyll - Yellow/450",
+      "name": "Fill - Yellow/450",
       "command": "fill-yellow-450"
     },
     {
-      "name": "Fyll - Yellow/460",
+      "name": "Fill - Yellow/460",
       "command": "fill-yellow-460"
     },
     {
-      "name": "Fyll - Yellow/470",
+      "name": "Fill - Yellow/470",
       "command": "fill-yellow-470"
     },
     {
-      "name": "Fyll - Yellow/480",
+      "name": "Fill - Yellow/480",
       "command": "fill-yellow-480"
     },
     {
-      "name": "Fyll - Yellow/490",
+      "name": "Fill - Yellow/490",
       "command": "fill-yellow-490"
     },
     {
-      "name": "Fyll - Yellow/500",
+      "name": "Fill - Yellow/500",
       "command": "fill-yellow-500"
     },
     {
-      "name": "Fyll - Yellow/510",
+      "name": "Fill - Yellow/510",
       "command": "fill-yellow-510"
     },
     {
-      "name": "Fyll - Yellow/520",
+      "name": "Fill - Yellow/520",
       "command": "fill-yellow-520"
     },
     {
-      "name": "Fyll - Yellow/530",
+      "name": "Fill - Yellow/530",
       "command": "fill-yellow-530"
     },
     {
-      "name": "Fyll - Yellow/540",
+      "name": "Fill - Yellow/540",
       "command": "fill-yellow-540"
     },
     {
-      "name": "Fyll - Yellow/550",
+      "name": "Fill - Yellow/550",
       "command": "fill-yellow-550"
     },
     {
-      "name": "Fyll - Yellow/560",
+      "name": "Fill - Yellow/560",
       "command": "fill-yellow-560"
     },
     {
-      "name": "Fyll - Yellow/570",
+      "name": "Fill - Yellow/570",
       "command": "fill-yellow-570"
     },
     {
-      "name": "Fyll - Yellow/580",
+      "name": "Fill - Yellow/580",
       "command": "fill-yellow-580"
     },
     {
-      "name": "Fyll - Yellow/590",
+      "name": "Fill - Yellow/590",
       "command": "fill-yellow-590"
     },
     {
-      "name": "Fyll - Yellow/600",
+      "name": "Fill - Yellow/600",
       "command": "fill-yellow-600"
     },
     {
-      "name": "Fyll - Yellow/610",
+      "name": "Fill - Yellow/610",
       "command": "fill-yellow-610"
     },
     {
-      "name": "Fyll - Yellow/620",
+      "name": "Fill - Yellow/620",
       "command": "fill-yellow-620"
     },
     {
-      "name": "Fyll - Yellow/630",
+      "name": "Fill - Yellow/630",
       "command": "fill-yellow-630"
     },
     {
-      "name": "Fyll - Yellow/640",
+      "name": "Fill - Yellow/640",
       "command": "fill-yellow-640"
     },
     {
-      "name": "Fyll - Yellow/650",
+      "name": "Fill - Yellow/650",
       "command": "fill-yellow-650"
     },
     {
-      "name": "Fyll - Yellow/660",
+      "name": "Fill - Yellow/660",
       "command": "fill-yellow-660"
     },
     {
-      "name": "Fyll - Yellow/670",
+      "name": "Fill - Yellow/670",
       "command": "fill-yellow-670"
     },
     {
-      "name": "Fyll - Yellow/680",
+      "name": "Fill - Yellow/680",
       "command": "fill-yellow-680"
     },
     {
-      "name": "Fyll - Yellow/690",
+      "name": "Fill - Yellow/690",
       "command": "fill-yellow-690"
     },
     {
-      "name": "Fyll - Yellow/700",
+      "name": "Fill - Yellow/700",
       "command": "fill-yellow-700"
     },
     {
-      "name": "Fyll - Yellow/710",
+      "name": "Fill - Yellow/710",
       "command": "fill-yellow-710"
     },
     {
-      "name": "Fyll - Yellow/720",
+      "name": "Fill - Yellow/720",
       "command": "fill-yellow-720"
     },
     {
-      "name": "Fyll - Yellow/730",
+      "name": "Fill - Yellow/730",
       "command": "fill-yellow-730"
     },
     {
-      "name": "Fyll - Yellow/740",
+      "name": "Fill - Yellow/740",
       "command": "fill-yellow-740"
     },
     {
-      "name": "Fyll - Yellow/750",
+      "name": "Fill - Yellow/750",
       "command": "fill-yellow-750"
     },
     {
-      "name": "Fyll - Yellow/760",
+      "name": "Fill - Yellow/760",
       "command": "fill-yellow-760"
     },
     {
-      "name": "Fyll - Yellow/770",
+      "name": "Fill - Yellow/770",
       "command": "fill-yellow-770"
     },
     {
-      "name": "Fyll - Yellow/780",
+      "name": "Fill - Yellow/780",
       "command": "fill-yellow-780"
     },
     {
-      "name": "Fyll - Yellow/790",
+      "name": "Fill - Yellow/790",
       "command": "fill-yellow-790"
     },
     {
-      "name": "Fyll - Yellow/800",
+      "name": "Fill - Yellow/800",
       "command": "fill-yellow-800"
     },
     {
-      "name": "Fyll - Yellow/810",
+      "name": "Fill - Yellow/810",
       "command": "fill-yellow-810"
     },
     {
-      "name": "Fyll - Yellow/820",
+      "name": "Fill - Yellow/820",
       "command": "fill-yellow-820"
     },
     {
-      "name": "Fyll - Yellow/830",
+      "name": "Fill - Yellow/830",
       "command": "fill-yellow-830"
     },
     {
-      "name": "Fyll - Yellow/840",
+      "name": "Fill - Yellow/840",
       "command": "fill-yellow-840"
     },
     {
-      "name": "Fyll - Yellow/850",
+      "name": "Fill - Yellow/850",
       "command": "fill-yellow-850"
     },
     {
-      "name": "Fyll - Yellow/860",
+      "name": "Fill - Yellow/860",
       "command": "fill-yellow-860"
     },
     {
-      "name": "Fyll - Yellow/870",
+      "name": "Fill - Yellow/870",
       "command": "fill-yellow-870"
     },
     {
-      "name": "Fyll - Yellow/880",
+      "name": "Fill - Yellow/880",
       "command": "fill-yellow-880"
     },
     {
-      "name": "Fyll - Yellow/890",
+      "name": "Fill - Yellow/890",
       "command": "fill-yellow-890"
     },
     {
-      "name": "Fyll - Yellow/900",
+      "name": "Fill - Yellow/900",
       "command": "fill-yellow-900"
     },
     {
-      "name": "Fyll - Yellow/910",
+      "name": "Fill - Yellow/910",
       "command": "fill-yellow-910"
     },
     {
-      "name": "Fyll - Yellow/920",
+      "name": "Fill - Yellow/920",
       "command": "fill-yellow-920"
     },
     {
-      "name": "Fyll - Yellow/930",
+      "name": "Fill - Yellow/930",
       "command": "fill-yellow-930"
     },
     {
-      "name": "Fyll - Yellow/940",
+      "name": "Fill - Yellow/940",
       "command": "fill-yellow-940"
     },
     {
-      "name": "Fyll - Yellow/950",
+      "name": "Fill - Yellow/950",
       "command": "fill-yellow-950"
     },
     {
-      "name": "Fyll - Yellow/960",
+      "name": "Fill - Yellow/960",
       "command": "fill-yellow-960"
     },
     {
-      "name": "Fyll - Yellow/970",
+      "name": "Fill - Yellow/970",
       "command": "fill-yellow-970"
     },
     {
-      "name": "Fyll - Yellow/980",
+      "name": "Fill - Yellow/980",
       "command": "fill-yellow-980"
     },
     {
-      "name": "Fyll - Yellow/990",
+      "name": "Fill - Yellow/990",
       "command": "fill-yellow-990"
     },
     {
-      "name": "Fyll - Yellow/1000",
+      "name": "Fill - Yellow/1000",
       "command": "fill-yellow-1000"
     },
     {
-      "name": "Fyll - Red/0",
+      "name": "Fill - Red/0",
       "command": "fill-red-0"
     },
     {
-      "name": "Fyll - Red/10",
+      "name": "Fill - Red/10",
       "command": "fill-red-10"
     },
     {
-      "name": "Fyll - Red/20",
+      "name": "Fill - Red/20",
       "command": "fill-red-20"
     },
     {
-      "name": "Fyll - Red/30",
+      "name": "Fill - Red/30",
       "command": "fill-red-30"
     },
     {
-      "name": "Fyll - Red/40",
+      "name": "Fill - Red/40",
       "command": "fill-red-40"
     },
     {
-      "name": "Fyll - Red/50",
+      "name": "Fill - Red/50",
       "command": "fill-red-50"
     },
     {
-      "name": "Fyll - Red/60",
+      "name": "Fill - Red/60",
       "command": "fill-red-60"
     },
     {
-      "name": "Fyll - Red/70",
+      "name": "Fill - Red/70",
       "command": "fill-red-70"
     },
     {
-      "name": "Fyll - Red/80",
+      "name": "Fill - Red/80",
       "command": "fill-red-80"
     },
     {
-      "name": "Fyll - Red/90",
+      "name": "Fill - Red/90",
       "command": "fill-red-90"
     },
     {
-      "name": "Fyll - Red/100",
+      "name": "Fill - Red/100",
       "command": "fill-red-100"
     },
     {
-      "name": "Fyll - Red/110",
+      "name": "Fill - Red/110",
       "command": "fill-red-110"
     },
     {
-      "name": "Fyll - Red/120",
+      "name": "Fill - Red/120",
       "command": "fill-red-120"
     },
     {
-      "name": "Fyll - Red/130",
+      "name": "Fill - Red/130",
       "command": "fill-red-130"
     },
     {
-      "name": "Fyll - Red/140",
+      "name": "Fill - Red/140",
       "command": "fill-red-140"
     },
     {
-      "name": "Fyll - Red/150",
+      "name": "Fill - Red/150",
       "command": "fill-red-150"
     },
     {
-      "name": "Fyll - Red/160",
+      "name": "Fill - Red/160",
       "command": "fill-red-160"
     },
     {
-      "name": "Fyll - Red/170",
+      "name": "Fill - Red/170",
       "command": "fill-red-170"
     },
     {
-      "name": "Fyll - Red/180",
+      "name": "Fill - Red/180",
       "command": "fill-red-180"
     },
     {
-      "name": "Fyll - Red/190",
+      "name": "Fill - Red/190",
       "command": "fill-red-190"
     },
     {
-      "name": "Fyll - Red/200",
+      "name": "Fill - Red/200",
       "command": "fill-red-200"
     },
     {
-      "name": "Fyll - Red/210",
+      "name": "Fill - Red/210",
       "command": "fill-red-210"
     },
     {
-      "name": "Fyll - Red/220",
+      "name": "Fill - Red/220",
       "command": "fill-red-220"
     },
     {
-      "name": "Fyll - Red/230",
+      "name": "Fill - Red/230",
       "command": "fill-red-230"
     },
     {
-      "name": "Fyll - Red/240",
+      "name": "Fill - Red/240",
       "command": "fill-red-240"
     },
     {
-      "name": "Fyll - Red/250",
+      "name": "Fill - Red/250",
       "command": "fill-red-250"
     },
     {
-      "name": "Fyll - Red/260",
+      "name": "Fill - Red/260",
       "command": "fill-red-260"
     },
     {
-      "name": "Fyll - Red/270",
+      "name": "Fill - Red/270",
       "command": "fill-red-270"
     },
     {
-      "name": "Fyll - Red/280",
+      "name": "Fill - Red/280",
       "command": "fill-red-280"
     },
     {
-      "name": "Fyll - Red/290",
+      "name": "Fill - Red/290",
       "command": "fill-red-290"
     },
     {
-      "name": "Fyll - Red/300",
+      "name": "Fill - Red/300",
       "command": "fill-red-300"
     },
     {
-      "name": "Fyll - Red/310",
+      "name": "Fill - Red/310",
       "command": "fill-red-310"
     },
     {
-      "name": "Fyll - Red/320",
+      "name": "Fill - Red/320",
       "command": "fill-red-320"
     },
     {
-      "name": "Fyll - Red/330",
+      "name": "Fill - Red/330",
       "command": "fill-red-330"
     },
     {
-      "name": "Fyll - Red/340",
+      "name": "Fill - Red/340",
       "command": "fill-red-340"
     },
     {
-      "name": "Fyll - Red/350",
+      "name": "Fill - Red/350",
       "command": "fill-red-350"
     },
     {
-      "name": "Fyll - Red/360",
+      "name": "Fill - Red/360",
       "command": "fill-red-360"
     },
     {
-      "name": "Fyll - Red/370",
+      "name": "Fill - Red/370",
       "command": "fill-red-370"
     },
     {
-      "name": "Fyll - Red/380",
+      "name": "Fill - Red/380",
       "command": "fill-red-380"
     },
     {
-      "name": "Fyll - Red/390",
+      "name": "Fill - Red/390",
       "command": "fill-red-390"
     },
     {
-      "name": "Fyll - Red/400",
+      "name": "Fill - Red/400",
       "command": "fill-red-400"
     },
     {
-      "name": "Fyll - Red/410",
+      "name": "Fill - Red/410",
       "command": "fill-red-410"
     },
     {
-      "name": "Fyll - Red/420",
+      "name": "Fill - Red/420",
       "command": "fill-red-420"
     },
     {
-      "name": "Fyll - Red/430",
+      "name": "Fill - Red/430",
       "command": "fill-red-430"
     },
     {
-      "name": "Fyll - Red/440",
+      "name": "Fill - Red/440",
       "command": "fill-red-440"
     },
     {
-      "name": "Fyll - Red/450",
+      "name": "Fill - Red/450",
       "command": "fill-red-450"
     },
     {
-      "name": "Fyll - Red/460",
+      "name": "Fill - Red/460",
       "command": "fill-red-460"
     },
     {
-      "name": "Fyll - Red/470",
+      "name": "Fill - Red/470",
       "command": "fill-red-470"
     },
     {
-      "name": "Fyll - Red/480",
+      "name": "Fill - Red/480",
       "command": "fill-red-480"
     },
     {
-      "name": "Fyll - Red/490",
+      "name": "Fill - Red/490",
       "command": "fill-red-490"
     },
     {
-      "name": "Fyll - Red/500",
+      "name": "Fill - Red/500",
       "command": "fill-red-500"
     },
     {
-      "name": "Fyll - Red/510",
+      "name": "Fill - Red/510",
       "command": "fill-red-510"
     },
     {
-      "name": "Fyll - Red/520",
+      "name": "Fill - Red/520",
       "command": "fill-red-520"
     },
     {
-      "name": "Fyll - Red/530",
+      "name": "Fill - Red/530",
       "command": "fill-red-530"
     },
     {
-      "name": "Fyll - Red/540",
+      "name": "Fill - Red/540",
       "command": "fill-red-540"
     },
     {
-      "name": "Fyll - Red/550",
+      "name": "Fill - Red/550",
       "command": "fill-red-550"
     },
     {
-      "name": "Fyll - Red/560",
+      "name": "Fill - Red/560",
       "command": "fill-red-560"
     },
     {
-      "name": "Fyll - Red/570",
+      "name": "Fill - Red/570",
       "command": "fill-red-570"
     },
     {
-      "name": "Fyll - Red/580",
+      "name": "Fill - Red/580",
       "command": "fill-red-580"
     },
     {
-      "name": "Fyll - Red/590",
+      "name": "Fill - Red/590",
       "command": "fill-red-590"
     },
     {
-      "name": "Fyll - Red/600",
+      "name": "Fill - Red/600",
       "command": "fill-red-600"
     },
     {
-      "name": "Fyll - Red/610",
+      "name": "Fill - Red/610",
       "command": "fill-red-610"
     },
     {
-      "name": "Fyll - Red/620",
+      "name": "Fill - Red/620",
       "command": "fill-red-620"
     },
     {
-      "name": "Fyll - Red/630",
+      "name": "Fill - Red/630",
       "command": "fill-red-630"
     },
     {
-      "name": "Fyll - Red/640",
+      "name": "Fill - Red/640",
       "command": "fill-red-640"
     },
     {
-      "name": "Fyll - Red/650",
+      "name": "Fill - Red/650",
       "command": "fill-red-650"
     },
     {
-      "name": "Fyll - Red/660",
+      "name": "Fill - Red/660",
       "command": "fill-red-660"
     },
     {
-      "name": "Fyll - Red/670",
+      "name": "Fill - Red/670",
       "command": "fill-red-670"
     },
     {
-      "name": "Fyll - Red/680",
+      "name": "Fill - Red/680",
       "command": "fill-red-680"
     },
     {
-      "name": "Fyll - Red/690",
+      "name": "Fill - Red/690",
       "command": "fill-red-690"
     },
     {
-      "name": "Fyll - Red/700",
+      "name": "Fill - Red/700",
       "command": "fill-red-700"
     },
     {
-      "name": "Fyll - Red/710",
+      "name": "Fill - Red/710",
       "command": "fill-red-710"
     },
     {
-      "name": "Fyll - Red/720",
+      "name": "Fill - Red/720",
       "command": "fill-red-720"
     },
     {
-      "name": "Fyll - Red/730",
+      "name": "Fill - Red/730",
       "command": "fill-red-730"
     },
     {
-      "name": "Fyll - Red/740",
+      "name": "Fill - Red/740",
       "command": "fill-red-740"
     },
     {
-      "name": "Fyll - Red/750",
+      "name": "Fill - Red/750",
       "command": "fill-red-750"
     },
     {
-      "name": "Fyll - Red/760",
+      "name": "Fill - Red/760",
       "command": "fill-red-760"
     },
     {
-      "name": "Fyll - Red/770",
+      "name": "Fill - Red/770",
       "command": "fill-red-770"
     },
     {
-      "name": "Fyll - Red/780",
+      "name": "Fill - Red/780",
       "command": "fill-red-780"
     },
     {
-      "name": "Fyll - Red/790",
+      "name": "Fill - Red/790",
       "command": "fill-red-790"
     },
     {
-      "name": "Fyll - Red/800",
+      "name": "Fill - Red/800",
       "command": "fill-red-800"
     },
     {
-      "name": "Fyll - Red/810",
+      "name": "Fill - Red/810",
       "command": "fill-red-810"
     },
     {
-      "name": "Fyll - Red/820",
+      "name": "Fill - Red/820",
       "command": "fill-red-820"
     },
     {
-      "name": "Fyll - Red/830",
+      "name": "Fill - Red/830",
       "command": "fill-red-830"
     },
     {
-      "name": "Fyll - Red/840",
+      "name": "Fill - Red/840",
       "command": "fill-red-840"
     },
     {
-      "name": "Fyll - Red/850",
+      "name": "Fill - Red/850",
       "command": "fill-red-850"
     },
     {
-      "name": "Fyll - Red/860",
+      "name": "Fill - Red/860",
       "command": "fill-red-860"
     },
     {
-      "name": "Fyll - Red/870",
+      "name": "Fill - Red/870",
       "command": "fill-red-870"
     },
     {
-      "name": "Fyll - Red/880",
+      "name": "Fill - Red/880",
       "command": "fill-red-880"
     },
     {
-      "name": "Fyll - Red/890",
+      "name": "Fill - Red/890",
       "command": "fill-red-890"
     },
     {
-      "name": "Fyll - Red/900",
+      "name": "Fill - Red/900",
       "command": "fill-red-900"
     },
     {
-      "name": "Fyll - Red/910",
+      "name": "Fill - Red/910",
       "command": "fill-red-910"
     },
     {
-      "name": "Fyll - Red/920",
+      "name": "Fill - Red/920",
       "command": "fill-red-920"
     },
     {
-      "name": "Fyll - Red/930",
+      "name": "Fill - Red/930",
       "command": "fill-red-930"
     },
     {
-      "name": "Fyll - Red/940",
+      "name": "Fill - Red/940",
       "command": "fill-red-940"
     },
     {
-      "name": "Fyll - Red/950",
+      "name": "Fill - Red/950",
       "command": "fill-red-950"
     },
     {
-      "name": "Fyll - Red/960",
+      "name": "Fill - Red/960",
       "command": "fill-red-960"
     },
     {
-      "name": "Fyll - Red/970",
+      "name": "Fill - Red/970",
       "command": "fill-red-970"
     },
     {
-      "name": "Fyll - Red/980",
+      "name": "Fill - Red/980",
       "command": "fill-red-980"
     },
     {
-      "name": "Fyll - Red/990",
+      "name": "Fill - Red/990",
       "command": "fill-red-990"
     },
     {
-      "name": "Fyll - Red/1000",
+      "name": "Fill - Red/1000",
       "command": "fill-red-1000"
     },
     {
-      "name": "Fyll - Gray/50",
+      "name": "Fill - Gray/50",
       "command": "fill-gray-50"
     },
     {
-      "name": "Fyll - Gray/100",
+      "name": "Fill - Gray/100",
       "command": "fill-gray-100"
     },
     {
-      "name": "Fyll - Gray/150",
+      "name": "Fill - Gray/150",
       "command": "fill-gray-150"
     },
     {
-      "name": "Fyll - Gray/800",
+      "name": "Fill - Gray/800",
       "command": "fill-gray-800"
     },
     {
-      "name": "Fyll - Gray/920",
+      "name": "Fill - Gray/920",
       "command": "fill-gray-920"
     },
     {
-      "name": "Fyll - Gray/970",
+      "name": "Fill - Gray/970",
       "command": "fill-gray-970"
     },
     {
-      "name": "Fyll - Light/Theme/base-c-theme",
+      "name": "Fill - Light/Theme/base-c-theme",
       "command": "fill-light-theme-base-c-theme"
     },
     {
-      "name": "Fyll - Light/Theme/theme-1",
+      "name": "Fill - Light/Theme/theme-1",
       "command": "fill-light-theme-theme-1"
     },
     {
-      "name": "Fyll - Light/Theme/theme-2",
+      "name": "Fill - Light/Theme/theme-2",
       "command": "fill-light-theme-theme-2"
     },
     {
-      "name": "Fyll - Light/Theme/theme-3",
+      "name": "Fill - Light/Theme/theme-3",
       "command": "fill-light-theme-theme-3"
     },
     {
-      "name": "Fyll - Light/Theme/theme-c-1",
+      "name": "Fill - Light/Theme/theme-c-1",
       "command": "fill-light-theme-theme-c-1"
     },
     {
-      "name": "Fyll - Light/Theme/theme-c-2",
+      "name": "Fill - Light/Theme/theme-c-2",
       "command": "fill-light-theme-theme-c-2"
     },
     {
-      "name": "Fyll - Light/Theme/theme-hc",
+      "name": "Fill - Light/Theme/theme-hc",
       "command": "fill-light-theme-theme-hc"
     },
     {
-      "name": "Fyll - Light/Theme/Fade/theme-fade",
+      "name": "Fill - Light/Theme/Fade/theme-fade",
       "command": "fill-light-theme-fade-theme-fade"
     },
     {
-      "name": "Fyll - Light/Theme/Fade/theme-fade-c",
+      "name": "Fill - Light/Theme/Fade/theme-fade-c",
       "command": "fill-light-theme-fade-theme-fade-c"
     },
     {
-      "name": "Fyll - Dark/Theme/base-c-theme",
+      "name": "Fill - Dark/Theme/base-c-theme",
       "command": "fill-dark-theme-base-c-theme"
     },
     {
-      "name": "Fyll - Dark/Theme/theme-1",
+      "name": "Fill - Dark/Theme/theme-1",
       "command": "fill-dark-theme-theme-1"
     },
     {
-      "name": "Fyll - Dark/Theme/theme-2",
+      "name": "Fill - Dark/Theme/theme-2",
       "command": "fill-dark-theme-theme-2"
     },
     {
-      "name": "Fyll - Dark/Theme/theme-3",
+      "name": "Fill - Dark/Theme/theme-3",
       "command": "fill-dark-theme-theme-3"
     },
     {
-      "name": "Fyll - Dark/Theme/theme-c-1",
+      "name": "Fill - Dark/Theme/theme-c-1",
       "command": "fill-dark-theme-theme-c-1"
     },
     {
-      "name": "Fyll - Dark/Theme/theme-c-2",
+      "name": "Fill - Dark/Theme/theme-c-2",
       "command": "fill-dark-theme-theme-c-2"
     },
     {
-      "name": "Fyll - Dark/Theme/theme-hc",
+      "name": "Fill - Dark/Theme/theme-hc",
       "command": "fill-dark-theme-theme-hc"
     },
     {
-      "name": "Fyll - Dark/Theme/Fade/theme-fade",
+      "name": "Fill - Dark/Theme/Fade/theme-fade",
       "command": "fill-dark-theme-fade-theme-fade"
     },
     {
-      "name": "Fyll - Dark/Theme/Fade/theme-fade-c",
+      "name": "Fill - Dark/Theme/Fade/theme-fade-c",
       "command": "fill-dark-theme-fade-theme-fade-c"
     },
     {
-      "name": "Fyll - 0",
+      "name": "Fill - 0",
       "command": "fill-0"
     },
     {
-      "name": "Fyll - 10",
+      "name": "Fill - 10",
       "command": "fill-10"
     },
     {
-      "name": "Fyll - 20",
+      "name": "Fill - 20",
       "command": "fill-20"
     },
     {
-      "name": "Fyll - 30",
+      "name": "Fill - 30",
       "command": "fill-30"
     },
     {
-      "name": "Fyll - 40",
+      "name": "Fill - 40",
       "command": "fill-40"
     },
     {
-      "name": "Fyll - 50",
+      "name": "Fill - 50",
       "command": "fill-50"
     },
     {
-      "name": "Fyll - 60",
+      "name": "Fill - 60",
       "command": "fill-60"
     },
     {
-      "name": "Fyll - 70",
+      "name": "Fill - 70",
       "command": "fill-70"
     },
     {
-      "name": "Fyll - 80",
+      "name": "Fill - 80",
       "command": "fill-80"
     },
     {
-      "name": "Fyll - 90",
+      "name": "Fill - 90",
       "command": "fill-90"
     },
     {
-      "name": "Fyll - 100",
+      "name": "Fill - 100",
       "command": "fill-100"
     },
     {
-      "name": "Fyll - 110",
+      "name": "Fill - 110",
       "command": "fill-110"
     },
     {
-      "name": "Fyll - 120",
+      "name": "Fill - 120",
       "command": "fill-120"
     },
     {
-      "name": "Fyll - 130",
+      "name": "Fill - 130",
       "command": "fill-130"
     },
     {
-      "name": "Fyll - 140",
+      "name": "Fill - 140",
       "command": "fill-140"
     },
     {
-      "name": "Fyll - 150",
+      "name": "Fill - 150",
       "command": "fill-150"
     },
     {
-      "name": "Fyll - 160",
+      "name": "Fill - 160",
       "command": "fill-160"
     },
     {
-      "name": "Fyll - 170",
+      "name": "Fill - 170",
       "command": "fill-170"
     },
     {
-      "name": "Fyll - 180",
+      "name": "Fill - 180",
       "command": "fill-180"
     },
     {
-      "name": "Fyll - 190",
+      "name": "Fill - 190",
       "command": "fill-190"
     },
     {
-      "name": "Fyll - 200",
+      "name": "Fill - 200",
       "command": "fill-200"
     },
     {
-      "name": "Fyll - 210",
+      "name": "Fill - 210",
       "command": "fill-210"
     },
     {
-      "name": "Fyll - 220",
+      "name": "Fill - 220",
       "command": "fill-220"
     },
     {
-      "name": "Fyll - 230",
+      "name": "Fill - 230",
       "command": "fill-230"
     },
     {
-      "name": "Fyll - 240",
+      "name": "Fill - 240",
       "command": "fill-240"
     },
     {
-      "name": "Fyll - 250",
+      "name": "Fill - 250",
       "command": "fill-250"
     },
     {
-      "name": "Fyll - 260",
+      "name": "Fill - 260",
       "command": "fill-260"
     },
     {
-      "name": "Fyll - 270",
+      "name": "Fill - 270",
       "command": "fill-270"
     },
     {
-      "name": "Fyll - 280",
+      "name": "Fill - 280",
       "command": "fill-280"
     },
     {
-      "name": "Fyll - 290",
+      "name": "Fill - 290",
       "command": "fill-290"
     },
     {
-      "name": "Fyll - 300",
+      "name": "Fill - 300",
       "command": "fill-300"
     },
     {
-      "name": "Fyll - 310",
+      "name": "Fill - 310",
       "command": "fill-310"
     },
     {
-      "name": "Fyll - 320",
+      "name": "Fill - 320",
       "command": "fill-320"
     },
     {
-      "name": "Fyll - 330",
+      "name": "Fill - 330",
       "command": "fill-330"
     },
     {
-      "name": "Fyll - 340",
+      "name": "Fill - 340",
       "command": "fill-340"
     },
     {
-      "name": "Fyll - 350",
+      "name": "Fill - 350",
       "command": "fill-350"
     },
     {
-      "name": "Fyll - 360",
+      "name": "Fill - 360",
       "command": "fill-360"
     },
     {
-      "name": "Fyll - 370",
+      "name": "Fill - 370",
       "command": "fill-370"
     },
     {
-      "name": "Fyll - 380",
+      "name": "Fill - 380",
       "command": "fill-380"
     },
     {
-      "name": "Fyll - 390",
+      "name": "Fill - 390",
       "command": "fill-390"
     },
     {
-      "name": "Fyll - 400",
+      "name": "Fill - 400",
       "command": "fill-400"
     },
     {
-      "name": "Fyll - 410",
+      "name": "Fill - 410",
       "command": "fill-410"
     },
     {
-      "name": "Fyll - 420",
+      "name": "Fill - 420",
       "command": "fill-420"
     },
     {
-      "name": "Fyll - 430",
+      "name": "Fill - 430",
       "command": "fill-430"
     },
     {
-      "name": "Fyll - 440",
+      "name": "Fill - 440",
       "command": "fill-440"
     },
     {
-      "name": "Fyll - 450",
+      "name": "Fill - 450",
       "command": "fill-450"
     },
     {
-      "name": "Fyll - 460",
+      "name": "Fill - 460",
       "command": "fill-460"
     },
     {
-      "name": "Fyll - 470",
+      "name": "Fill - 470",
       "command": "fill-470"
     },
     {
-      "name": "Fyll - 480",
+      "name": "Fill - 480",
       "command": "fill-480"
     },
     {
-      "name": "Fyll - 490",
+      "name": "Fill - 490",
       "command": "fill-490"
     },
     {
-      "name": "Fyll - 500",
+      "name": "Fill - 500",
       "command": "fill-500"
     },
     {
-      "name": "Fyll - 510",
+      "name": "Fill - 510",
       "command": "fill-510"
     },
     {
-      "name": "Fyll - 520",
+      "name": "Fill - 520",
       "command": "fill-520"
     },
     {
-      "name": "Fyll - 530",
+      "name": "Fill - 530",
       "command": "fill-530"
     },
     {
-      "name": "Fyll - 540",
+      "name": "Fill - 540",
       "command": "fill-540"
     },
     {
-      "name": "Fyll - 550",
+      "name": "Fill - 550",
       "command": "fill-550"
     },
     {
-      "name": "Fyll - 560",
+      "name": "Fill - 560",
       "command": "fill-560"
     },
     {
-      "name": "Fyll - 570",
+      "name": "Fill - 570",
       "command": "fill-570"
     },
     {
-      "name": "Fyll - 580",
+      "name": "Fill - 580",
       "command": "fill-580"
     },
     {
-      "name": "Fyll - 590",
+      "name": "Fill - 590",
       "command": "fill-590"
     },
     {
-      "name": "Fyll - 600",
+      "name": "Fill - 600",
       "command": "fill-600"
     },
     {
-      "name": "Fyll - 610",
+      "name": "Fill - 610",
       "command": "fill-610"
     },
     {
-      "name": "Fyll - 620",
+      "name": "Fill - 620",
       "command": "fill-620"
     },
     {
-      "name": "Fyll - 630",
+      "name": "Fill - 630",
       "command": "fill-630"
     },
     {
-      "name": "Fyll - 640",
+      "name": "Fill - 640",
       "command": "fill-640"
     },
     {
-      "name": "Fyll - 650",
+      "name": "Fill - 650",
       "command": "fill-650"
     },
     {
-      "name": "Fyll - 660",
+      "name": "Fill - 660",
       "command": "fill-660"
     },
     {
-      "name": "Fyll - 670",
+      "name": "Fill - 670",
       "command": "fill-670"
     },
     {
-      "name": "Fyll - 680",
+      "name": "Fill - 680",
       "command": "fill-680"
     },
     {
-      "name": "Fyll - 690",
+      "name": "Fill - 690",
       "command": "fill-690"
     },
     {
-      "name": "Fyll - 700",
+      "name": "Fill - 700",
       "command": "fill-700"
     },
     {
-      "name": "Fyll - 710",
+      "name": "Fill - 710",
       "command": "fill-710"
     },
     {
-      "name": "Fyll - 720",
+      "name": "Fill - 720",
       "command": "fill-720"
     },
     {
-      "name": "Fyll - 730",
+      "name": "Fill - 730",
       "command": "fill-730"
     },
     {
-      "name": "Fyll - 740",
+      "name": "Fill - 740",
       "command": "fill-740"
     },
     {
-      "name": "Fyll - 750",
+      "name": "Fill - 750",
       "command": "fill-750"
     },
     {
-      "name": "Fyll - 760",
+      "name": "Fill - 760",
       "command": "fill-760"
     },
     {
-      "name": "Fyll - 770",
+      "name": "Fill - 770",
       "command": "fill-770"
     },
     {
-      "name": "Fyll - 780",
+      "name": "Fill - 780",
       "command": "fill-780"
     },
     {
-      "name": "Fyll - 790",
+      "name": "Fill - 790",
       "command": "fill-790"
     },
     {
-      "name": "Fyll - 800",
+      "name": "Fill - 800",
       "command": "fill-800"
     },
     {
-      "name": "Fyll - 810",
+      "name": "Fill - 810",
       "command": "fill-810"
     },
     {
-      "name": "Fyll - 820",
+      "name": "Fill - 820",
       "command": "fill-820"
     },
     {
-      "name": "Fyll - 830",
+      "name": "Fill - 830",
       "command": "fill-830"
     },
     {
-      "name": "Fyll - 840",
+      "name": "Fill - 840",
       "command": "fill-840"
     },
     {
-      "name": "Fyll - 850",
+      "name": "Fill - 850",
       "command": "fill-850"
     },
     {
-      "name": "Fyll - 860",
+      "name": "Fill - 860",
       "command": "fill-860"
     },
     {
-      "name": "Fyll - 870",
+      "name": "Fill - 870",
       "command": "fill-870"
     },
     {
-      "name": "Fyll - 880",
+      "name": "Fill - 880",
       "command": "fill-880"
     },
     {
-      "name": "Fyll - 890",
+      "name": "Fill - 890",
       "command": "fill-890"
     },
     {
-      "name": "Fyll - 900",
+      "name": "Fill - 900",
       "command": "fill-900"
     },
     {
-      "name": "Fyll - 910",
+      "name": "Fill - 910",
       "command": "fill-910"
     },
     {
-      "name": "Fyll - 920",
+      "name": "Fill - 920",
       "command": "fill-920"
     },
     {
-      "name": "Fyll - 930",
+      "name": "Fill - 930",
       "command": "fill-930"
     },
     {
-      "name": "Fyll - 940",
+      "name": "Fill - 940",
       "command": "fill-940"
     },
     {
-      "name": "Fyll - 950",
+      "name": "Fill - 950",
       "command": "fill-950"
     },
     {
-      "name": "Fyll - 960",
+      "name": "Fill - 960",
       "command": "fill-960"
     },
     {
-      "name": "Fyll - 970",
+      "name": "Fill - 970",
       "command": "fill-970"
     },
     {
-      "name": "Fyll - 980",
+      "name": "Fill - 980",
       "command": "fill-980"
     },
     {
-      "name": "Fyll - 990",
+      "name": "Fill - 990",
       "command": "fill-990"
     },
     {
-      "name": "Fyll - 1000",
+      "name": "Fill - 1000",
       "command": "fill-1000"
     },
     {
@@ -3591,7 +3602,7 @@
       "command": "text-l-font-awesome-brands"
     },
     {
-      "name": "Text - H5/Satoshi/Text",
+      "name": "Text - H5",
       "command": "text-h5-satoshi-text"
     },
     {
@@ -3615,7 +3626,7 @@
       "command": "text-h5-font-awesome-brands"
     },
     {
-      "name": "Text - H4/Satoshi/Text",
+      "name": "Text - H4",
       "command": "text-h4-satoshi-text"
     },
     {
@@ -3639,7 +3650,7 @@
       "command": "text-h4-font-awesome-brands"
     },
     {
-      "name": "Text - H3/Satoshi/Text",
+      "name": "Text - H3",
       "command": "text-h3-satoshi-text"
     },
     {
@@ -3663,7 +3674,7 @@
       "command": "text-h3-font-awesome-brands"
     },
     {
-      "name": "Text - H2/Satoshi/Text",
+      "name": "Text - H2",
       "command": "text-h2-satoshi-text"
     },
     {
@@ -3691,7 +3702,7 @@
       "command": "text-h2-font-awesome-brands"
     },
     {
-      "name": "Text - H1/Satoshi/Text",
+      "name": "Text - H1",
       "command": "text-h1-satoshi-text"
     },
     {
@@ -3717,6 +3728,350 @@
     {
       "name": "Text - H1/Font Awesome/Brands",
       "command": "text-h1-font-awesome-brands"
+    },
+    {
+      "name": "Component - Accordion-basic",
+      "command": "comp-accordion-basic"
+    },
+    {
+      "name": "Component - Accordion-styled",
+      "command": "comp-accordion-styled"
+    },
+    {
+      "name": "Component - Article-card-horizontal",
+      "command": "comp-article-card-horizontal"
+    },
+    {
+      "name": "Component - Article-card-vertical",
+      "command": "comp-article-card-vertical"
+    },
+    {
+      "name": "Component - Backdrop",
+      "command": "comp-backdrop"
+    },
+    {
+      "name": "Component - Badge",
+      "command": "comp-badge"
+    },
+    {
+      "name": "Component - BottomBar",
+      "command": "comp-bottombar"
+    },
+    {
+      "name": "Component - Box",
+      "command": "comp-box"
+    },
+    {
+      "name": "Component - Breadcrumbs",
+      "command": "comp-breadcrumbs"
+    },
+    {
+      "name": "Component - Button.Group",
+      "command": "comp-button-group"
+    },
+    {
+      "name": "Component - Button.Expand",
+      "command": "comp-button-expand"
+    },
+    {
+      "name": "Component - Button",
+      "command": "comp-button"
+    },
+    {
+      "name": "Component - Button (icon only)",
+      "command": "comp-button-icon-only"
+    },
+    {
+      "name": "Component - Checkbox-button",
+      "command": "comp-checkbox-button"
+    },
+    {
+      "name": "Component - Checkbox-indeterminate-button",
+      "command": "comp-checkbox-indeterminate-button"
+    },
+    {
+      "name": "Component - Checkbox-indeterminate",
+      "command": "comp-checkbox-indeterminate"
+    },
+    {
+      "name": "Component - Checkbox",
+      "command": "comp-checkbox"
+    },
+    {
+      "name": "Component - CheckboxCard-basic",
+      "command": "comp-checkboxcard-basic"
+    },
+    {
+      "name": "Component - CheckboxCard-indeterminate",
+      "command": "comp-checkboxcard-indeterminate"
+    },
+    {
+      "name": "Component - DatePicker (with input)",
+      "command": "comp-datepicker-with-input"
+    },
+    {
+      "name": "Component - DatePicker (with presets)",
+      "command": "comp-datepicker-with-presets"
+    },
+    {
+      "name": "Component - Drawer",
+      "command": "comp-drawer"
+    },
+    {
+      "name": "Component - Dropdown",
+      "command": "comp-dropdown"
+    },
+    {
+      "name": "Component - Dropdown-item",
+      "command": "comp-dropdown-item"
+    },
+    {
+      "name": "Component - Feedback",
+      "command": "comp-feedback"
+    },
+    {
+      "name": "Component - FileInputArea",
+      "command": "comp-fileinputarea"
+    },
+    {
+      "name": "Component - FileInputArea item",
+      "command": "comp-fileinputarea-item"
+    },
+    {
+      "name": "Component - FieldGroup.item",
+      "command": "comp-fieldgroup-item"
+    },
+    {
+      "name": "Component - FieldGroup (Basic input + item)",
+      "command": "comp-fieldgroup-basic-input-item"
+    },
+    {
+      "name": "Component - FieldGroup (Basic input + select)",
+      "command": "comp-fieldgroup-basic-input-select"
+    },
+    {
+      "name": "Component - FieldGroup (Select + item)",
+      "command": "comp-fieldgroup-select-item"
+    },
+    {
+      "name": "Component - Glass-effect",
+      "command": "comp-glass-effect"
+    },
+    {
+      "name": "Component - Icon (H1)",
+      "command": "comp-icon-h1"
+    },
+    {
+      "name": "Component - Icon (H2)",
+      "command": "comp-icon-h2"
+    },
+    {
+      "name": "Component - Icon (H3)",
+      "command": "comp-icon-h3"
+    },
+    {
+      "name": "Component - Icon (H4)",
+      "command": "comp-icon-h4"
+    },
+    {
+      "name": "Component - Icon (H5)",
+      "command": "comp-icon-h5"
+    },
+    {
+      "name": "Component - Icon (Large)",
+      "command": "comp-icon-large"
+    },
+    {
+      "name": "Component - Icon (Medium)",
+      "command": "comp-icon-medium"
+    },
+    {
+      "name": "Component - Icon (Small)",
+      "command": "comp-icon-small"
+    },
+    {
+      "name": "Component - Input/Basic input",
+      "command": "comp-input-basic-input"
+    },
+    {
+      "name": "Component - Label",
+      "command": "comp-label"
+    },
+    {
+      "name": "Component - Link/bf-title-link",
+      "command": "comp-link-bf-title-link"
+    },
+    {
+      "name": "Component - Link/bf-neutral-link",
+      "command": "comp-link-bf-neutral-link"
+    },
+    {
+      "name": "Component - Link/bf-link",
+      "command": "comp-link-bf-link"
+    },
+    {
+      "name": "Component - Link/bf-link + bfc-base (neutral color)",
+      "command": "comp-link-bf-link-bfc-base-neutral-color"
+    },
+    {
+      "name": "Component - List/Basic-list-item",
+      "command": "comp-list-basic-list-item"
+    },
+    {
+      "name": "Component - List/TOC-list-item",
+      "command": "comp-list-toc-list-item"
+    },
+    {
+      "name": "Component - Menu",
+      "command": "comp-menu"
+    },
+    {
+      "name": "Component - Message/Expandable message",
+      "command": "comp-message-expandable-message"
+    },
+    {
+      "name": "Component - Message/Basic message",
+      "command": "comp-message-basic-message"
+    },
+    {
+      "name": "Component - Message",
+      "command": "comp-message"
+    },
+    {
+      "name": "Component - Nav/TopBar - Search",
+      "command": "comp-nav-topbar-search"
+    },
+    {
+      "name": "Component - Nav/TopBar - Item",
+      "command": "comp-nav-topbar-item"
+    },
+    {
+      "name": "Component - Nav - TopBar",
+      "command": "comp-nav-topbar"
+    },
+    {
+      "name": "Component - Nav - Sidebar",
+      "command": "comp-nav-sidebar"
+    },
+    {
+      "name": "Component - Nav - Sidebar item (grouped)",
+      "command": "comp-nav-sidebar-item-grouped"
+    },
+    {
+      "name": "Component - Nav - Sidebar item (single)",
+      "command": "comp-nav-sidebar-item-single"
+    },
+    {
+      "name": "Component - Nav - Sidebar item (grouped - dropout)",
+      "command": "comp-nav-sidebar-item-grouped-dropout"
+    },
+    {
+      "name": "Component - Nav - Sidebar item (sub item)",
+      "command": "comp-nav-sidebar-item-sub-item"
+    },
+    {
+      "name": "Component - Nav/Legend - Markings (horizontal)",
+      "command": "comp-nav-legend-markings-horizontal"
+    },
+    {
+      "name": "Component - Modal",
+      "command": "comp-modal"
+    },
+    {
+      "name": "Component - Modal/Image",
+      "command": "comp-modal-image"
+    },
+    {
+      "name": "Component - Pagination",
+      "command": "comp-pagination"
+    },
+    {
+      "name": "Component - ProgressBar",
+      "command": "comp-progressbar"
+    },
+    {
+      "name": "Component - Radio",
+      "command": "comp-radio"
+    },
+    {
+      "name": "Component - Radio-button",
+      "command": "comp-radio-button"
+    },
+    {
+      "name": "Component - RadioCard",
+      "command": "comp-radiocard"
+    },
+    {
+      "name": "Component - Section",
+      "command": "comp-section"
+    },
+    {
+      "name": "Component - Section-header",
+      "command": "comp-section-header"
+    },
+    {
+      "name": "Component - Scrollbar",
+      "command": "comp-scrollbar"
+    },
+    {
+      "name": "Component - Select",
+      "command": "comp-select"
+    },
+    {
+      "name": "Component - Select/Multi-select",
+      "command": "comp-select-multi-select"
+    },
+    {
+      "name": "Component - Skeleton",
+      "command": "comp-skeleton"
+    },
+    {
+      "name": "Component - Stepbar",
+      "command": "comp-stepbar"
+    },
+    {
+      "name": "Component - Spinner",
+      "command": "comp-spinner"
+    },
+    {
+      "name": "Component - Sticky",
+      "command": "comp-sticky"
+    },
+    {
+      "name": "Component - Switch",
+      "command": "comp-switch"
+    },
+    {
+      "name": "Component - Switch-button",
+      "command": "comp-switch-button"
+    },
+    {
+      "name": "Component - SwitchCard",
+      "command": "comp-switchcard"
+    },
+    {
+      "name": "Component - Table (variable)",
+      "command": "comp-table-variable"
+    },
+    {
+      "name": "Component - Tabs (with content)",
+      "command": "comp-tabs-with-content"
+    },
+    {
+      "name": "Component - Tabs (bar only)",
+      "command": "comp-tabs-bar-only"
+    },
+    {
+      "name": "Component - Tag",
+      "command": "comp-tag"
+    },
+    {
+      "name": "Component - TextArea",
+      "command": "comp-textarea"
+    },
+    {
+      "name": "Component - Tooltip",
+      "command": "comp-tooltip"
     }
   ]
 }
