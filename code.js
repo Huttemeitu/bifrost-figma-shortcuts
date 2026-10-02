@@ -6786,9 +6786,10 @@ async function applyRadius(variable) {
 
 // --- TEXT STYLE (hele stilen: familie, størrelse, vekt, linjehøyde, bokstavavstand) ---
 async function applyTextStyle(style) {
-  await withSelectionGuard(style, async () => {
+  const nodes = [...figma.currentPage.selection];
+  await withSelectionGuard(style, nodes, async (style, nodes) => {
     let touched = 0;
-    for (const node of figma.currentPage.selection) {
+    for (const node of nodes) {
       if (node.type !== "TEXT") continue;
       try {
         await node.setTextStyleIdAsync(style.id);
