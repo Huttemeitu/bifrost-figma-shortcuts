@@ -1,10 +1,10 @@
 # Bifrost for Figma
 
-A keyboard-first Figma plugin for applying Bifrost design tokens (fill colors,
-padding, gap, radius, text styles) to the selection and inserting Bifrost
+A keyboard-first Figma plugin for applying Bifrost design tokens (fill and
+border colors, padding, gap, radius, text styles) to the selection and inserting Bifrost
 components, from a small command palette. No macOS shortcut setup needed.
 
-It covers 814 fill colors, 12 spacing values (padding and gap), 7 radius
+It covers 796 colors (as fill or border), 12 spacing values (padding and gap), 7 radius
 values, 68 text styles and 86 components.
 
 ## Using it
@@ -30,13 +30,17 @@ group also teaches you what to type next time.
 | Type | Does |
 |---|---|
 | `pm` or `p m` | Padding M on all sides |
-| `px l`, `py s` | Padding horizontal / vertical |
+| `ph l`, `pv s` | Padding horizontal / vertical |
 | `pt m`, `pb m`, `pl m`, `pr m` | Padding on one side |
 | `gs` | Gap S |
 | `rl`, `r full` | Radius on all corners |
 | `rt m`, `rtl s`, `rbr m` | Radius on two corners / one corner |
-| `f brand`, `bg base-1` | Fill, fuzzy match on the color name |
-| `h1` … `h5`, `t regular` | Text style |
+| `f brand`, `fbase3`, `bg base-1` | Fill, fuzzy match on the color name (dashes optional) |
+| `b base-dimmed-3`, `bbasedimmed3` | Border: that color, always 1px on all sides |
+| `h1` … `h5`, `t regular` | Text style on selected text; with no text selected it inserts a text layer ("Header H5") |
+| `frame` | Insert a frame (placed like components, see below) |
+| `alh`, `alv` | Auto layout horizontal / vertical on the selected frames |
+| `frame alh pm rm bbase-dimmed3` | Build a styled auto-layout frame in one go |
 | `button`, `btn`, `basic input`, `brand` | Search components, text styles and colors by name |
 | `+button`, `+icon button` | Insert a component (the rest of the input is its name) |
 | `pm gs rl` | Several at once |
@@ -45,18 +49,32 @@ group also teaches you what to type next time.
 | `?` | Help, aliases and recents |
 
 Inside a group, leave out the group's key: in Padding, `m` is Padding M and
-`x l` is Padding horizontal L.
+`h l` is Padding horizontal L.
 
 Some details:
 
+- **Only what works is offered:** the palette checks every command against
+  what's selected, step by step, and hides what would do nothing. Padding and
+  gap need an auto-layout frame (`alh pm` adds it first), auto layout needs a
+  frame (not an instance), fills and borders need a layer that can have them
+  (not a group), single corners need a frame or rectangle. If you type
+  something that can't apply, it says why instead of doing nothing.
 - **Repeat:** the last three commands are listed first on the empty palette,
   so Enter right after opening it repeats the last one on the new selection.
-- **Nothing selected:** only commands that don't need a selection are shown
-  (the Component group, and recents like `button pm`). The palette updates
-  live when the selection changes.
-- **Glued values:** the shortest op wins, so `pxl` is Padding XL and you need
-  `px l` for Padding horizontal L. `pl` is Padding L; `pl m` is Padding left M.
-  The rows below the `✓` row show the other readings.
+- **Nothing selected:** only inserts are offered (text styles, components,
+  `frame`), plus anything that follows them, like `button pm`. The palette
+  updates live when the selection changes.
+- **Glued values:** `pm`, `phl` and `fbase3` work like `p m`, `ph l` and
+  `f base3`. A glued `f`, `b` or `t` is only used when the whole word isn't
+  itself a name, so `brand` and `button` stay searches while `fbrand` is a
+  fill. `pl` is Padding L (`pl m` is Padding left M); the rows below show the
+  other readings.
+- **Window size:** drag the bottom-right corner to resize. The size is
+  remembered for next time.
+- **Frames** (`frame`) are placed the same way as components and become the
+  selection, so everything after `frame` applies to the new frame. Adding auto
+  layout (`alh`/`alv`) to a frame with children makes it hug them, like
+  Shift+A; an empty frame keeps its size. Instances are left alone.
 - **Components** insert the default variant. With an auto-layout frame
   selected the instance is added as its last child, with anything else
   selected it's added right after it, and with nothing selected it lands in
@@ -70,6 +88,25 @@ Some details:
   them up or share them. The Aliases tab also checks a new alias live and lets
   you click an existing one to edit it.
 - The Bifrost libraries must be enabled in the file you're working in.
+
+### Choosing which options show
+
+Most libraries have far more tokens than you use. Open **Choose which options
+show** on the palette's main page (or the Options tab in `?`) to hide them:
+
+- Everything is a tree: Fill › Mode › Pop › Brand, Fill › Primitives › Teal,
+  Component › Button, and so on. Fills are grouped by their variable
+  collection first, so all 612 primitives can be hidden with one checkbox.
+- Fill and Border are separate groups, so you can keep different colors for
+  each (hide Primitives in both if you never use them).
+- A group's checkbox hides or shows everything in it; open the group (Enter
+  or →) to pick single values. ← or Backspace goes back up, Space toggles.
+- The filter field finds matches across groups, e.g. `-hc` or `fade`, and
+  hides or shows all of them at once.
+
+Hidden options disappear from search, groups and counts in the palette.
+Aliases and recents that use them keep working. The choice is saved per
+machine and included in the help view's Copy as JSON backup.
 
 ### Stream Deck
 
