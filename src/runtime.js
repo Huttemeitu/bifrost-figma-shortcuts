@@ -3,12 +3,16 @@
 // the window for instant feedback; this side applies ops and owns storage.
 //
 // UI -> code: ready | apply {ops, keepOpen} | saveAlias {name, expansion} |
-//             deleteAlias {name} | clearRecents | import {json} | vars | close
-// code -> UI: init {entries, aliases, recents, selection} | selection {selection} |
-//             state {aliases, recents, error, notice}
+//             deleteAlias {name} | clearRecents | setHidden {hidden} | import {json} |
+//             resize {width, height, save} | vars | close
+// code -> UI: init {entries, aliases, recents, hidden, selection} | selection {selection} |
+//             (selection = {count, nodes: distinct nodeCaps of the selected layers})
+//             state {aliases, recents, hidden, error, notice}
 
 const ENTRIES = Object.keys(VARIABLE_MAP).map((slug) => Object.assign({ slug }, VARIABLE_MAP[slug]));
 const MAX_RECENTS = 8;
+const DEFAULT_SIZE = { width: 520, height: 600 };
+const MIN_SIZE = { width: 380, height: 360 };
 
 const FIELD_SETS = {
   padding: {
@@ -34,15 +38,22 @@ const FIELD_SETS = {
   gap: { ALL: ["itemSpacing", "counterAxisSpacing"] },
 };
 
-// Aliases ({ name: expansion }) and recents ([{ ops, label }]) live in clientStorage:
-// per user and per machine, not synced. The help view can export/import aliases.
-const state = { aliases: {}, recents: [] };
+// Aliases ({ name: expansion }), recents ([{ ops, label }]) and hidden options
+// (slugs the user turned off in the Options tab) live in clientStorage: per user
+// and per machine, not synced. The help view can export/import aliases and hidden.
+const state = { aliases: {}, recents: [], hidden: [], size: DEFAULT_SIZE };
 const stateReady = Promise.all([
   figma.clientStorage.getAsync("aliases"),
   figma.clientStorage.getAsync("recents"),
-]).then(([aliases, recents]) => {
+  figma.clientStorage.getAsync("hidden"),
+  figma.clientStorage.getAsync("size"),
+]).then(([aliases, recents, hidden, size]) => {
   state.aliases = aliases || {};
   state.recents = recents || [];
+  state.size = size || DEFAULT_SIZE;
+  // Drop slugs that are no longer generated (e.g. after a library update), so
+  // the "N hidden" count stays right.
+  state.hidden = (hidden || []).filter((slug) => VARIABLE_MAP[slug]);
 });
 
 // The Figma Plugin API has no built-in figma.clone(), so we make our own.
@@ -107,7 +118,7 @@ const RESOLVE_FN = { variable: resolveVariable, style: resolveStyle, component: 
 // Auto-layout frame selected: add as last child. Anything else selected: add
 // right after it as a sibling. Nothing selected, or Figma refuses (e.g. inside
 // an instance): center of the viewport.
-function placeInstance(instance, anchor) {
+function placeNode(instance, anchor) {
   try {
     if (anchor && anchor.type !== "INSTANCE" && "layoutMode" in anchor && anchor.layoutMode !== "NONE") {
       anchor.appendChild(instance);
@@ -144,42 +155,114 @@ function bindFields(node, fields, variable) {
   return hit;
 }
 
-// Returns how many nodes the op touched.
-async function applyOp(op, target, nodes) {
+// Binds the color variable to the first paint of node.fills or node.strokes,
+// adding a solid paint if there is none. Text with several colors (mixed fills)
+// gets one fill for all of it.
+function bindPaint(node, prop, variable) {
+  const paints = node[prop] === figma.mixed ? [] : clone(node[prop]);
+  const base = paints.length > 0 && paints[0].type === "SOLID" ? paints[0] : { type: "SOLID", color: { r: 0, g: 0, b: 0 } };
+  paints[0] = figma.variables.setBoundVariableForPaint(base, "color", variable);
+  node[prop] = paints;
+}
+
+// Adding auto layout to a frame with children makes it hug them, like Shift+A in
+// Figma. An empty frame keeps its size, so "frame alh" doesn't collapse to 0x0.
+function setAutoLayout(node, direction) {
+  const adding = node.layoutMode === "NONE";
+  node.layoutMode = direction;
+  if (adding && node.children.length) {
+    node.primaryAxisSizingMode = "AUTO";
+    node.counterAxisSizingMode = "AUTO";
+  }
+}
+
+// What each layer can take, for opSupports/checkOps in parse.js.
+function nodeCaps(node) {
+  return {
+    fills: "fills" in node,
+    strokes: "strokes" in node,
+    radius: "cornerRadius" in node,
+    corners: "topLeftRadius" in node,
+    autoLayout: "layoutMode" in node && node.layoutMode !== "NONE",
+    // Instances get their auto layout from the main component.
+    canAutoLayout: "layoutMode" in node && node.type !== "INSTANCE",
+    text: node.type === "TEXT",
+  };
+}
+
+// Text styles can only be applied once their font is loaded. Throws a readable
+// error if the font isn't available on this machine.
+async function loadStyleFont(style) {
+  try {
+    await figma.loadFontAsync(style.fontName);
+  } catch (e) {
+    throw new Error("font " + style.fontName.family + " " + style.fontName.style + " isn't available");
+  }
+}
+
+// H1-H5 get "Header H5" as their text, other styles "Text".
+async function insertText(style, anchor) {
+  const text = figma.createText();
+  await figma.loadFontAsync(text.fontName);
+  await loadStyleFont(style);
+  text.characters = /^H[1-5]$/.test(style.name) ? "Header " + style.name : "Text";
+  await text.setTextStyleIdAsync(style.id);
+  placeNode(text, anchor);
+  figma.currentPage.selection = [text];
+}
+
+// Returns how many layers the op touched. mode comes from checkOps: "insert"
+// creates a layer (frame, component, or text when no text is selected).
+async function applyOp(op, target, nodes, mode) {
+  if (op.kind === "frame") {
+    const frame = figma.createFrame();
+    frame.name = "Frame";
+    placeNode(frame, nodes[0]);
+    figma.currentPage.selection = [frame];
+    return 1;
+  }
   if (op.kind === "component") {
     const instance = target.createInstance();
-    placeInstance(instance, nodes[0]);
+    placeNode(instance, nodes[0]);
     figma.currentPage.selection = [instance];
     return 1;
   }
+  if (op.kind === "textstyle" && mode === "insert") {
+    await insertText(target, nodes[0]);
+    return 1;
+  }
+  if (op.kind === "textstyle") await loadStyleFont(target);
   let touched = 0;
   for (const node of nodes) {
+    if (!opSupports(nodeCaps(node), op)) continue;
     if (op.kind === "fill") {
-      if (!("fills" in node) || node.fills === figma.mixed) continue;
-      const fills = clone(node.fills);
-      const base = fills.length > 0 && fills[0].type === "SOLID" ? fills[0] : { type: "SOLID", color: { r: 0, g: 0, b: 0 } };
-      fills[0] = figma.variables.setBoundVariableForPaint(base, "color", target);
-      node.fills = fills;
-      touched++;
+      bindPaint(node, "fills", target);
+    } else if (op.kind === "stroke") {
+      bindPaint(node, "strokes", target);
+      // Borders always default to 1px on all sides, replacing per-side weights.
+      if ("strokeWeight" in node) node.strokeWeight = 1;
+    } else if (op.kind === "autolayout") {
+      setAutoLayout(node, op.value);
     } else if (op.kind === "textstyle") {
-      if (node.type !== "TEXT") continue;
       await node.setTextStyleIdAsync(target.id);
-      touched++;
+    } else if (op.kind === "radius" && op.side === "ALL" && !nodeCaps(node).corners) {
+      // Shapes like stars and polygons only have one uniform radius
+      bindFields(node, ["cornerRadius"], target);
     } else {
-      let hit = bindFields(node, FIELD_SETS[op.kind][op.side], target);
-      // Some nodes have a uniform cornerRadius but no individual corners
-      if (!hit && op.kind === "radius" && op.side === "ALL") hit = bindFields(node, ["cornerRadius"], target);
-      if (hit) touched++;
+      bindFields(node, FIELD_SETS[op.kind][op.side], target);
     }
+    touched++;
   }
   return touched;
 }
 
-// Applies ops in order and returns a one-line summary. Ops after a component
-// insert apply to the new instance.
 async function applyOps(ops) {
   let nodes = [...figma.currentPage.selection];
-  const label = describeOps(ops);
+  // The palette only offers ops that pass this check, but the selection may have
+  // changed since. Never apply something that would partly do nothing.
+  const check = checkOps(ops, nodes.map(nodeCaps));
+  if (check.error) return { message: check.error, failed: true };
+  const label = describeOpsIn(ops, check.modes);
   // Figma's own running indicator only shows the plugin name. Say what's
   // happening, but only if resolving is slow (e.g. first import from a library).
   let loading = null;
@@ -188,15 +271,24 @@ async function applyOps(ops) {
   }, 400);
   const skipped = [];
   try {
-    for (const op of ops) {
-      const entry = VARIABLE_MAP[op.slug];
-      const target = entry ? await RESOLVE_FN[entry.type](entry) : null;
-      if (!target) {
-        skipped.push(op.label + " (not in an enabled library)");
-        continue;
+    for (let i = 0; i < ops.length; i++) {
+      const op = ops[i];
+      // Word ops (frame, alh, alv) have no token to resolve.
+      let target = null;
+      if (op.slug) {
+        const entry = VARIABLE_MAP[op.slug];
+        if (!entry) {
+          skipped.push(op.label + " (no longer in the plugin)");
+          continue;
+        }
+        target = await RESOLVE_FN[entry.type](entry);
+        if (!target) {
+          skipped.push(op.label + " (not in an enabled library)");
+          continue;
+        }
       }
-      if ((await applyOp(op, target, nodes)) === 0) skipped.push(op.label);
-      if (op.kind === "component") nodes = [...figma.currentPage.selection];
+      if ((await applyOp(op, target, nodes, check.modes[i])) === 0) skipped.push(op.label);
+      if (check.modes[i] === "insert") nodes = [...figma.currentPage.selection];
     }
     await remember(ops, label);
   } catch (e) {
@@ -222,9 +314,10 @@ async function setAlias(name, expansion) {
   await figma.clientStorage.setAsync("aliases", state.aliases);
 }
 
-// Accepts { "aliases": { "name": "expansion" } } as produced by Export. Valid
-// aliases are merged in; invalid ones are reported and skipped.
-async function importAliases(json) {
+// Accepts { "aliases": { "name": "expansion" }, "hidden": [slugs] } as produced by
+// Copy as JSON. Valid aliases are merged in, invalid ones are reported and
+// skipped. hidden replaces the current choice; unknown slugs are dropped.
+async function importBackup(json) {
   let data;
   try {
     data = JSON.parse(json);
@@ -232,7 +325,12 @@ async function importAliases(json) {
     return "Not valid JSON";
   }
   const incoming = data && typeof data.aliases === "object" ? data.aliases : null;
-  if (!incoming) return 'Expected { "aliases": { "name": "expansion" } }';
+  if (!incoming && !Array.isArray(data && data.hidden)) return 'Expected { "aliases": { ... }, "hidden": [ ... ] }';
+  if (Array.isArray(data.hidden)) {
+    state.hidden = data.hidden.filter((slug) => VARIABLE_MAP[slug]);
+    await figma.clientStorage.setAsync("hidden", state.hidden);
+  }
+  if (!incoming) return null;
   const rejected = [];
   for (const name of Object.keys(incoming)) {
     const err = aliasError(ENTRIES, name, String(incoming[name]));
@@ -245,17 +343,19 @@ async function importAliases(json) {
 
 // ---------- Palette window ----------
 
+// Distinct capabilities only: a selection of 500 rectangles is one entry.
 function selectionInfo() {
   const sel = figma.currentPage.selection;
-  return {
-    count: sel.length,
-    hasText: sel.some((n) => n.type === "TEXT"),
-    hasAutoLayout: sel.some((n) => "layoutMode" in n && n.layoutMode !== "NONE"),
-  };
+  const seen = new Map();
+  for (const node of sel) {
+    const caps = nodeCaps(node);
+    seen.set(JSON.stringify(caps), caps);
+  }
+  return { count: sel.length, nodes: [...seen.values()] };
 }
 
 function postState(error, notice) {
-  figma.ui.postMessage({ type: "state", aliases: state.aliases, recents: state.recents, error: error || null, notice: notice || null });
+  figma.ui.postMessage({ type: "state", aliases: state.aliases, recents: state.recents, hidden: state.hidden, error: error || null, notice: notice || null });
 }
 
 async function handleMessage(msg) {
@@ -263,9 +363,10 @@ async function handleMessage(msg) {
   if (msg.type === "ready") {
     figma.ui.postMessage({
       type: "init",
-      entries: ENTRIES.map((e) => ({ slug: e.slug, kind: e.kind, name: e.name })),
+      entries: ENTRIES.map((e) => ({ slug: e.slug, kind: e.kind, name: e.name, group: e.group })),
       aliases: state.aliases,
       recents: state.recents,
+      hidden: state.hidden,
       selection: selectionInfo(),
     });
   } else if (msg.type === "apply") {
@@ -286,9 +387,22 @@ async function handleMessage(msg) {
     state.recents = [];
     await figma.clientStorage.setAsync("recents", []);
     postState(null, "Cleared recents");
+  } else if (msg.type === "setHidden") {
+    // The UI already shows the change; just persist it.
+    state.hidden = msg.hidden;
+    await figma.clientStorage.setAsync("hidden", state.hidden);
   } else if (msg.type === "import") {
-    const error = await importAliases(msg.json);
-    postState(error, error ? null : "Imported aliases");
+    const error = await importBackup(msg.json);
+    postState(error, error ? null : "Imported");
+  } else if (msg.type === "resize") {
+    // The window's drag handle sends sizes while dragging and save on release.
+    const width = Math.max(MIN_SIZE.width, Math.round(msg.width));
+    const height = Math.max(MIN_SIZE.height, Math.round(msg.height));
+    figma.ui.resize(width, height);
+    if (msg.save) {
+      state.size = { width, height };
+      await figma.clientStorage.setAsync("size", state.size);
+    }
   } else if (msg.type === "vars") {
     await listVariables();
   } else if (msg.type === "close") {
@@ -296,13 +410,16 @@ async function handleMessage(msg) {
   }
 }
 
-figma.showUI(UI_HTML, { width: 440, height: 480, themeColors: true, title: "Bifrost" });
-figma.ui.onmessage = (msg) =>
-  handleMessage(msg).catch((e) => {
-    console.error(e);
-    postState("Error: " + e.message);
-  });
-figma.on("selectionchange", () => figma.ui.postMessage({ type: "selection", selection: selectionInfo() }));
+// Opened after storage is read, so the window starts at the size it had last time.
+stateReady.then(() => {
+  figma.showUI(UI_HTML, Object.assign({ themeColors: true, title: "Bifrost" }, state.size));
+  figma.ui.onmessage = (msg) =>
+    handleMessage(msg).catch((e) => {
+      console.error(e);
+      postState("Error: " + e.message);
+    });
+  figma.on("selectionchange", () => figma.ui.postMessage({ type: "selection", selection: selectionInfo() }));
+});
 
 // ---------- Debug / export helper ----------
 

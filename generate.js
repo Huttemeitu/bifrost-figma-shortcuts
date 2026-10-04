@@ -7,7 +7,7 @@
 //  - code.js: VARIABLE_MAP (slug -> token/component) + UI_HTML (src/ui.html with
 //    src/parse.js inlined) + src/parse.js + src/runtime.js
 //
-// Classification: COLOR variables -> fill, FLOAT "Spacing/..." -> padding AND gap,
+// Classification: COLOR variables (except Light/ and Dark/ ones) -> fill AND stroke, FLOAT "Spacing/..." -> padding AND gap,
 // FLOAT "Border radius/..." -> radius, text styles -> textstyle, components -> component.
 
 const fs = require("fs");
@@ -69,7 +69,11 @@ function componentLabel(c) {
 
 // ---------- Classification ----------
 
-const colorVars = variables.filter((v) => v.resolvedType === "COLOR");
+// Light/... and Dark/... colors are the per-mode values behind the Mode
+// collection's tokens. Those tokens already switch with the parent's variable
+// mode, so applying a light- or dark-specific color directly is never wanted.
+const MODE_SPECIFIC = /^(Light|Dark)\//;
+const colorVars = variables.filter((v) => v.resolvedType === "COLOR" && !MODE_SPECIFIC.test(v.name));
 const spacingVars = variables.filter(
   (v) => v.resolvedType === "FLOAT" && v.name.startsWith("Spacing/")
 );
@@ -78,7 +82,8 @@ const radiusVars = variables.filter(
 );
 
 const KINDS = {
-  fill: colorVars.map((v) => ({ slug: uniqueSlug("fill", v.name), name: v.name, id: v.id, key: v.key })),
+  fill: colorVars.map((v) => ({ slug: uniqueSlug("fill", v.name), name: v.name, id: v.id, key: v.key, group: v.collection })),
+  stroke: colorVars.map((v) => ({ slug: uniqueSlug("stroke", v.name), name: v.name, id: v.id, key: v.key, group: v.collection })),
   padding: spacingVars.map((v) => ({
     slug: uniqueSlug("pad", v.name),
     name: stripPrefix(v.name, "Spacing/"),
@@ -105,7 +110,7 @@ const KINDS = {
   })),
   component: components.map((c) => {
     const name = componentLabel(c);
-    return { slug: uniqueSlug("comp", name), name, id: c.id, key: c.key, isSet: c.isSet };
+    return { slug: uniqueSlug("comp", name), name, id: c.id, key: c.key, isSet: c.isSet, group: c.page };
   }),
 };
 
@@ -121,13 +126,15 @@ const manifest = {
 
 // ---------- code.js ----------
 
-// Flat lookup: slug -> { id, key, name, kind, type, isSet? }
+// Flat lookup: slug -> { id, key, name, kind, type, isSet?, group? }. group is the
+// top level in the Options tree: a fill's collection, a component's page.
 const TYPE_BY_KIND = { textstyle: "style", component: "component" };
 const flatMap = {};
 for (const [kind, entries] of Object.entries(KINDS)) {
   for (const e of entries) {
     flatMap[e.slug] = { id: e.id, key: e.key, name: e.name, kind, type: TYPE_BY_KIND[kind] || "variable" };
     if (e.isSet) flatMap[e.slug].isSet = true;
+    if (e.group) flatMap[e.slug].group = e.group;
   }
 }
 
