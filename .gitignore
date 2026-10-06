@@ -6,5 +6,7 @@ node_modules
 # macOS
 .DS_Store
 
-# Lokale backup-filer scriptene lager
-figma-shortcuts-backup-*.plist
+
+# Companion app
+companion/.build
+companion/build
