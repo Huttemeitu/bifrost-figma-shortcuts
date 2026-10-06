@@ -2,7 +2,7 @@ import AppKit
 import ApplicationServices
 
 /// Talks to the Figma desktop app through the Accessibility API: presses the
-/// Bifrost plugin's "Numpad N" menu items and checks whether a text field has focus.
+/// Bifrost plugin's menu items and checks whether a text field has focus.
 @MainActor
 final class Figma {
   static let bundleID = "com.figma.Desktop"
@@ -30,20 +30,20 @@ final class Figma {
     return Self.textRoles.contains(role)
   }
 
-  /// Runs Plugins › … › Bifrost › Numpad › Numpad <digit>. Returns false if the
-  /// menu item can't be found or pressed (plugin not installed, Figma busy).
-  func runNumpad(_ digit: String) -> Bool {
+  /// Runs a Bifrost plugin command, e.g. "Open palette" or "Numpad 1". Returns
+  /// false if the menu item can't be found or pressed (plugin not installed, Figma busy).
+  func run(_ command: String) -> Bool {
     guard let app = frontmost else { return false }
     if app.processIdentifier != menuPid {
       menuItems = [:]
       menuPid = app.processIdentifier
     }
-    if let cached = menuItems[digit], press(cached) { return true }
+    if let cached = menuItems[command], press(cached) { return true }
     let axApp = AXUIElementCreateApplication(app.processIdentifier)
     guard let bar: AXUIElement = attribute(axApp, kAXMenuBarAttribute),
-      let item = findItem(in: bar, title: "Numpad \(digit)", underBifrost: false)
+      let item = findItem(in: bar, title: command, underBifrost: false)
     else { return false }
-    menuItems[digit] = item
+    menuItems[command] = item
     return press(item)
   }
 

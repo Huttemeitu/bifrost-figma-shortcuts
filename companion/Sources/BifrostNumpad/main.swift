@@ -2,25 +2,30 @@ import AppKit
 import ServiceManagement
 
 /// Menu bar app: numpad digits in Figma run the Bifrost plugin's Numpad N
-/// command, which applies the alias named N. Keys are assigned in the plugin
-/// (=1 button pm), so this app has nothing to configure.
+/// command, which applies the alias named N (assigned in the plugin with
+/// =1 button pm). A recordable shortcut opens the palette.
 @MainActor
-final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
+final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWindowDelegate {
   private let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
   private let figma = Figma()
-  private lazy var tap = NumpadTap(figma: figma) { [weak self] digit in self?.run(digit) }
+  private lazy var tap = KeyTap(
+    figma: figma,
+    onDigit: { [weak self] digit in self?.run("Numpad \(digit)") },
+    onPalette: { [weak self] in self?.run("Open palette") })
   private var permissionTimer: Timer?
+  private var recordPanel: NSPanel?
 
   func applicationDidFinishLaunching(_ notification: Notification) {
     let menu = NSMenu()
     menu.delegate = self
     statusItem.menu = menu
     setIcon("square.grid.3x3")
+    tap.paletteShortcut = Shortcut.loadPalette()
     startWhenTrusted()
   }
 
-  private func run(_ digit: String) {
-    flash(figma.runNumpad(digit) ? "square.grid.3x3.fill" : "exclamationmark.triangle")
+  private func run(_ command: String) {
+    flash(figma.run(command) ? "square.grid.3x3.fill" : "exclamationmark.triangle")
   }
 
   // Without Accessibility permission the tap can't be created. Ask once, then
@@ -47,6 +52,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
       let enabled = item("Enabled", #selector(toggleEnabled))
       enabled.state = tap.isEnabled ? .on : .off
       menu.addItem(enabled)
+      menu.addItem(.separator())
+      menu.addItem(withTitle: "Open palette: " + (tap.paletteShortcut?.description ?? "no shortcut"), action: nil, keyEquivalent: "")
+      menu.addItem(item("Record palette shortcut…", #selector(recordShortcut)))
+      if tap.paletteShortcut != nil { menu.addItem(item("Remove palette shortcut", #selector(removeShortcut))) }
     } else {
       menu.addItem(item("Grant Accessibility access…", #selector(openAccessibilitySettings)))
     }
@@ -68,6 +77,48 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
   @objc private func toggleEnabled() {
     tap.isEnabled.toggle()
     updateIcon()
+  }
+
+  // ---------- Recording the palette shortcut ----------
+
+  // A small window that only explains what to do; the key tap does the
+  // recording, so it sees combos that a window would never get (like ⌘Q).
+  @objc private func recordShortcut() {
+    let panel = NSPanel(
+      contentRect: NSRect(x: 0, y: 0, width: 300, height: 80), styleMask: [.titled, .closable],
+      backing: .buffered, defer: false)
+    panel.title = "Palette shortcut"
+    panel.isReleasedWhenClosed = false
+    panel.delegate = self
+    let label = NSTextField(wrappingLabelWithString: "Press the new shortcut for the palette.\nIt needs ⌘, ⌃ or ⌥. Esc cancels.")
+    label.alignment = .center
+    label.frame = panel.contentView!.bounds.insetBy(dx: 16, dy: 20)
+    label.autoresizingMask = [.width, .height]
+    panel.contentView!.addSubview(label)
+    panel.center()
+    recordPanel = panel
+    NSApp.activate()
+    panel.makeKeyAndOrderFront(nil)
+    tap.recorder = { [weak self] shortcut in self?.finishRecording(shortcut) }
+  }
+
+  private func finishRecording(_ shortcut: Shortcut?) {
+    if let shortcut {
+      tap.paletteShortcut = shortcut
+      Shortcut.savePalette(shortcut)
+    }
+    recordPanel?.close()
+  }
+
+  // Also runs when the window's close button is used, which cancels recording.
+  func windowWillClose(_ notification: Notification) {
+    tap.recorder = nil
+    recordPanel = nil
+  }
+
+  @objc private func removeShortcut() {
+    tap.paletteShortcut = nil
+    Shortcut.savePalette(nil)
   }
 
   @objc private func toggleLaunchAtLogin() {

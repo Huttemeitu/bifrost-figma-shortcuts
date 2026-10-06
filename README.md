@@ -3,7 +3,8 @@
 A keyboard-first Figma plugin for applying Bifrost design tokens (fill and
 border colors, padding, gap, radius, text styles) to the selection and inserting Bifrost
 components, from a small command palette. With the optional **Bifrost Numpad**
-app, a single numpad key applies a command of your choice.
+app, a keyboard shortcut opens the palette and a single numpad key applies a
+command of your choice.
 
 It covers 796 colors (as fill or border), 12 spacing values (padding and gap), 7 radius
 values, 68 text styles and 86 components.
@@ -56,11 +57,12 @@ Without them, commands fail with "not in an enabled library".
 4. Type `?` in the palette for the full guide. [Using the palette](#using-the-palette)
    below has the same in short.
 
-### 5. Optional: numpad keys
+### 5. Optional: shortcut and numpad keys
 
-Skip this if your keyboard has no numpad. With **Bifrost Numpad** running,
-pressing numpad 1 in Figma runs your alias `1`, numpad 2 runs alias `2`, and
-so on.
+With **Bifrost Numpad** running, **⌃⌥Space** in Figma opens the palette (no
+Actions menu needed), and if your keyboard has a numpad, pressing numpad 1
+runs your alias `1`, numpad 2 runs alias `2`, and so on. On a MacBook without
+a numpad you get the shortcut.
 
 1. In Finder, open the repo folder, go to `companion/dist/` and copy
    **Bifrost Numpad.app** to **Applications**.
@@ -70,11 +72,15 @@ so on.
    Settings** and turn on Bifrost Numpad (needs an admin password). If you
    missed the prompt: menu bar icon › **Grant Accessibility access…**. The
    icon turns from grey to normal within a couple of seconds.
-4. Choose what each key does by saving aliases named `0`–`9` in the palette:
-   type `=1 button pm` and press Enter, and numpad 1 inserts a Button with
-   padding M. `=2 alh pm gs` makes numpad 2 add auto layout with padding M and
-   gap S. Any command that works in the palette works as an alias.
-5. Optional: menu bar icon › **Launch at login**.
+4. Press ⌃⌥Space in Figma to check that the palette opens. To use another
+   shortcut: menu bar icon › **Record palette shortcut…**, then press the new
+   one (it needs ⌘, ⌃ or ⌥).
+5. Numpad only: choose what each key does by saving aliases named `0`–`9`.
+   In the palette, type `?` and open the **Aliases** tab. Name `1` and Does
+   `button pm` makes numpad 1 insert a Button with padding M; name `2` and
+   Does `alh pm gs` makes numpad 2 add auto layout with padding M and gap S.
+   Any command that works in the palette works as an alias.
+6. Optional: menu bar icon › **Launch at login**.
 
 To use the same keys as a teammate, have them copy their aliases (palette ›
 `?` › **Aliases** › **Copy as JSON**) and paste them in with **Import…** in
@@ -100,10 +106,11 @@ cd ~/Code/bifrost-figma-shortcuts && git pull
 |---|---|
 | "not in an enabled library" | Enable the Bifrost libraries in this file (step 3) |
 | "font … isn't available" | Install that font on your Mac (text styles need their font locally) |
-| A numpad key does nothing | Check the menu bar icon: grey means paused (turn on **Enabled**) or no Accessibility access (step 5.3) |
-| The menu bar icon flashes a warning sign | The plugin isn't installed, or was imported from a folder that moved (step 2) |
-| Toast: `No alias "3"` | Save an alias for that key: `=3 …` in the palette |
+| The shortcut or a numpad key does nothing | Check the menu bar icon: grey means paused (turn on **Enabled**) or no Accessibility access (step 5.3) |
+| Nothing happens, and the menu bar icon flashes a warning sign | The plugin isn't installed, or was imported from a folder that moved (step 2) |
+| Toast: `No alias "3"` | Save an alias named `3` in the palette's Aliases tab (`?` › Aliases) |
 | Numpad types digits instead | You're in a text field (W/H, layer name, a text layer); that's on purpose. Click the canvas first |
+| The shortcut also does something else in Figma | Record another one (step 5.4); the app takes it over while Figma is in front |
 | macOS says the app "can't be opened" or "is damaged" | The repo was downloaded as a zip. Delete it and use `git clone` (step 1) |
 
 ## Using the palette
@@ -212,28 +219,32 @@ machine and included in the help view's Copy as JSON backup.
 Use a text or multi-action key that types the whole sequence, e.g.
 ⌘K → `bif` → Enter → `pm gs` → Enter.
 
-## Numpad keys
+## Bifrost Numpad
 
 The plugin has ten menu commands, **Plugins › Development › Bifrost › Numpad
 › Numpad 0–9**. Each runs the alias with that name directly, without opening
 the palette. If the alias is missing or can't apply to the selection, a toast
 says why.
 
-**Bifrost Numpad** (`companion/`, set up in [step 5](#5-optional-numpad-keys))
-is a small menu bar app that runs those commands when you press a numpad key.
-Keys are assigned with aliases in the palette; the app has no settings of its
-own.
+**Bifrost Numpad** (`companion/`, set up in [step 5](#5-optional-shortcut-and-numpad-keys))
+is a small menu bar app that runs those commands when you press a numpad key,
+and **Open palette** when you press the palette shortcut. Numpad keys are
+assigned with aliases in the palette; the only setting in the app is the
+palette shortcut.
 
-- It reacts only to numpad digits without modifiers, and only while Figma is
-  the frontmost app. Top-row digits, other apps and ⌘/⌥/⌃/⇧ combos are
-  untouched.
-- While you type in a field (W/H, layer name, a text layer) the numpad types
-  digits as usual.
+- It only acts while Figma is the frontmost app. Other apps never see a
+  difference.
+- The palette shortcut (default ⌃⌥Space) works anywhere in Figma, also while
+  you edit text. Record another one in the app's menu; it needs ⌘, ⌃ or ⌥ so
+  plain typing can't trigger it. **Remove palette shortcut** turns it off.
+- Numpad digits only count without modifiers. Top-row digits and ⌘/⌥/⌃/⇧
+  combos are untouched, and while you type in a field (W/H, layer name, a
+  text layer) the numpad types digits as usual.
 - The menu bar icon flashes filled when a key runs, and a warning sign if the
   Numpad command couldn't be found. It's grey while paused or without
   Accessibility access.
-- Its menu has **Enabled** (a pause; every launch starts enabled), **Launch
-  at login** and **Quit**.
+- Its menu has **Enabled** (a pause for both; every launch starts enabled),
+  the palette shortcut, **Launch at login** and **Quit**.
 
 ## Maintaining the plugin
 

@@ -1,11 +1,12 @@
 import AppKit
 import Carbon.HIToolbox
 
-/// Catches plain numpad digits while Figma is frontmost and not in a text
-/// field, swallows them and hands the digit to onDigit. Everything else
-/// (other apps, top-row digits, modifier combos, typing) passes through.
+/// Watches every keypress. While Figma is frontmost it swallows the palette
+/// shortcut and plain numpad digits (unless a text field has focus) and hands
+/// them to onPalette / onDigit. While recording, it captures the next shortcut
+/// instead. Everything else passes through.
 @MainActor
-final class NumpadTap {
+final class KeyTap {
   private static let digits: [Int64: String] = [
     Int64(kVK_ANSI_Keypad0): "0", Int64(kVK_ANSI_Keypad1): "1", Int64(kVK_ANSI_Keypad2): "2",
     Int64(kVK_ANSI_Keypad3): "3", Int64(kVK_ANSI_Keypad4): "4", Int64(kVK_ANSI_Keypad5): "5",
@@ -14,16 +15,21 @@ final class NumpadTap {
   ]
 
   var isEnabled = true
+  var paletteShortcut: Shortcut?
+  /// Set to record: gets the next key with ⌘, ⌃ or ⌥, or nil if Esc cancels.
+  var recorder: ((Shortcut?) -> Void)?
   private let figma: Figma
   private let onDigit: (String) -> Void
+  private let onPalette: () -> Void
   private var tap: CFMachPort?
   // A key whose keyDown was swallowed also gets its keyUp swallowed, even if
   // focus moved in between, so Figma never sees half a keypress.
   private var swallowed: Set<Int64> = []
 
-  init(figma: Figma, onDigit: @escaping (String) -> Void) {
+  init(figma: Figma, onDigit: @escaping (String) -> Void, onPalette: @escaping () -> Void) {
     self.figma = figma
     self.onDigit = onDigit
+    self.onPalette = onPalette
   }
 
   var isRunning: Bool { tap != nil }
@@ -33,7 +39,7 @@ final class NumpadTap {
     if tap != nil { return true }
     let mask = (1 << CGEventType.keyDown.rawValue) | (1 << CGEventType.keyUp.rawValue)
     let callback: CGEventTapCallBack = { _, type, event, info in
-      let tap = Unmanaged<NumpadTap>.fromOpaque(info!).takeUnretainedValue()
+      let tap = Unmanaged<KeyTap>.fromOpaque(info!).takeUnretainedValue()
       let key = Key(
         code: event.getIntegerValueField(.keyboardEventKeycode), flags: event.flags,
         isRepeat: event.getIntegerValueField(.keyboardEventAutorepeat) != 0)
@@ -59,16 +65,38 @@ final class NumpadTap {
     }
     if type == .keyUp { return swallowed.remove(key.code) != nil }
 
-    let modifiers = key.flags.intersection([.maskCommand, .maskControl, .maskAlternate, .maskShift])
-    guard isEnabled, let digit = Self.digits[key.code], modifiers.isEmpty, figma.isFrontmost, !figma.isTyping else {
-      return false
+    let shortcut = Shortcut(keyCode: key.code, flags: key.flags)
+    if let recorder {
+      swallowed.insert(key.code)
+      if key.code == Int64(kVK_Escape) && shortcut.modifiers == 0 {
+        finish(recorder, nil)
+      } else if !key.flags.isDisjoint(with: [.maskCommand, .maskControl, .maskAlternate]) {
+        // Shift alone isn't enough: it would catch normal typing.
+        finish(recorder, shortcut)
+      }
+      return true
     }
+
+    guard isEnabled, figma.isFrontmost else { return false }
+    // Unlike digits, the shortcut also works in text fields: a modifier combo
+    // doesn't type anything.
+    if shortcut == paletteShortcut {
+      return swallow(key) { $0.onPalette() }
+    }
+    guard let digit = Self.digits[key.code], shortcut.modifiers == 0, !figma.isTyping else { return false }
+    return swallow(key) { $0.onDigit(digit) }
+  }
+
+  // Runs off the callback, so a slow menu press can't time out the tap.
+  private func swallow(_ key: Key, _ action: @escaping (KeyTap) -> Void) -> Bool {
     swallowed.insert(key.code)
-    if !key.isRepeat {
-      // Off the callback, so a slow menu press can't time out the tap.
-      DispatchQueue.main.async { self.onDigit(digit) }
-    }
+    if !key.isRepeat { DispatchQueue.main.async { action(self) } }
     return true
+  }
+
+  private func finish(_ recorder: @escaping (Shortcut?) -> Void, _ shortcut: Shortcut?) {
+    self.recorder = nil
+    DispatchQueue.main.async { recorder(shortcut) }
   }
 }
 
