@@ -16,7 +16,7 @@ const SIDE_OPS = {
   r: ["radius", "ALL"], rt: ["radius", "T"], rb: ["radius", "B"], rl: ["radius", "L"], rr: ["radius", "R"],
   rtl: ["radius", "TL"], rtr: ["radius", "TR"], rbl: ["radius", "BL"], rbr: ["radius", "BR"],
 };
-const FUZZY_OPS = { f: "fill", bg: "fill", b: "stroke", t: "textstyle" };
+const FUZZY_OPS = { f: "fill", b: "stroke", t: "textstyle" };
 
 // Ops that are a single word with no value or token behind them (no slug).
 const WORD_OPS = {
@@ -31,7 +31,8 @@ const WORD_OPS = {
 const SEARCH_KINDS = ["component", "textstyle", "fill"];
 
 // Palette groups. `prefix` turns input typed inside a group into full syntax
-// ("m" in Padding is "pm", "brand" in Fill is "f brand").
+// ("m" in Padding is "pm", "brand" in Fill is "f brand"). `search` limits name
+// search inside the group instead (components have no op key).
 const GROUPS = [
   { kind: "padding", label: "Padding", key: "p", prefix: "p" },
   { kind: "gap", label: "Gap", key: "g", prefix: "g" },
@@ -39,7 +40,7 @@ const GROUPS = [
   { kind: "fill", label: "Fill", key: "f", prefix: "f " },
   { kind: "stroke", label: "Border", key: "b", prefix: "b " },
   { kind: "textstyle", label: "Text", key: "t", prefix: "t " },
-  { kind: "component", label: "Component", key: "+", prefix: "+" },
+  { kind: "component", label: "Component", prefix: "", search: ["component"] },
   { kind: "layout", label: "Layout", key: "al", prefix: "al" },
 ];
 
@@ -54,10 +55,10 @@ const SYNTAX = [
   {
     title: "Spacing and radius",
     rows: [
-      [["pm", "p m"], "Padding M on all sides"],
+      [["pm", "p m"], "Padding M on all sides; adds auto layout to a frame without it"],
       [["ph l", "pv s"], "Padding horizontal or vertical"],
       [["pt m", "pb m", "pl m", "pr m"], "Padding on one side"],
-      [["gs"], "Gap S"],
+      [["gs"], "Gap S; also adds auto layout when needed"],
       [["rl", "r full"], "Radius on all corners"],
       [["rt m", "rtl s"], "Radius on two corners or one corner"],
     ],
@@ -65,8 +66,8 @@ const SYNTAX = [
   {
     title: "Colors and text",
     rows: [
-      [["f brand", "fbase1", "bg base-1"], "Fill, matched by color name (dashes optional)"],
-      [["b base-dimmed-3", "bbrand"], "Border, 1px on all sides, matched by color name"],
+      [["fbrand", "fbase1", "f base-1"], "Fill, matched by color name (space and dashes optional)"],
+      [["bbrand", "bbasedimmed3", "b base-dimmed-3"], "Border, 1px on all sides, matched by color name"],
       [["h1", "h3", "t regular"], "Text style: changes selected text, or inserts a new text layer"],
     ],
   },
@@ -82,16 +83,12 @@ const SYNTAX = [
     title: "Components",
     rows: [
       [["button", "basic input"], "Search components, text styles and colors by name"],
-      [["+button"], "Insert a component; everything after + is its name"],
       [["box rm"], "Insert, then style the new instance"],
     ],
   },
   {
-    title: "Combine and save",
-    rows: [
-      [["pm gs rl"], "Several at once"],
-      [["=cta f brand"], "Save an alias; =cta on its own deletes it"],
-    ],
+    title: "Combine",
+    rows: [[["pm gs rl"], "Several at once"]],
   },
 ];
 
@@ -125,10 +122,12 @@ function matchScore(name, q) {
 }
 
 // options.search = false turns off name search for bare words, leaving only
-// op syntax (used to check alias names against built-in syntax).
+// op syntax (used to check alias names against built-in syntax); an array
+// limits it to those kinds (the Component group).
 // options.limit caps fuzzy matches per slot (default 12).
 function createParser(entries, aliases, options) {
   const search = !options || options.search !== false;
+  const searchKinds = (options && Array.isArray(options.search) && options.search) || SEARCH_KINDS;
   const limit = (options && options.limit) || 12;
   const bySlug = {};
   for (const e of entries) bySlug[e.slug] = e;
@@ -167,7 +166,7 @@ function createParser(entries, aliases, options) {
     return { primary: ops.concat(nameOp(m[0])), alternatives: m.slice(1).map((e) => ops.concat(nameOp(e))) };
   }
 
-  const isKeyword = (w) => Boolean(SIDE_OPS[w] || FUZZY_OPS[w] || WORD_OPS[w] || w.startsWith("+") || aliases[w]);
+  const isKeyword = (w) => Boolean(SIDE_OPS[w] || FUZZY_OPS[w] || WORD_OPS[w] || aliases[w]);
   const wordOp = (w) => Object.assign({ key: w }, WORD_OPS[w]);
   const bestScore = (kinds, q) =>
     kinds.flatMap(byKind).reduce((best, e) => {
@@ -200,11 +199,6 @@ function createParser(entries, aliases, options) {
       }
       const w = words[i].toLowerCase();
       const isLast = i === words.length - 1;
-
-      if (w.startsWith("+")) {
-        const q = [w.slice(1)].concat(words.slice(i + 1)).join(" ").toLowerCase().trim();
-        return fuzzySlot(ops, ["component"], q);
-      }
 
       if (FUZZY_OPS[w]) {
         const kind = FUZZY_OPS[w];
@@ -290,22 +284,22 @@ function createParser(entries, aliases, options) {
       // follows still parses: "basic input pm" is Basic input · Padding M, and
       // "box rm" is Box · Radius M because no name matches "box rm".
       if (search) {
-        // A name never runs into an op keyword, a +component or an alias, so
+        // A name never runs into an op keyword or an alias, so
         // "button b brand" is Button · Border, not a search for "button b".
         let end = i + 1;
         while (end < words.length && !isKeyword(words[end].toLowerCase())) end++;
         for (let j = end; j > i + 1; j--) {
           const name = words.slice(i, j).join(" ").toLowerCase();
-          const match = fuzzy(SEARCH_KINDS, name, 1)[0];
+          const match = fuzzy(searchKinds, name, 1)[0];
           if (!match) continue;
-          if (j === words.length) return fuzzySlot(ops, SEARCH_KINDS, name);
+          if (j === words.length) return fuzzySlot(ops, searchKinds, name);
           if (parse(words.slice(j).join(" ")).error) continue;
           ops.push(nameOp(match));
           i = j - 1;
           continue words;
         }
       }
-      const found = search && w.length >= 2 ? fuzzy(SEARCH_KINDS, w, limit) : [];
+      const found = search && w.length >= 2 ? fuzzy(searchKinds, w, limit) : [];
       if (!isLast && found.length) {
         ops.push(nameOp(found[0]));
         continue;
@@ -362,8 +356,8 @@ function createParser(entries, aliases, options) {
     }
     const c = compactLast(entry.name);
     const { counts, segs } = colorIndex[kind];
-    // Another color with the same compact name, or "b" + "g..." reading as "bg" (fill).
-    if (!c || counts[c] !== 1 || (kind === "stroke" && c.startsWith("g"))) return null;
+    // Another color with the same compact name.
+    if (!c || counts[c] !== 1) return null;
     const word = COLOR_KEYS[kind] + c;
     // A path segment equal to it ("brand" in Pop/Brand) makes ranking decide: parse to be sure.
     if (segs.has(c)) {
@@ -467,7 +461,7 @@ const INSERTED_CAPS = {
 };
 
 function opNeed(op) {
-  if (op.kind === "padding" || op.kind === "gap") return "autoLayout";
+  if (op.kind === "padding" || op.kind === "gap") return "frame";
   if (op.kind === "radius") return op.side === "ALL" ? "radius" : "corners";
   if (op.kind === "fill") return "fills";
   if (op.kind === "stroke") return "strokes";
@@ -477,7 +471,7 @@ function opNeed(op) {
 }
 
 const NEED_MESSAGE = {
-  autoLayout: "needs an auto-layout frame. Add alh or alv first",
+  frame: "needs a frame",
   radius: "needs a frame or shape with corner radius",
   corners: "needs a frame or rectangle with individual corners",
   fills: "needs a layer that can have a fill",
@@ -485,15 +479,18 @@ const NEED_MESSAGE = {
   canAutoLayout: "needs a frame (instances get auto layout from their component)",
 };
 
+// Padding and gap add auto layout to a frame that has none (applyOp in runtime.js).
 function opSupports(caps, op) {
   const need = opNeed(op);
+  if (need === "frame") return Boolean(caps.autoLayout || caps.canAutoLayout);
   return !need || Boolean(caps[need]);
 }
 
 // Walks the ops in order against the selected layers' capabilities, the same way
 // applyOps applies them: inserts (frame, component, and a text style when no
-// text is selected) replace the targets with the new layer, and alh/alv make
-// frames auto layout. Returns { modes } ("insert" or "apply" per op), or
+// text is selected) replace the targets with the new layer, and alh/alv,
+// padding and gap make frames auto layout. Returns { modes } per op ("insert",
+// "apply", or "autolayout" for padding or gap that adds auto layout), or
 // { error, index } for the first op that would do nothing.
 function checkOps(ops, selection) {
   let targets = selection;
@@ -510,15 +507,19 @@ function checkOps(ops, selection) {
       const error = targets.length ? opLabel(op, "apply") + " " + NEED_MESSAGE[opNeed(op)] : "Select a layer first";
       return { error, index: i };
     }
-    if (op.kind === "autolayout") targets = targets.map((t) => (t.canAutoLayout ? Object.assign({}, t, { autoLayout: true }) : t));
-    modes.push("apply");
+    const addsLayout = opNeed(op) === "frame" && targets.some((t) => !t.autoLayout && t.canAutoLayout);
+    if (op.kind === "autolayout" || addsLayout) targets = targets.map((t) => (t.canAutoLayout ? Object.assign({}, t, { autoLayout: true }) : t));
+    modes.push(addsLayout ? "autolayout" : "apply");
   }
   return { modes };
 }
 
-// A text style inserts a new text layer when no text is selected.
+// A text style inserts a new text layer when no text is selected, and padding
+// or gap on a frame without auto layout adds it.
 function opLabel(op, mode) {
-  return op.kind === "textstyle" && mode === "insert" ? "Insert text " + op.label.replace(/^Text /, "") : op.label;
+  if (op.kind === "textstyle" && mode === "insert") return "Insert text " + op.label.replace(/^Text /, "");
+  if (mode === "autolayout") return op.label + " (adds auto layout)";
+  return op.label;
 }
 function describeOpsIn(ops, modes) {
   return ops.map((op, i) => opLabel(op, modes && modes[i])).join(" · ");
@@ -529,16 +530,40 @@ function aliasError(entries, name, expansion) {
   if (!ALIAS_NAME.test(name)) return "Alias names are lowercase letters, digits and -, not starting with -";
   const r0 = createParser(entries, {}, { search: false }).parse(name);
   if (!r0.error) return '"' + name + '" is already built-in syntax';
-  if (/[=?]/.test(expansion)) return "An alias can't contain = or ?";
   const r = createParser(entries, {}).parse(expansion);
   if (r.error) return r.error;
   if (!r.primary) return "Incomplete: " + expansion;
   return null;
 }
 
+// A variable's value for the given modes ({ collection name: mode name }, from
+// the selected layer), following aliases into other collections with their own
+// mode. Collections the layer has no mode for use their default mode. table is
+// VARIABLE_VALUES: id -> { collection, defaultMode, values: { mode: value } },
+// or just the value for a variable with a single mode.
+function resolveValue(table, id, modes) {
+  for (let depth = 0; depth < 10; depth++) {
+    const t = table[id];
+    if (t === undefined || t === null) return null;
+    if (typeof t !== "object") return t;
+    const chosen = modes && modes[t.collection];
+    const value = t.values[chosen in t.values ? chosen : t.defaultMode];
+    if (value === undefined || value === null) return null;
+    if (typeof value !== "object") return value;
+    id = value.alias;
+  }
+  return null;
+}
+
+// "12px" for numbers, colors as they are ("#1A73E8").
+function formatValue(value) {
+  if (typeof value === "number") return Number(value.toFixed(2)) + "px";
+  return typeof value === "string" ? value : null;
+}
+
 // The Numpad N menu commands run the alias named N without the palette.
 function aliasOps(entries, aliases, name) {
-  if (!aliases[name]) return { error: 'No alias "' + name + '". Add one with =' + name + " in the palette" };
+  if (!aliases[name]) return { error: 'No alias "' + name + '". Add one in the palette: ? › Aliases' };
   const r = createParser(entries, aliases).parse(name);
   if (!r.primary) return { error: "Alias " + name + ": " + (r.error || "incomplete") };
   return { ops: r.primary };

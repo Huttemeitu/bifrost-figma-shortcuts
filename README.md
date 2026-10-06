@@ -121,8 +121,12 @@ cd ~/Code/bifrost-figma-shortcuts && git pull
    understood), or open a group (Padding, Gap, Radius, Fill, Text, Component)
    with Tab or Enter to browse its actions.
 
-Every row shows its shorthand and your aliases on the right, so browsing a
-group also teaches you what to type next time.
+Every row shows the token's value (`12px`, or a color swatch and its hex),
+then its shorthand and your aliases on the right, so browsing a group also
+teaches you what to type next time. Colors follow the selected layer's
+variable modes: inside a Dark frame you see the dark value, in a Pink theme
+the pink one. With nothing selected they show the defaults (Light, Teal).
+The Options tab shows the same values.
 
 | Key | Does |
 |---|---|
@@ -141,17 +145,15 @@ group also teaches you what to type next time.
 | `gs` | Gap S |
 | `rl`, `r full` | Radius on all corners |
 | `rt m`, `rtl s`, `rbr m` | Radius on two corners / one corner |
-| `f brand`, `fbase3`, `bg base-1` | Fill, fuzzy match on the color name (dashes optional) |
-| `b base-dimmed-3`, `bbasedimmed3` | Border: that color, always 1px on all sides |
+| `fbrand`, `fbase3`, `f base-1` | Fill, fuzzy match on the color name (space and dashes optional) |
+| `bbrand`, `bbasedimmed3`, `b base-dimmed-3` | Border: that color, always 1px on all sides |
 | `h1` … `h5`, `t regular` | Text style on selected text; with no text selected it inserts a text layer ("Header H5") |
 | `frame` | Insert a frame (placed like components, see below) |
 | `alh`, `alv` | Auto layout horizontal / vertical on the selected frames |
 | `frame alh pm rm bbase-dimmed3` | Build a styled auto-layout frame in one go |
 | `button`, `btn`, `basic input`, `brand` | Search components, text styles and colors by name |
-| `+button`, `+icon button` | Insert a component (the rest of the input is its name) |
 | `pm gs rl` | Several at once |
 | `button pm` | Insert a Button and give it padding M |
-| `=cta f brand` | Save the alias `cta` (`=cta` alone deletes it) |
 | `?` | Help, aliases and recents |
 
 Inside a group, leave out the group's key: in Padding, `m` is Padding M and
@@ -160,9 +162,9 @@ Inside a group, leave out the group's key: in Padding, `m` is Padding M and
 Some details:
 
 - **Only what works is offered:** the palette checks every command against
-  what's selected, step by step, and hides what would do nothing. Padding and
-  gap need an auto-layout frame (`alh pm` adds it first), auto layout needs a
-  frame (not an instance), fills and borders need a layer that can have them
+  what's selected, step by step, and hides what would do nothing. Auto
+  layout, padding and gap need a frame (not an instance, unless it already
+  has auto layout), fills and borders need a layer that can have them
   (not a group), single corners need a frame or rectangle. If you type
   something that can't apply, it says why instead of doing nothing.
 - **Repeat:** the last three commands are listed first on the empty palette,
@@ -177,6 +179,10 @@ Some details:
   other readings.
 - **Window size:** drag the bottom-right corner to resize. The size is
   remembered for next time.
+- **Padding and gap add auto layout** to a frame that doesn't have it, so
+  `pm` or `gs` works on any frame. The direction follows the children like Shift+A: side
+  by side becomes horizontal, anything else vertical. The row says "(adds
+  auto layout)" when this happens. Use `alh`/`alv` first to choose yourself.
 - **Frames** (`frame`) are placed the same way as components and become the
   selection, so everything after `frame` applies to the new frame. Adding auto
   layout (`alh`/`alv`) to a frame with children makes it hug them, like
@@ -186,13 +192,14 @@ Some details:
   selected it's added right after it, and with nothing selected it lands in
   the center of the viewport. The new instance gets selected, and anything
   after the component in the same command applies to it.
-- **Aliases** can be words or numbers (`=1 pm gs`), and work anywhere a
-  command can start, so `cta rl` works if `cta` is an alias. They never
+- **Aliases** are saved in the help view's Aliases tab (`?` › Aliases). Names
+  can be words or numbers (`1` → `pm gs`), and they work anywhere a command
+  can start, so `cta rl` works if `cta` is an alias. They never
   replace a value, so an alias named `m` doesn't break `p m`.
   They're stored per user and per machine (Figma's `clientStorage`); use
-  **Copy as JSON** / **Import…** in the help view's Aliases tab (`?`) to back
-  them up or share them. The Aliases tab also checks a new alias live and lets
-  you click an existing one to edit it.
+  **Copy as JSON** / **Import…** in the Aliases tab to back them up or share
+  them. The tab checks a new alias live and lets you click an existing one
+  to edit it.
 - The Bifrost libraries must be enabled in the file you're working in.
 
 ### Choosing which options show
@@ -259,24 +266,12 @@ Mac.
 ### Regenerating when the Bifrost library changes
 
 1. Open the file where the variables and text styles are defined.
-2. Type `!vars` in the palette, or paste this into the plugin console
-   (**Plugins → Development → Open Console**):
-   ```js
-   (async () => {
-     const collections = await figma.variables.getLocalVariableCollectionsAsync();
-     const result = [];
-     for (const c of collections) {
-       for (const id of c.variableIds) {
-         const v = await figma.variables.getVariableByIdAsync(id);
-         if (!v) continue;
-         result.push({ collection: c.name, name: v.name, id: v.id, key: v.key, resolvedType: v.resolvedType });
-       }
-     }
-     console.log(JSON.stringify(result, null, 2));
-   })();
-   ```
+2. Open **Plugins → Development → Open Console**, then type `!vars` in the
+   palette and press Enter. It logs every variable with its value in each
+   mode (references to other variables kept as `{ "alias": id }`), which the
+   palette shows next to each option.
    Right-click the log → **Copy string contents** → save as `bifrost-variables.json`.
-3. For text styles, paste this instead and save as `bifrost-text-styles.json`:
+3. For text styles, paste this into the console and save as `bifrost-text-styles.json`:
    ```js
    (async () => {
      const styles = await figma.getLocalTextStylesAsync();

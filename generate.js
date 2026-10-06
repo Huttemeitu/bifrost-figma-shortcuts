@@ -4,8 +4,9 @@
 //
 // Reads the JSON exports from the Figma console snippets (see README) and writes:
 //  - manifest.json: "Open palette" plus "Numpad 0-9" (run alias 0-9 without a window)
-//  - code.js: VARIABLE_MAP (slug -> token/component) + UI_HTML (src/ui.html with
-//    src/parse.js inlined) + src/parse.js + src/runtime.js
+//  - code.js: VARIABLE_MAP (slug -> token/component) + VARIABLE_VALUES (values per
+//    mode) + UI_HTML (src/ui.html with src/parse.js inlined) + src/parse.js +
+//    src/runtime.js
 //
 // Classification: COLOR variables (except Light/ and Dark/ ones) -> fill AND stroke, FLOAT "Spacing/..." -> padding AND gap,
 // FLOAT "Border radius/..." -> radius, text styles -> textstyle, components -> component.
@@ -107,6 +108,7 @@ const KINDS = {
     name: textStyleLabel(s.name),
     id: s.id,
     key: s.key,
+    value: s.fontSize,
   })),
   component: components.map((c) => {
     const name = componentLabel(c);
@@ -134,8 +136,9 @@ const manifest = {
 
 // ---------- code.js ----------
 
-// Flat lookup: slug -> { id, key, name, kind, type, isSet?, group? }. group is the
-// top level in the Options tree: a fill's collection, a component's page.
+// Flat lookup: slug -> { id, key, name, kind, type, isSet?, group?, value? }. group is the
+// top level in the Options tree: a fill's collection, a component's page. value
+// is a text style's font size; variables get theirs from VARIABLE_VALUES.
 const TYPE_BY_KIND = { textstyle: "style", component: "component" };
 const flatMap = {};
 for (const [kind, entries] of Object.entries(KINDS)) {
@@ -143,7 +146,25 @@ for (const [kind, entries] of Object.entries(KINDS)) {
     flatMap[e.slug] = { id: e.id, key: e.key, name: e.name, kind, type: TYPE_BY_KIND[kind] || "variable" };
     if (e.isSet) flatMap[e.slug].isSet = true;
     if (e.group) flatMap[e.slug].group = e.group;
+    if (e.value) flatMap[e.slug].value = e.value;
   }
+}
+
+// The value shown next to each variable option, per mode, so the palette can
+// show what the selected layer would get (resolveValue in parse.js). Includes
+// every variable an option's aliases lead to, like the Light/ and Dark/ colors.
+// A variable with a single mode (all primitives) is stored as just its value.
+// Empty for exports made before !vars included values.
+const variablesById = new Map(variables.map((v) => [v.id, v]));
+const valueTable = {};
+const pending = Object.values(flatMap).filter((e) => e.type === "variable").map((e) => e.id);
+while (pending.length) {
+  const v = variablesById.get(pending.pop());
+  if (!v || !v.values || valueTable[v.id]) continue;
+  const values = Object.values(v.values);
+  const single = values.length === 1 && !(values[0] && values[0].alias);
+  valueTable[v.id] = single ? values[0] : { collection: v.collection, defaultMode: v.defaultMode, values: v.values };
+  for (const value of values) if (value && value.alias) pending.push(value.alias);
 }
 
 const readSrc = (file) => fs.readFileSync(path.join(__dirname, "src", file), "utf8");
@@ -156,6 +177,8 @@ const codeJs = [
   "// regenerate instead of editing this file by hand.",
   "",
   `const VARIABLE_MAP = ${JSON.stringify(flatMap, null, 2)};`,
+  "",
+  `const VARIABLE_VALUES = ${JSON.stringify(valueTable)};`,
   "",
   `const UI_HTML = ${JSON.stringify(uiHtml)};`,
   "",

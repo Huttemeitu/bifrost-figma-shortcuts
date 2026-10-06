@@ -6,8 +6,9 @@
 // UI -> code: ready | apply {ops, keepOpen} | saveAlias {name, expansion} |
 //             deleteAlias {name} | clearRecents | setHidden {hidden} | import {json} |
 //             resize {width, height, save} | vars | close
-// code -> UI: init {entries, aliases, recents, hidden, selection} | selection {selection} |
-//             (selection = {count, nodes: distinct nodeCaps of the selected layers})
+// code -> UI: init {entries, values, aliases, recents, hidden, selection} | selection {selection} |
+//             (selection = {count, nodes: distinct nodeCaps of the selected layers,
+//              modes: {collection name: mode name} of the first selected layer})
 //             state {aliases, recents, hidden, error, notice}
 
 const ENTRIES = Object.keys(VARIABLE_MAP).map((slug) => Object.assign({ slug }, VARIABLE_MAP[slug]));
@@ -177,6 +178,16 @@ function setAutoLayout(node, direction) {
   }
 }
 
+// For padding or gap on a frame without auto layout: children spread out more
+// sideways than downwards become a row, like Shift+A does. Otherwise a column.
+function guessDirection(node) {
+  const spread = (axis, size) => {
+    const centers = node.children.map((c) => c[axis] + c[size] / 2);
+    return Math.max(...centers) - Math.min(...centers);
+  };
+  return node.children.length > 1 && spread("x", "width") > spread("y", "height") ? "HORIZONTAL" : "VERTICAL";
+}
+
 // What each layer can take, for opSupports/checkOps in parse.js.
 function nodeCaps(node) {
   return {
@@ -244,6 +255,9 @@ async function applyOp(op, target, nodes, mode) {
       if ("strokeWeight" in node) node.strokeWeight = 1;
     } else if (op.kind === "autolayout") {
       setAutoLayout(node, op.value);
+    } else if (op.kind === "padding" || op.kind === "gap") {
+      if (node.layoutMode === "NONE") setAutoLayout(node, guessDirection(node));
+      bindFields(node, FIELD_SETS[op.kind][op.side], target);
     } else if (op.kind === "textstyle") {
       await node.setTextStyleIdAsync(target.id);
     } else if (op.kind === "radius" && op.side === "ALL" && !nodeCaps(node).corners) {
@@ -345,14 +359,30 @@ async function importBackup(json) {
 // ---------- Palette window ----------
 
 // Distinct capabilities only: a selection of 500 rectangles is one entry.
-function selectionInfo() {
+async function selectionInfo() {
   const sel = figma.currentPage.selection;
   const seen = new Map();
   for (const node of sel) {
     const caps = nodeCaps(node);
     seen.set(JSON.stringify(caps), caps);
   }
-  return { count: sel.length, nodes: [...seen.values()] };
+  return { count: sel.length, nodes: [...seen.values()], modes: await layerModes(sel[0]) };
+}
+
+// The variable modes a layer resolves to (its own or inherited from a parent),
+// by collection and mode name. Names, not ids: in a file that uses Bifrost as a
+// library, the collections have other ids than in the Variables file.
+const collectionCache = new Map();
+async function layerModes(node) {
+  const modes = {};
+  if (!node) return modes;
+  for (const [collectionId, modeId] of Object.entries(node.resolvedVariableModes)) {
+    if (!collectionCache.has(collectionId)) collectionCache.set(collectionId, await figma.variables.getVariableCollectionByIdAsync(collectionId));
+    const collection = collectionCache.get(collectionId);
+    const mode = collection && collection.modes.find((m) => m.modeId === modeId);
+    if (mode) modes[collection.name] = mode.name;
+  }
+  return modes;
 }
 
 function postState(error, notice) {
@@ -364,11 +394,12 @@ async function handleMessage(msg) {
   if (msg.type === "ready") {
     figma.ui.postMessage({
       type: "init",
-      entries: ENTRIES.map((e) => ({ slug: e.slug, kind: e.kind, name: e.name, group: e.group })),
+      entries: ENTRIES.map((e) => ({ slug: e.slug, id: e.id, kind: e.kind, name: e.name, group: e.group, value: e.value })),
+      values: VARIABLE_VALUES,
       aliases: state.aliases,
       recents: state.recents,
       hidden: state.hidden,
-      selection: selectionInfo(),
+      selection: await selectionInfo(),
     });
   } else if (msg.type === "apply") {
     const result = await applyOps(msg.ops);
@@ -432,19 +463,43 @@ stateReady.then(() => {
       console.error(e);
       postState("Error: " + e.message);
     });
-  figma.on("selectionchange", () => figma.ui.postMessage({ type: "selection", selection: selectionInfo() }));
+  // Reading modes is async, so a quick second selection change could finish
+  // first; only the latest one is sent.
+  let latest = 0;
+  figma.on("selectionchange", async () => {
+    const n = ++latest;
+    const selection = await selectionInfo();
+    if (n === latest) figma.ui.postMessage({ type: "selection", selection });
+  });
 });
 
 // ---------- Debug / export helper ----------
+
+// A variable's raw value in one mode: "#RRGGBB" (plus alpha if not opaque),
+// a number, or { alias: id } when it points to another variable. The palette
+// resolves aliases with the selected layer's modes (resolveValue in parse.js).
+function exportValue(value) {
+  if (typeof value === "number") return value;
+  if (value && value.type === "VARIABLE_ALIAS") return { alias: value.id };
+  if (!value || !("r" in value)) return null;
+  const hex = (n) => Math.round(n * 255).toString(16).padStart(2, "0").toUpperCase();
+  return "#" + hex(value.r) + hex(value.g) + hex(value.b) + ("a" in value && value.a < 1 ? hex(value.a) : "");
+}
 
 async function listVariables() {
   const collections = await figma.variables.getLocalVariableCollectionsAsync();
   const result = [];
   for (const c of collections) {
+    const defaultMode = c.modes.find((m) => m.modeId === c.defaultModeId).name;
     for (const id of c.variableIds) {
       const v = await figma.variables.getVariableByIdAsync(id);
       if (!v) continue;
-      result.push({ collection: c.name, name: v.name, id: v.id, key: v.key, resolvedType: v.resolvedType });
+      const item = { collection: c.name, name: v.name, id: v.id, key: v.key, resolvedType: v.resolvedType };
+      if (v.resolvedType === "COLOR" || v.resolvedType === "FLOAT") {
+        item.defaultMode = defaultMode;
+        item.values = Object.fromEntries(c.modes.map((m) => [m.name, exportValue(v.valuesByMode[m.modeId])]));
+      }
+      result.push(item);
     }
   }
   console.log(JSON.stringify(result, null, 2));

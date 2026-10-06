@@ -36,15 +36,14 @@ test("ambiguous glued input prefers the shortest op and offers the other reading
   assert.deepEqual(labels(parse("pl m").primary), ["Padding left M"]);
 });
 
-test("several ops chain, and a component consumes the rest of the input", () => {
+test("several ops chain", () => {
   assert.deepEqual(labels(parse("pm gs rl").primary), ["Padding M", "Gap S", "Radius L"]);
-  assert.deepEqual(labels(parse("pm +btn").primary), ["Padding M", "Insert Button"]);
-  assert.deepEqual(labels(parse("+button (icon").primary), ["Insert Button (icon only)"]);
+  assert.deepEqual(labels(parse("pm btn").primary), ["Padding M", "Insert Button"]);
 });
 
 test("fuzzy matches rank exact path segments first and icon fonts last", () => {
   assert.deepEqual(labels(parse("f brand").primary), ["Fill Pop/Brand/bfc-brand"]);
-  assert.deepEqual(labels(parse("bg base-1 pm").primary), ["Fill Base/bfc-base-1", "Padding M"]);
+  assert.deepEqual(labels(parse("fbase-1 pm").primary), ["Fill Base/bfc-base-1", "Padding M"]);
   assert.deepEqual(labels(parse("t s").primary), ["Text S/Open Sans/Regular/Text"]);
   assert.deepEqual(labels(parse("h1").primary), ["Text H1"]);
 });
@@ -118,6 +117,14 @@ test("bare words search components, text styles and colors by name", () => {
   assert.deepEqual(labels(parse("button pm").primary), ["Insert Button", "Padding M"]);
   assert.deepEqual(labels(parse("box rm").primary), ["Insert Box", "Radius M"]);
   assert.deepEqual(labels(parse("basic input pm").primary), ["Insert Input/Basic input", "Padding M"]);
+  assert.deepEqual(labels(parse("button (icon").primary), ["Insert Button (icon only)"]);
+});
+
+test("a group's search option limits name search to its kinds", () => {
+  const components = ctx.createParser(ENTRIES, {}, { search: ["component"] });
+  assert.deepEqual(labels(parse("brand").primary), ["Fill Pop/Brand/bfc-brand"]);
+  assert.match(components.parse("brand").error, /No matches/);
+  assert.deepEqual(labels(components.parse("button pm").primary), ["Insert Button", "Padding M"]);
 });
 
 test("incomplete input has no primary, unknown words are errors", () => {
@@ -138,7 +145,6 @@ test("every help example parses", () => {
   for (const section of sections) {
     for (const [examples] of section.rows) {
       for (const ex of examples) {
-        if (ex.startsWith("=")) continue;
         const r = p.parse(ex);
         assert.ok(!r.error && r.primary, ex + " → " + (r.error || "incomplete"));
       }
@@ -176,12 +182,14 @@ test("checkOps only allows ops that would do something to the selection", () => 
   const check = (q, selection) => ctx.checkOps(parse(q).primary, selection);
   const modes = (q, selection) => Array.from(check(q, selection).modes || []);
 
-  // Padding and gap need auto layout, also when it's added earlier in the same command
-  assert.match(check("pm", [frame]).error, /Padding M needs an auto-layout frame/);
+  // Padding and gap add auto layout to a frame without it, once.
   assert.deepEqual(modes("alh pm gs", [frame]), ["apply", "apply", "apply"]);
+  assert.deepEqual(modes("gs pm", [frame]), ["autolayout", "apply"]);
   assert.deepEqual(modes("pm", [autoFrame]), ["apply"]);
-  assert.deepEqual(modes("frame alh pm rm", []), ["insert", "apply", "apply", "apply"]);
-  assert.match(check("frame pm", []).error, /auto-layout/);
+  assert.deepEqual(modes("pm gs", [frame]), ["autolayout", "apply"]);
+  assert.equal(ctx.describeOpsIn(parse("pm").primary, ["autolayout"]), "Padding M (adds auto layout)");
+  assert.deepEqual(modes("frame pm rm", []), ["insert", "autolayout", "apply"]);
+  assert.match(check("pm", [caps({ canAutoLayout: false })]).error, /Padding M needs a frame/);
 
   // Text styles change selected text, otherwise insert a text layer
   assert.deepEqual(modes("h1", [text]), ["apply"]);
@@ -200,7 +208,9 @@ test("checkOps only allows ops that would do something to the selection", () => 
   assert.deepEqual(modes("r s", [caps({ corners: false })]), ["apply"]);
 
   // Mixed selection: available if any layer supports it
-  assert.deepEqual(modes("pm", [frame, autoFrame]), ["apply"]);
+  assert.deepEqual(modes("pm", [frame, autoFrame]), ["autolayout"]);
+  assert.deepEqual(modes("gs", [instance]), ["apply"]);
+  assert.match(check("gs", [text]).error, /Gap S needs a frame/);
 });
 
 test("aliasOps runs a numpad alias, or says what's missing", () => {
@@ -208,4 +218,20 @@ test("aliasOps runs a numpad alias, or says what's missing", () => {
   assert.deepEqual(labels(ctx.aliasOps(ENTRIES, aliases, "1").ops), ["Insert Button", "Padding M"]);
   assert.match(ctx.aliasOps(ENTRIES, aliases, "2").error, /^Alias 2: /);
   assert.match(ctx.aliasOps(ENTRIES, aliases, "3").error, /No alias "3"/);
+});
+
+test("resolveValue follows aliases with the layer's mode per collection", () => {
+  const table = {
+    brand: { collection: "Mode", defaultMode: "Light", values: { Light: { alias: "themeBrand" }, Dark: "#FFFFFF" } },
+    themeBrand: { collection: "Theme", defaultMode: "Teal", values: { Teal: { alias: "teal" }, Pink: "#BB006D" } },
+    teal: "#007375",
+    spacing: { collection: "Mode", defaultMode: "Light", values: { Light: 12, Dark: 12 } },
+  };
+  assert.equal(ctx.resolveValue(table, "brand", {}), "#007375");
+  assert.equal(ctx.resolveValue(table, "brand", { Mode: "Dark" }), "#FFFFFF");
+  assert.equal(ctx.resolveValue(table, "brand", { Theme: "Pink" }), "#BB006D");
+  assert.equal(ctx.resolveValue(table, "brand", { Mode: "Unknown mode" }), "#007375");
+  assert.equal(ctx.resolveValue(table, "missing", {}), null);
+  assert.equal(ctx.formatValue(ctx.resolveValue(table, "spacing", undefined)), "12px");
+  assert.equal(ctx.formatValue(ctx.resolveValue(table, "teal", {})), "#007375");
 });
