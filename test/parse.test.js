@@ -202,3 +202,10 @@ test("checkOps only allows ops that would do something to the selection", () => 
   // Mixed selection: available if any layer supports it
   assert.deepEqual(modes("pm", [frame, autoFrame]), ["apply"]);
 });
+
+test("aliasOps runs a numpad alias, or says what's missing", () => {
+  const aliases = { 1: "button pm", 2: "p" };
+  assert.deepEqual(labels(ctx.aliasOps(ENTRIES, aliases, "1").ops), ["Insert Button", "Padding M"]);
+  assert.match(ctx.aliasOps(ENTRIES, aliases, "2").error, /^Alias 2: /);
+  assert.match(ctx.aliasOps(ENTRIES, aliases, "3").error, /No alias "3"/);
+});

@@ -1,6 +1,7 @@
 // --- Runtime ---
-// Running the plugin opens the palette window (UI_HTML). Parsing happens inside
-// the window for instant feedback; this side applies ops and owns storage.
+// "Open palette" opens the palette window (UI_HTML). Parsing happens inside the
+// window for instant feedback; this side applies ops and owns storage.
+// "Numpad N" runs alias N headless (runAlias).
 //
 // UI -> code: ready | apply {ops, keepOpen} | saveAlias {name, expansion} |
 //             deleteAlias {name} | clearRecents | setHidden {hidden} | import {json} |
@@ -372,8 +373,7 @@ async function handleMessage(msg) {
   } else if (msg.type === "apply") {
     const result = await applyOps(msg.ops);
     if (msg.keepOpen) return postState(result.failed ? result.message : null, result.failed ? null : result.message);
-    figma.notify(result.message, { error: result.failed });
-    figma.closePlugin();
+    closeWith(result);
   } else if (msg.type === "saveAlias") {
     const name = String(msg.name || "").trim().toLowerCase();
     const expansion = String(msg.expansion || "").trim();
@@ -410,8 +410,22 @@ async function handleMessage(msg) {
   }
 }
 
+function closeWith(result) {
+  figma.notify(result.message, { error: result.failed });
+  figma.closePlugin();
+}
+
+// Numpad N runs alias N with no window, so a key bound to the menu item applies
+// it directly. This is what the numpad companion app triggers.
+async function runAlias(name) {
+  const found = aliasOps(ENTRIES, state.aliases, name);
+  closeWith(found.error ? { message: found.error, failed: true } : await applyOps(found.ops));
+}
+
 // Opened after storage is read, so the window starts at the size it had last time.
 stateReady.then(() => {
+  const numpad = /^numpad-(\d)$/.exec(figma.command);
+  if (numpad) return runAlias(numpad[1]);
   figma.showUI(UI_HTML, Object.assign({ themeColors: true, title: "Bifrost" }, state.size));
   figma.ui.onmessage = (msg) =>
     handleMessage(msg).catch((e) => {

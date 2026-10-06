@@ -536,6 +536,14 @@ function aliasError(entries, name, expansion) {
   return null;
 }
 
+// The Numpad N menu commands run the alias named N without the palette.
+function aliasOps(entries, aliases, name) {
+  if (!aliases[name]) return { error: 'No alias "' + name + '". Add one with =' + name + " in the palette" };
+  const r = createParser(entries, aliases).parse(name);
+  if (!r.primary) return { error: "Alias " + name + ": " + (r.error || "incomplete") };
+  return { ops: r.primary };
+}
+
 function describeOps(ops) {
   return ops.map((o) => o.label).join(" · ");
 }

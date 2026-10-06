@@ -3,7 +3,7 @@
 // Usage: node generate.js <variables.json> <outDir> [textstyles.json] [components.json]
 //
 // Reads the JSON exports from the Figma console snippets (see README) and writes:
-//  - manifest.json: one plugin, no menu; running it opens the palette window
+//  - manifest.json: "Open palette" plus "Numpad 0-9" (run alias 0-9 without a window)
 //  - code.js: VARIABLE_MAP (slug -> token/component) + UI_HTML (src/ui.html with
 //    src/parse.js inlined) + src/parse.js + src/runtime.js
 //
@@ -116,12 +116,20 @@ const KINDS = {
 
 // ---------- manifest.json ----------
 
+// Open palette comes first so "bif" → Enter in the Actions menu still opens it.
+// The Numpad commands share the plugin id, and with it the aliases in clientStorage.
+const digits = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
 const manifest = {
   name: "Bifrost",
   id: "bifrost-fill-shortcuts",
   api: "1.0.0",
   main: "code.js",
   editorType: ["figma"],
+  menu: [
+    { name: "Open palette", command: "open" },
+    { separator: true },
+    { name: "Numpad", menu: digits.map((d) => ({ name: "Numpad " + d, command: "numpad-" + d })) },
+  ],
 };
 
 // ---------- code.js ----------

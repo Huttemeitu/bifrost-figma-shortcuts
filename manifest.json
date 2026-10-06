@@ -5,5 +5,59 @@
   "main": "code.js",
   "editorType": [
     "figma"
+  ],
+  "menu": [
+    {
+      "name": "Open palette",
+      "command": "open"
+    },
+    {
+      "separator": true
+    },
+    {
+      "name": "Numpad",
+      "menu": [
+        {
+          "name": "Numpad 1",
+          "command": "numpad-1"
+        },
+        {
+          "name": "Numpad 2",
+          "command": "numpad-2"
+        },
+        {
+          "name": "Numpad 3",
+          "command": "numpad-3"
+        },
+        {
+          "name": "Numpad 4",
+          "command": "numpad-4"
+        },
+        {
+          "name": "Numpad 5",
+          "command": "numpad-5"
+        },
+        {
+          "name": "Numpad 6",
+          "command": "numpad-6"
+        },
+        {
+          "name": "Numpad 7",
+          "command": "numpad-7"
+        },
+        {
+          "name": "Numpad 8",
+          "command": "numpad-8"
+        },
+        {
+          "name": "Numpad 9",
+          "command": "numpad-9"
+        },
+        {
+          "name": "Numpad 0",
+          "command": "numpad-0"
+        }
+      ]
+    }
   ]
 }
