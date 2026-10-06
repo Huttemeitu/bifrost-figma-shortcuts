@@ -6,3 +6,7 @@ node_modules
 # macOS
 .DS_Store
 
+
+# Companion app
+companion/.build
+companion/build
