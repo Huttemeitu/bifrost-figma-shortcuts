@@ -30,7 +30,8 @@ node --check code.js && node --test test/
 
 ## Runtime model
 
-- The manifest has no menu and no parameters: running the plugin (Actions menu → `bif` → Enter) waits for `clientStorage`, then calls `figma.showUI(UI_HTML, { themeColors: true, ...state.size })` (default 520×600) and the palette takes over. The corner `#grip` in `ui.html` sends `resize {width, height}` once per animation frame while dragging and `save: true` on release; `runtime.js` clamps to `MIN_SIZE`, calls `figma.ui.resize` and stores the size. It replaced Figma's native parameter list (2026-10-02) because that list can't show a right-hand column or open nested groups.
+- The manifest menu is `Open palette` (first, so `bif` → Enter still opens it) and a `Numpad` submenu with `Numpad 0`…`Numpad 9` (`figma.command` `numpad-N`). Those run alias `N` headless via `runAlias` → `aliasOps` (in `parse.js`) → `applyOps`, then notify and close. They exist for the numpad companion app (see below); aliases stay the single place where keys are assigned.
+- `Open palette` waits for `clientStorage`, then calls `figma.showUI(UI_HTML, { themeColors: true, ...state.size })` (default 520×600) and the palette takes over. The corner `#grip` in `ui.html` sends `resize {width, height}` once per animation frame while dragging and `save: true` on release; `runtime.js` clamps to `MIN_SIZE`, calls `figma.ui.resize` and stores the size. It replaced Figma's native parameter list (2026-10-02) because that list can't show a right-hand column or open nested groups.
 - Message protocol is documented at the top of `runtime.js`. The UI parses locally (instant) and sends `apply {ops, keepOpen}`; the plugin side applies, then either closes (Enter) or replies with `state` (Shift+Enter). Ops carry slugs and labels, so the plugin side never re-parses.
 - The palette needs keyboard focus on open (`window.focus()` + `q.focus()`). Not yet verified in Figma whether that works without a click.
 - `selectionchange` is forwarded as `selection {count, hasText, hasAutoLayout}`; the UI re-renders live and orders groups by it.
@@ -83,8 +84,19 @@ node --check code.js && node --test test/
 | `bifrost-variables.json`, `bifrost-text-styles.json` | Exports from the Bifrost variables file |
 | `bifrost-components.json` | Filtered export from the Bifrost Components file (public, non-demo, Bifrost section only) |
 | `test/parse.test.js` | Focused parser tests, `node --test test/` |
+| `companion/` | Bifrost Numpad, the macOS menu bar app (Swift package, no dependencies) |
 
 No `package.json` and no dependencies; Node is only used to generate and test.
+
+## Numpad companion app (companion/)
+
+Swift 6 package, macOS 14+, AppKit only. `companion/build.sh` builds a universal `build/Bifrost Numpad.app` (`Info.plist` is copied in, `LSUIElement`), signed ad hoc or with `SIGN_IDENTITY`. `--release` also copies it to `dist/`, which is **committed**: designers install by copying it from a git checkout, with no build tools. That works without notarization only because git doesn't set the quarantine flag (a browser zip download does). Only update `dist/` on a real release (bump the version), since every new binary loses the Accessibility grant.
+
+- `NumpadTap.swift`: a `CGEventTap` (needs Accessibility) swallows numpad digits (keypad key codes, no ⌘⌥⌃⇧) only while Figma is frontmost and `!figma.isTyping`; the matching keyUp is swallowed too. The menu press is dispatched off the callback so a slow press can't time out the tap. `CGEvent` isn't Sendable, so the callback copies fields into `Key` before `MainActor.assumeIsolated`.
+- `Figma.swift`: `isTyping` = the focused AX element is a text role. Works without `AXManualAccessibility` (verified 2026-10-06), so the app never changes Figma's settings. `runNumpad` finds `Numpad N` below a menu titled `Bifrost` (dev and org-published paths differ), caches it per Figma pid and searches again if a press fails.
+- `main.swift`: status item (SF Symbol `square.grid.3x3`, flashes `.fill` on success, `exclamationmark.triangle` on failure, `appearsDisabled` when paused or without permission). Enabled is deliberately not persisted. Launch at login uses `SMAppService.mainApp`. Without permission it polls `AXIsProcessTrusted` every 2 s and starts the tap when granted.
+- Ad hoc signatures change per build, so macOS forgets the Accessibility grant after every rebuild.
+- Before relying on the committed app more widely, check with security: skipping Gatekeeper via git is a gray area. The long-term route is Developer ID + notarization + MDM.
 
 ## History
 

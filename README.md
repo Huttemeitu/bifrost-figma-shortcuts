@@ -2,12 +2,111 @@
 
 A keyboard-first Figma plugin for applying Bifrost design tokens (fill and
 border colors, padding, gap, radius, text styles) to the selection and inserting Bifrost
-components, from a small command palette. No macOS shortcut setup needed.
+components, from a small command palette. With the optional **Bifrost Numpad**
+app, a single numpad key applies a command of your choice.
 
 It covers 796 colors (as fill or border), 12 spacing values (padding and gap), 7 radius
 values, 68 text styles and 86 components.
 
-## Using it
+## Getting started
+
+You need the Figma **desktop app** (development plugins don't run in the
+browser) and access to this repo on GitHub.
+
+### 1. Get the repo
+
+Open Terminal and clone the repo to a folder you'll keep, e.g. `~/Code`:
+
+```bash
+mkdir -p ~/Code && cd ~/Code
+git clone https://github.com/Huttemeitu/bifrost-figma-shortcuts.git
+```
+
+- The first time you run `git`, macOS may offer to install the Command Line
+  Tools. Accept and run the command again.
+- Use `git clone`, not **Download ZIP**: macOS blocks the numpad app in a
+  downloaded zip, and with a clone, updating is one command.
+- Figma remembers where the plugin is. If you move the folder later, import
+  the plugin again (step 2).
+
+### 2. Install the Figma plugin
+
+1. In the Figma desktop app, open any design file.
+2. **Plugins › Development › Import plugin from manifest…**
+3. Pick `manifest.json` in the `bifrost-figma-shortcuts` folder.
+
+If you imported an earlier version from another folder, remove that one first
+(**Plugins › Development › Manage plugins in development**); both use the same
+plugin id.
+
+### 3. Enable the Bifrost libraries
+
+The plugin applies tokens and components from the Bifrost libraries, so they
+have to be enabled in the file you work in: **Assets panel › Libraries** (the
+book icon), then turn on the Bifrost variables library and Bifrost Components.
+Without them, commands fail with "not in an enabled library".
+
+### 4. Try it
+
+1. Select a frame.
+2. Open the Actions menu (⌘K, ⌘/ or ⌘, depending on your keyboard layout),
+   type `bif` and press Enter. The Bifrost palette opens.
+3. Type `alh pm rm` and press Enter: the frame gets horizontal auto layout,
+   padding M and radius M.
+4. Type `?` in the palette for the full guide. [Using the palette](#using-the-palette)
+   below has the same in short.
+
+### 5. Optional: numpad keys
+
+Skip this if your keyboard has no numpad. With **Bifrost Numpad** running,
+pressing numpad 1 in Figma runs your alias `1`, numpad 2 runs alias `2`, and
+so on.
+
+1. In Finder, open the repo folder, go to `companion/dist/` and copy
+   **Bifrost Numpad.app** to **Applications**.
+2. Open it from Applications. It has no window; a small grid icon appears in
+   the menu bar.
+3. macOS asks to give it **Accessibility** access. Click **Open System
+   Settings** and turn on Bifrost Numpad (needs an admin password). If you
+   missed the prompt: menu bar icon › **Grant Accessibility access…**. The
+   icon turns from grey to normal within a couple of seconds.
+4. Choose what each key does by saving aliases named `0`–`9` in the palette:
+   type `=1 button pm` and press Enter, and numpad 1 inserts a Button with
+   padding M. `=2 alh pm gs` makes numpad 2 add auto layout with padding M and
+   gap S. Any command that works in the palette works as an alias.
+5. Optional: menu bar icon › **Launch at login**.
+
+To use the same keys as a teammate, have them copy their aliases (palette ›
+`?` › **Aliases** › **Copy as JSON**) and paste them in with **Import…** in
+the same place. Imported aliases are added to the ones you have.
+
+### Updating
+
+```bash
+cd ~/Code/bifrost-figma-shortcuts && git pull
+```
+
+- **Plugin:** nothing else to do. The next time you open the palette it runs
+  the new version.
+- **Numpad app:** only if `git pull` lists changes in `companion/dist/`. Quit
+  Bifrost Numpad (menu bar icon › Quit), copy the new app over the old one in
+  Applications, and open it. macOS treats it as a new app: in **System
+  Settings › Privacy & Security › Accessibility**, remove the old Bifrost
+  Numpad entry with `−` and turn the new one on.
+
+### Troubleshooting
+
+| Problem | Fix |
+|---|---|
+| "not in an enabled library" | Enable the Bifrost libraries in this file (step 3) |
+| "font … isn't available" | Install that font on your Mac (text styles need their font locally) |
+| A numpad key does nothing | Check the menu bar icon: grey means paused (turn on **Enabled**) or no Accessibility access (step 5.3) |
+| The menu bar icon flashes a warning sign | The plugin isn't installed, or was imported from a folder that moved (step 2) |
+| Toast: `No alias "3"` | Save an alias for that key: `=3 …` in the palette |
+| Numpad types digits instead | You're in a text field (W/H, layer name, a text layer); that's on purpose. Click the canvas first |
+| macOS says the app "can't be opened" or "is damaged" | The repo was downloaded as a zip. Delete it and use `git clone` (step 1) |
+
+## Using the palette
 
 1. Open the Actions menu (⌘K, ⌘/ or ⌘, depending on your keyboard layout).
 2. Type `bif` and press Enter. The Bifrost palette opens.
@@ -113,16 +212,40 @@ machine and included in the help view's Copy as JSON backup.
 Use a text or multi-action key that types the whole sequence, e.g.
 ⌘K → `bif` → Enter → `pm gs` → Enter.
 
-## Setup
+## Numpad keys
 
-1. Figma desktop app → **Plugins → Development → Import plugin from manifest…**
-2. Pick `manifest.json` in this repo. Figma runs the plugin straight from this
-   folder, so there's nothing to copy after regenerating.
+The plugin has ten menu commands, **Plugins › Development › Bifrost › Numpad
+› Numpad 0–9**. Each runs the alias with that name directly, without opening
+the palette. If the alias is missing or can't apply to the selection, a toast
+says why.
 
-If you registered an earlier version of the plugin from another folder, remove
-that one first (same plugin id).
+**Bifrost Numpad** (`companion/`, set up in [step 5](#5-optional-numpad-keys))
+is a small menu bar app that runs those commands when you press a numpad key.
+Keys are assigned with aliases in the palette; the app has no settings of its
+own.
 
-## Regenerating when the Bifrost library changes
+- It reacts only to numpad digits without modifiers, and only while Figma is
+  the frontmost app. Top-row digits, other apps and ⌘/⌥/⌃/⇧ combos are
+  untouched.
+- While you type in a field (W/H, layer name, a text layer) the numpad types
+  digits as usual.
+- The menu bar icon flashes filled when a key runs, and a warning sign if the
+  Numpad command couldn't be found. It's grey while paused or without
+  Accessibility access.
+- Its menu has **Enabled** (a pause; every launch starts enabled), **Launch
+  at login** and **Quit**.
+
+## Maintaining the plugin
+
+### Releasing a new version of the numpad app
+
+Needs Xcode. Bump `CFBundleShortVersionString` in `companion/Info.plist`, run
+`companion/build.sh --release` and commit `companion/dist/`. Plain `build.sh`
+builds to the ignored `companion/build/` for testing. Only update `dist/` for
+real releases: every new build has to be granted Accessibility again on every
+Mac.
+
+### Regenerating when the Bifrost library changes
 
 1. Open the file where the variables and text styles are defined.
 2. Type `!vars` in the palette, or paste this into the plugin console
@@ -185,7 +308,7 @@ that one first (same plugin id).
    node generate.js bifrost-variables.json . bifrost-text-styles.json bifrost-components.json
    ```
 
-## Files
+### Files
 
 | File | What it is |
 |---|---|
@@ -197,3 +320,4 @@ that one first (same plugin id).
 | `generate.js` | Builds `manifest.json` + `code.js` from the JSON exports and `src/` |
 | `bifrost-*.json` | Exports of variables, text styles and components from Figma |
 | `test/parse.test.js` | Parser tests: `node --test test/` |
+| `companion/` | Bifrost Numpad menu bar app (Swift package, `build.sh`) |
