@@ -12,50 +12,134 @@
       "command": "open"
     },
     {
+      "name": "Fix variables",
+      "command": "fix"
+    },
+    {
       "separator": true
     },
     {
-      "name": "Numpad",
+      "name": "Aliases",
       "menu": [
         {
-          "name": "Numpad 1",
-          "command": "numpad-1"
+          "name": "Alias 0",
+          "command": "alias-0"
         },
         {
-          "name": "Numpad 2",
-          "command": "numpad-2"
+          "name": "Alias 1",
+          "command": "alias-1"
         },
         {
-          "name": "Numpad 3",
-          "command": "numpad-3"
+          "name": "Alias 2",
+          "command": "alias-2"
         },
         {
-          "name": "Numpad 4",
-          "command": "numpad-4"
+          "name": "Alias 3",
+          "command": "alias-3"
         },
         {
-          "name": "Numpad 5",
-          "command": "numpad-5"
+          "name": "Alias 4",
+          "command": "alias-4"
         },
         {
-          "name": "Numpad 6",
-          "command": "numpad-6"
+          "name": "Alias 5",
+          "command": "alias-5"
         },
         {
-          "name": "Numpad 7",
-          "command": "numpad-7"
+          "name": "Alias 6",
+          "command": "alias-6"
         },
         {
-          "name": "Numpad 8",
-          "command": "numpad-8"
+          "name": "Alias 7",
+          "command": "alias-7"
         },
         {
-          "name": "Numpad 9",
-          "command": "numpad-9"
+          "name": "Alias 8",
+          "command": "alias-8"
         },
         {
-          "name": "Numpad 0",
-          "command": "numpad-0"
+          "name": "Alias 9",
+          "command": "alias-9"
+        },
+        {
+          "name": "Alias 10",
+          "command": "alias-10"
+        },
+        {
+          "name": "Alias 11",
+          "command": "alias-11"
+        },
+        {
+          "name": "Alias 12",
+          "command": "alias-12"
+        },
+        {
+          "name": "Alias 13",
+          "command": "alias-13"
+        },
+        {
+          "name": "Alias 14",
+          "command": "alias-14"
+        },
+        {
+          "name": "Alias 15",
+          "command": "alias-15"
+        },
+        {
+          "name": "Alias 16",
+          "command": "alias-16"
+        },
+        {
+          "name": "Alias 17",
+          "command": "alias-17"
+        },
+        {
+          "name": "Alias 18",
+          "command": "alias-18"
+        },
+        {
+          "name": "Alias 19",
+          "command": "alias-19"
+        },
+        {
+          "name": "Alias 20",
+          "command": "alias-20"
+        },
+        {
+          "name": "Alias 21",
+          "command": "alias-21"
+        },
+        {
+          "name": "Alias 22",
+          "command": "alias-22"
+        },
+        {
+          "name": "Alias 23",
+          "command": "alias-23"
+        },
+        {
+          "name": "Alias 24",
+          "command": "alias-24"
+        },
+        {
+          "name": "Alias 25",
+          "command": "alias-25"
+        },
+        {
+          "name": "Alias 26",
+          "command": "alias-26"
+        },
+        {
+          "name": "Alias 27",
+          "command": "alias-27"
+        },
+        {
+          "name": "Alias 28",
+          "command": "alias-28"
+        },
+        {
+          "name": "Alias 29",
+          "command": "alias-29"
         }
       ]
     }

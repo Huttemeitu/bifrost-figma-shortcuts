@@ -3,10 +3,11 @@
 // Usage: node generate.js <variables.json> <outDir> [textstyles.json] [components.json]
 //
 // Reads the JSON exports from the Figma console snippets (see README) and writes:
-//  - manifest.json: "Open palette" plus "Numpad 0-9" (run alias 0-9 without a window)
+//  - manifest.json: "Open palette", "Fix variables" (bind exact review matches
+//    without a window) and "Alias 0-29" (run alias 0-29 without a window)
 //  - code.js: VARIABLE_MAP (slug -> token/component) + VARIABLE_VALUES (values per
-//    mode) + UI_HTML (src/ui.html with src/parse.js inlined) + src/parse.js +
-//    src/runtime.js
+//    mode) + UI_HTML (src/ui.html with the Bifrost tokens as CSS variables and
+//    src/parse.js inlined) + src/parse.js + src/runtime.js
 //
 // Classification: COLOR variables (except Light/ and Dark/ ones) -> fill AND stroke, FLOAT "Spacing/..." -> padding AND gap,
 // FLOAT "Border radius/..." -> radius, text styles -> textstyle, components -> component.
@@ -81,6 +82,26 @@ const spacingVars = variables.filter(
 const radiusVars = variables.filter(
   (v) => v.resolvedType === "FLOAT" && v.name.startsWith("Border radius/")
 );
+const variablesById = new Map(variables.map((v) => [v.id, v]));
+
+// A variable's value in one of its modes, following aliases into other
+// collections (which use their default mode, so theme colors are Teal).
+// Null for exports made before !vars included values.
+function valueIn(v, mode) {
+  let value = v.values ? (mode in v.values ? v.values[mode] : v.values[v.defaultMode]) : null;
+  for (let depth = 0; value && value.alias && depth < 10; depth++) {
+    const target = variablesById.get(value.alias);
+    value = target && target.values ? target.values[target.defaultMode] : null;
+  }
+  return value === undefined ? null : value;
+}
+
+// A spacing or radius token's number, so "r 12" finds Radius M. These are the
+// same in every mode.
+function defaultNumber(v) {
+  const value = valueIn(v, v.defaultMode);
+  return typeof value === "number" ? value : undefined;
+}
 
 const KINDS = {
   fill: colorVars.map((v) => ({ slug: uniqueSlug("fill", v.name), name: v.name, id: v.id, key: v.key, group: v.collection })),
@@ -90,18 +111,21 @@ const KINDS = {
     name: stripPrefix(v.name, "Spacing/"),
     id: v.id,
     key: v.key,
+    px: defaultNumber(v),
   })),
   gap: spacingVars.map((v) => ({
     slug: uniqueSlug("gap", v.name),
     name: stripPrefix(v.name, "Spacing/"),
     id: v.id,
     key: v.key,
+    px: defaultNumber(v),
   })),
   radius: radiusVars.map((v) => ({
     slug: uniqueSlug("radius", v.name),
     name: stripPrefix(v.name, "Border radius/"),
     id: v.id,
     key: v.key,
+    px: defaultNumber(v),
   })),
   textstyle: textStyles.map((s) => ({
     slug: uniqueSlug("text", s.name),
@@ -119,8 +143,11 @@ const KINDS = {
 // ---------- manifest.json ----------
 
 // Open palette comes first so "bif" → Enter in the Actions menu still opens it.
-// The Numpad commands share the plugin id, and with it the aliases in clientStorage.
-const digits = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
+// Alias N runs the alias named N without a window: the companion app presses
+// them for numpad digits (0-9) and recorded shortcuts. Menus can't change at
+// runtime, so the count is fixed; Figma.aliasCount in the companion must match.
+// The commands share the plugin id, and with it the aliases in clientStorage.
+const ALIAS_COMMANDS = 30;
 const manifest = {
   name: "Bifrost",
   id: "bifrost-fill-shortcuts",
@@ -129,16 +156,21 @@ const manifest = {
   editorType: ["figma"],
   menu: [
     { name: "Open palette", command: "open" },
+    { name: "Fix variables", command: "fix" },
     { separator: true },
-    { name: "Numpad", menu: digits.map((d) => ({ name: "Numpad " + d, command: "numpad-" + d })) },
+    {
+      name: "Aliases",
+      menu: Array.from({ length: ALIAS_COMMANDS }, (_, n) => ({ name: "Alias " + n, command: "alias-" + n })),
+    },
   ],
 };
 
 // ---------- code.js ----------
 
-// Flat lookup: slug -> { id, key, name, kind, type, isSet?, group?, value? }. group is the
-// top level in the Options tree: a fill's collection, a component's page. value
-// is a text style's font size; variables get theirs from VARIABLE_VALUES.
+// Flat lookup: slug -> { id, key, name, kind, type, isSet?, group?, value?, px? }. group is
+// the top level in the Options tree: a fill's collection, a component's page. value
+// is a text style's font size; variables get theirs from VARIABLE_VALUES. px is a
+// spacing or radius number for value search ("r 12").
 const TYPE_BY_KIND = { textstyle: "style", component: "component" };
 const flatMap = {};
 for (const [kind, entries] of Object.entries(KINDS)) {
@@ -147,6 +179,7 @@ for (const [kind, entries] of Object.entries(KINDS)) {
     if (e.isSet) flatMap[e.slug].isSet = true;
     if (e.group) flatMap[e.slug].group = e.group;
     if (e.value) flatMap[e.slug].value = e.value;
+    if (e.px !== undefined) flatMap[e.slug].px = e.px;
   }
 }
 
@@ -155,7 +188,6 @@ for (const [kind, entries] of Object.entries(KINDS)) {
 // every variable an option's aliases lead to, like the Light/ and Dark/ colors.
 // A variable with a single mode (all primitives) is stored as just its value.
 // Empty for exports made before !vars included values.
-const variablesById = new Map(variables.map((v) => [v.id, v]));
 const valueTable = {};
 const pending = Object.values(flatMap).filter((e) => e.type === "variable").map((e) => e.id);
 while (pending.length) {
@@ -167,10 +199,35 @@ while (pending.length) {
   for (const value of values) if (value && value.alias) pending.push(value.alias);
 }
 
+// ---------- Palette styles ----------
+
+// The Mode collection as CSS variables, so the palette is styled with Bifrost
+// itself: colors for Light in :root and for Dark in html.figma-dark (set by
+// themeColors), plus spacing, radius and shadow sizes. bfc-* colors keep their
+// token name (--bfc-base-1); others get their path (--spacing-m,
+// --border-radius-s, --effect-variables-shadows-blur-m).
+function bifrostCss() {
+  const light = [];
+  const dark = [];
+  for (const v of variables.filter((x) => x.collection === "Mode")) {
+    const last = v.name.split("/").pop();
+    const name = "--" + (last.startsWith("bfc-") ? last : slugify("", v.name).slice(1));
+    const css = (value) => (typeof value === "number" ? value + "px" : value);
+    const l = valueIn(v, "Light");
+    const d = valueIn(v, "Dark");
+    if (l === null || typeof l === "object") continue;
+    light.push(`${name}: ${css(l)};`);
+    if (d !== null && d !== l) dark.push(`${name}: ${css(d)};`);
+  }
+  return `:root { ${light.join(" ")} }\n  html.figma-dark { ${dark.join(" ")} }`;
+}
+
 const readSrc = (file) => fs.readFileSync(path.join(__dirname, "src", file), "utf8");
 
 // The palette parses as you type, so the window gets its own copy of parse.js.
-const uiHtml = readSrc("ui.html").replace("/*PARSE_JS*/", () => readSrc("parse.js"));
+const uiHtml = readSrc("ui.html")
+  .replace("/*BIFROST_CSS*/", () => bifrostCss())
+  .replace("/*PARSE_JS*/", () => readSrc("parse.js"));
 
 const codeJs = [
   "// code.js: GENERATED by generate.js from the JSON exports and src/. Edit those and",
