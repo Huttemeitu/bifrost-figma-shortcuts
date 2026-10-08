@@ -6,6 +6,11 @@ import ApplicationServices
 @MainActor
 final class Figma {
   static let bundleID = "com.figma.Desktop"
+  nonisolated static let paletteCommand = "Open palette"
+  nonisolated static let fixCommand = "Fix variables"
+  /// Alias 0 to 29: must match ALIAS_COMMANDS in generate.js.
+  nonisolated static let aliasCount = 30
+  nonisolated static func aliasCommand(_ n: Int) -> String { "Alias \(n)" }
   private static let textRoles: Set<String> = ["AXTextField", "AXTextArea", "AXComboBox", "AXSearchField"]
 
   // Menu items are cached per Figma process. A cached item can go stale when
@@ -30,7 +35,7 @@ final class Figma {
     return Self.textRoles.contains(role)
   }
 
-  /// Runs a Bifrost plugin command, e.g. "Open palette" or "Numpad 1". Returns
+  /// Runs a Bifrost plugin command, e.g. "Open palette" or "Alias 1". Returns
   /// false if the menu item can't be found or pressed (plugin not installed, Figma busy).
   func run(_ command: String) -> Bool {
     guard let app = frontmost else { return false }

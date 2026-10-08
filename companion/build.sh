@@ -15,9 +15,18 @@ BIN="$(swift build -c release --arch arm64 --arch x86_64 --show-bin-path)/Bifros
 
 APP="build/Bifrost Numpad.app"
 rm -rf "$APP"
-mkdir -p "$APP/Contents/MacOS"
+mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cp Info.plist "$APP/Contents/"
 cp "$BIN" "$APP/Contents/MacOS/"
+
+# Both icons come from Resources/Logo.png: the menu bar one as is, the app icon
+# (Finder, Spotlight) on a background, see app-icon.swift.
+sips -z 64 64 Resources/Logo.png --out "$APP/Contents/Resources/MenuIcon.png" >/dev/null
+ICONSET="build/AppIcon.iconset"
+rm -rf "$ICONSET"
+swift app-icon.swift Resources/Logo.png "$ICONSET"
+iconutil -c icns "$ICONSET" -o "$APP/Contents/Resources/AppIcon.icns"
+rm -rf "$ICONSET"
 
 if [ -n "$SIGN_IDENTITY" ]; then
   codesign --force --options runtime --timestamp --sign "$SIGN_IDENTITY" "$APP"

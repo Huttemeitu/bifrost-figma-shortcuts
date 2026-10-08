@@ -6,13 +6,14 @@ const KIND_LABEL = { padding: "Padding", gap: "Gap", radius: "Radius", fill: "Fi
 const SIDE_LABEL = {
   ALL: "", H: " horizontal", V: " vertical", T: " top", B: " bottom", L: " left", R: " right",
   TL: " top-left", TR: " top-right", BL: " bottom-left", BR: " bottom-right",
+  COL: " columns", ROW: " rows",
 };
 
 // Op key -> [kind, side]. Sides map to fields via FIELD_SETS in runtime.js.
 const SIDE_OPS = {
   p: ["padding", "ALL"], ph: ["padding", "H"], pv: ["padding", "V"],
   pt: ["padding", "T"], pb: ["padding", "B"], pl: ["padding", "L"], pr: ["padding", "R"],
-  g: ["gap", "ALL"],
+  g: ["gap", "ALL"], gc: ["gap", "COL"], gr: ["gap", "ROW"],
   r: ["radius", "ALL"], rt: ["radius", "T"], rb: ["radius", "B"], rl: ["radius", "L"], rr: ["radius", "R"],
   rtl: ["radius", "TL"], rtr: ["radius", "TR"], rbl: ["radius", "BL"], rbr: ["radius", "BR"],
 };
@@ -31,12 +32,12 @@ const WORD_OPS = {
 const SEARCH_KINDS = ["component", "textstyle", "fill"];
 
 // Palette groups. `prefix` turns input typed inside a group into full syntax
-// ("m" in Padding is "pm", "brand" in Fill is "f brand"). `search` limits name
+// ("m" in Padding is "p m", "brand" in Fill is "f brand"). `search` limits name
 // search inside the group instead (components have no op key).
 const GROUPS = [
-  { kind: "padding", label: "Padding", key: "p", prefix: "p" },
-  { kind: "gap", label: "Gap", key: "g", prefix: "g" },
-  { kind: "radius", label: "Radius", key: "r", prefix: "r" },
+  { kind: "padding", label: "Padding", key: "p", prefix: "p " },
+  { kind: "gap", label: "Gap", key: "g", prefix: "g " },
+  { kind: "radius", label: "Radius", key: "r", prefix: "r " },
   { kind: "fill", label: "Fill", key: "f", prefix: "f " },
   { kind: "stroke", label: "Border", key: "b", prefix: "b " },
   { kind: "textstyle", label: "Text", key: "t", prefix: "t " },
@@ -55,19 +56,20 @@ const SYNTAX = [
   {
     title: "Spacing and radius",
     rows: [
-      [["pm", "p m"], "Padding M on all sides; adds auto layout to a frame without it"],
+      [["p m", "p 12"], "Padding M (12px) on all sides; adds auto layout to a frame without it"],
       [["ph l", "pv s"], "Padding horizontal or vertical"],
       [["pt m", "pb m", "pl m", "pr m"], "Padding on one side"],
-      [["gs"], "Gap S; also adds auto layout when needed"],
-      [["rl", "r full"], "Radius on all corners"],
+      [["g s", "g auto"], "Gap S, or auto (space between); also adds auto layout when needed"],
+      [["gc s", "gr m"], "Grid column or row gap, on frames with grid layout"],
+      [["r l", "r full"], "Radius on all corners"],
       [["rt m", "rtl s"], "Radius on two corners or one corner"],
     ],
   },
   {
     title: "Colors and text",
     rows: [
-      [["fbrand", "fbase1", "f base-1"], "Fill, matched by color name (space and dashes optional)"],
-      [["bbrand", "bbasedimmed3", "b base-dimmed-3"], "Border, 1px on all sides, matched by color name"],
+      [["f brand", "f base1", "f base-1"], "Fill, matched by color name (dashes optional)"],
+      [["b brand", "b basedimmed3", "b base-dimmed-3"], "Border, 1px on all sides, matched by color name"],
       [["h1", "h3", "t regular"], "Text style: changes selected text, or inserts a new text layer"],
     ],
   },
@@ -76,19 +78,19 @@ const SYNTAX = [
     rows: [
       [["frame"], "Insert a frame; ops after it apply to the new frame"],
       [["alh", "alv"], "Auto layout horizontal or vertical"],
-      [["frame alh pm rm"], "Build a styled frame in one go"],
+      [["frame alh p m r m"], "Build a styled frame in one go"],
     ],
   },
   {
     title: "Components",
     rows: [
       [["button", "basic input"], "Search components, text styles and colors by name"],
-      [["box rm"], "Insert, then style the new instance"],
+      [["box r m"], "Insert, then style the new instance"],
     ],
   },
   {
     title: "Combine",
-    rows: [[["pm gs rl"], "Several at once"]],
+    rows: [[["p m g s r l"], "Several at once: each property, a space, then its value"]],
   },
 ];
 
@@ -133,15 +135,28 @@ function createParser(entries, aliases, options) {
   for (const e of entries) bySlug[e.slug] = e;
   const kindCache = {};
   const byKind = (kind) => kindCache[kind] || (kindCache[kind] = entries.filter((e) => e.kind === kind));
-  const valueEntry = (kind, v) => byKind(kind).find((e) => e.name.toLowerCase() === v);
+  // A size by name ("m") or by its number ("12", "12px"; `px` from generate.js).
+  const valueEntry = (kind, v) => {
+    const px = /^\d+(\.\d+)?(px)?$/.test(v) ? parseFloat(v) : null;
+    return byKind(kind).find((e) => e.name.toLowerCase() === v) || (px !== null ? byKind(kind).find((e) => e.px === px) : undefined);
+  };
+  const startsValue = (e, v) => e.name.toLowerCase().startsWith(v) || (e.px !== undefined && String(e.px).startsWith(v));
 
-  function sideOp(key, entry) {
+  // `at` is [from, to): the typed words an op came from, so the palette can
+  // box them. Ops built outside parse (lists, shorthand) have none.
+  function sideOp(key, entry, at) {
     const [kind, side] = SIDE_OPS[key];
-    return { slug: entry.slug, kind, side, key, label: KIND_LABEL[kind] + SIDE_LABEL[side] + " " + entry.name };
+    return { slug: entry.slug, kind, side, key, label: KIND_LABEL[kind] + SIDE_LABEL[side] + " " + entry.name, at };
   }
-  function nameOp(entry) {
-    return { slug: entry.slug, kind: entry.kind, label: KIND_LABEL[entry.kind] + " " + entry.name };
+  function nameOp(entry, at) {
+    return { slug: entry.slug, kind: entry.kind, label: KIND_LABEL[entry.kind] + " " + entry.name, at };
   }
+  const wordOp = (w, at) => Object.assign({ key: w, at }, WORD_OPS[w]);
+  // "g auto": space between, so the gap follows the frame. No token behind it.
+  const autoGapOp = (at) => ({ kind: "gap", side: "ALL", key: "g", value: "auto", label: "Gap auto", at });
+  // Every value a side op can take, as ops: its sizes, plus auto for plain gap.
+  const sideValues = (key, at) => byKind(SIDE_OPS[key][0]).map((x) => sideOp(key, x, at)).concat(key === "g" ? [autoGapOp(at)] : []);
+  const startsSideValue = (op, v) => (op.value === "auto" ? "auto".startsWith(v) : startsValue(bySlug[op.slug], v));
 
   function fuzzy(kinds, q, limit) {
     return kinds
@@ -159,15 +174,14 @@ function createParser(entries, aliases, options) {
       .map(([e]) => e);
   }
 
-  function fuzzySlot(ops, kinds, q) {
+  function fuzzySlot(ops, kinds, q, at) {
     const m = fuzzy(kinds, q, limit);
     if (!m.length) return { error: "No " + (kinds.length > 1 ? "" : KIND_LABEL[kinds[0]].toLowerCase() + " ") + 'matches "' + q + '"' };
-    if (!q) return { primary: null, alternatives: m.map((e) => ops.concat(nameOp(e))) };
-    return { primary: ops.concat(nameOp(m[0])), alternatives: m.slice(1).map((e) => ops.concat(nameOp(e))) };
+    if (!q) return { primary: null, alternatives: m.map((e) => ops.concat(nameOp(e, at))) };
+    return { primary: ops.concat(nameOp(m[0], at)), alternatives: m.slice(1).map((e) => ops.concat(nameOp(e, at))) };
   }
 
   const isKeyword = (w) => Boolean(SIDE_OPS[w] || FUZZY_OPS[w] || WORD_OPS[w] || aliases[w]);
-  const wordOp = (w) => Object.assign({ key: w }, WORD_OPS[w]);
   const bestScore = (kinds, q) =>
     kinds.flatMap(byKind).reduce((best, e) => {
       const s = matchScore(e.name, q);
@@ -178,11 +192,24 @@ function createParser(entries, aliases, options) {
     return s >= 0 && s <= 2;
   };
 
+  // The spaced form of a word in the old glued syntax ("pm" -> "p m",
+  // "rtll" -> "rtl l", "fbrand" -> "f brand"), or null. A glued color only
+  // counts when the whole word isn't a good name itself ("brand", "button").
+  function splitGlued(w) {
+    const side = Object.keys(SIDE_OPS).find((k) => w.length > k.length && w.startsWith(k) && valueEntry(SIDE_OPS[k][0], w.slice(k.length)));
+    if (side) return side + " " + w.slice(side.length);
+    const key = Object.keys(FUZZY_OPS).find((k) => w.length > k.length && w.startsWith(k) && fuzzy([FUZZY_OPS[k]], w.slice(k.length), 1).length);
+    return key && !isStrongName(w) ? key + " " + w.slice(key.length) : null;
+  }
+
   // Returns { primary: ops | null, alternatives: ops[] } or { error }.
   // primary is how the whole input is understood; alternatives are other
   // readings or completions of the last word.
   function parse(query) {
     const words = query.trim().split(/\s+/).filter(Boolean);
+    // Where each word was typed: words from an alias all point at the alias.
+    const src = words.map((_, i) => i);
+    const at = (from, to) => [src[from], src[to - 1] + 1];
     const ops = [];
     // Aliases only expand where an op can start, never where a value is
     // expected, so an alias named "m" or "brand" can't break "p m" or "f brand".
@@ -193,6 +220,7 @@ function createParser(entries, aliases, options) {
       if (alias) {
         const parts = alias.trim().split(/\s+/);
         words.splice(i, 1, ...parts);
+        src.splice(i, 1, ...parts.map(() => src[i]));
         aliasEnd = i + parts.length - 1;
         i--;
         continue;
@@ -202,87 +230,52 @@ function createParser(entries, aliases, options) {
 
       if (FUZZY_OPS[w]) {
         const kind = FUZZY_OPS[w];
-        if (isLast) return fuzzySlot(ops, [kind], "");
+        if (isLast) return fuzzySlot(ops, [kind], "", at(i, i + 1));
         const q = words[++i].toLowerCase();
-        if (i === words.length - 1) return fuzzySlot(ops, [kind], q);
+        if (i === words.length - 1) return fuzzySlot(ops, [kind], q, at(i - 1, i + 1));
         const best = fuzzy([kind], q, 1)[0];
         if (!best) return { error: "No " + KIND_LABEL[kind].toLowerCase() + ' matches "' + q + '"' };
-        ops.push(nameOp(best));
+        ops.push(nameOp(best, at(i - 1, i + 1)));
         continue;
       }
 
       if (/^h[1-5]$/.test(w) && valueEntry("textstyle", w)) {
-        ops.push(nameOp(valueEntry("textstyle", w)));
+        ops.push(nameOp(valueEntry("textstyle", w), at(i, i + 1)));
         continue;
       }
 
       if (WORD_OPS[w]) {
-        ops.push(wordOp(w));
+        ops.push(wordOp(w, at(i, i + 1)));
         continue;
       }
       // Typing a word op ("fr", "al"): offer it before other readings like f + "r".
       const wordCompletions = isLast ? Object.keys(WORD_OPS).filter((k) => k.startsWith(w)) : [];
-      if (wordCompletions.length) return { primary: null, alternatives: wordCompletions.map((k) => ops.concat(wordOp(k))) };
+      if (wordCompletions.length) return { primary: null, alternatives: wordCompletions.map((k) => ops.concat(wordOp(k, at(i, i + 1)))) };
 
-      // Two-word form: "pl m", "rtl s"
-      const next = words[i + 1] && words[i + 1].toLowerCase();
-      if (SIDE_OPS[w] && next !== undefined) {
-        const e = valueEntry(SIDE_OPS[w][0], next);
-        if (e) {
-          ops.push(sideOp(w, e));
+      // A property and its value are two words: "p m", "pl m", "rtl s", "r 12", "g auto".
+      if (SIDE_OPS[w]) {
+        const kind = SIDE_OPS[w][0];
+        if (isLast) return { primary: null, alternatives: sideValues(w, at(i, i + 1)).map((op) => ops.concat(op)) };
+        const next = words[i + 1].toLowerCase();
+        const e = valueEntry(kind, next);
+        if (e || (w === "g" && next === "auto")) {
+          ops.push(e ? sideOp(w, e, at(i, i + 2)) : autoGapOp(at(i, i + 2)));
           i++;
           continue;
         }
-        if (i + 1 === words.length - 1) {
-          const opts = byKind(SIDE_OPS[w][0]).filter((x) => x.name.toLowerCase().startsWith(next));
-          if (opts.length) return { primary: null, alternatives: opts.map((x) => ops.concat(sideOp(w, x))) };
-        }
+        const opts = i + 1 === words.length - 1 ? sideValues(w, at(i, i + 2)).filter((op) => startsSideValue(op, next)) : [];
+        if (opts.length) return { primary: null, alternatives: opts.map((op) => ops.concat(op)) };
+        return { error: KIND_LABEL[kind] + ' has no size "' + words[i + 1] + '"' };
       }
 
-      // Glued form: "pm", "phl", "rtlm". If several ops fit, the shortest wins
-      // ("pl" is Padding L) and the others become alternatives.
-      const readings = Object.keys(SIDE_OPS)
-        .filter((k) => w.startsWith(k) && w.length > k.length)
-        .map((k) => {
-          const e = valueEntry(SIDE_OPS[k][0], w.slice(k.length));
-          return e && sideOp(k, e);
-        })
-        .filter(Boolean)
-        .sort((a, b) => a.key.length - b.key.length);
-      if (readings.length) {
-        if (!isLast) {
-          ops.push(readings[0]);
-          continue;
-        }
-        const sideValues = SIDE_OPS[w] ? byKind(SIDE_OPS[w][0]).map((x) => ops.concat(sideOp(w, x))) : [];
-        return {
-          primary: ops.concat(readings[0]),
-          alternatives: readings.slice(1).map((x) => ops.concat(x)).concat(sideValues),
-        };
-      }
-
-      if (isLast && SIDE_OPS[w]) {
-        return { primary: null, alternatives: byKind(SIDE_OPS[w][0]).map((x) => ops.concat(sideOp(w, x))) };
-      }
-
-      // Glued fuzzy op: "fbase3", "bbrand", "tregular". Only when the whole word
-      // isn't a good name match itself, so "brand", "button" and "tag" stay searches.
-      const gluedKey = Object.keys(FUZZY_OPS)
-        .filter((k) => w.startsWith(k) && w.length > k.length)
-        .sort((a, b) => b.length - a.length)
-        .find((k) => fuzzy([FUZZY_OPS[k]], w.slice(k.length), 1).length);
-      if (gluedKey && !isStrongName(w)) {
-        const kind = FUZZY_OPS[gluedKey];
-        const q = w.slice(gluedKey.length);
-        if (isLast) return fuzzySlot(ops, [kind], q);
-        ops.push(nameOp(fuzzy([kind], q, 1)[0]));
-        continue;
-      }
+      const typingAlias = isLast && Object.keys(aliases).some((a) => a.startsWith(w));
+      const spaced = !typingAlias && splitGlued(w);
+      if (spaced) return { error: 'Put a space after the property: "' + spaced + '"' };
 
       // Anything else is a name search over components, text styles and colors.
       // The longest run of words that matches a name wins, as long as what
-      // follows still parses: "basic input pm" is Basic input · Padding M, and
-      // "box rm" is Box · Radius M because no name matches "box rm".
+      // follows still parses: "icon button" is one name, "basic input p m" is
+      // Basic input · Padding M.
       if (search) {
         // A name never runs into an op keyword or an alias, so
         // "button b brand" is Button · Border, not a search for "button b".
@@ -292,46 +285,40 @@ function createParser(entries, aliases, options) {
           const name = words.slice(i, j).join(" ").toLowerCase();
           const match = fuzzy(searchKinds, name, 1)[0];
           if (!match) continue;
-          if (j === words.length) return fuzzySlot(ops, searchKinds, name);
+          if (j === words.length) return fuzzySlot(ops, searchKinds, name, at(i, j));
           if (parse(words.slice(j).join(" ")).error) continue;
-          ops.push(nameOp(match));
+          ops.push(nameOp(match, at(i, j)));
           i = j - 1;
           continue words;
         }
       }
       const found = search && w.length >= 2 ? fuzzy(searchKinds, w, limit) : [];
       if (!isLast && found.length) {
-        ops.push(nameOp(found[0]));
+        ops.push(nameOp(found[0], at(i, i + 1)));
         continue;
       }
       if (!isLast) return { error: 'No matches for "' + words[i] + '". Type ? for help' };
 
-      // Still typing the last word: completions of ops and aliases come first,
-      // then name matches.
-      const partial = Object.keys(SIDE_OPS)
-        .filter((k) => w.startsWith(k) && w.length > k.length)
-        .flatMap((k) =>
-          byKind(SIDE_OPS[k][0])
-            .filter((x) => x.name.toLowerCase().startsWith(w.slice(k.length)))
-            .map((x) => ops.concat(sideOp(k, x)))
-        );
+      // Still typing the last word: alias completions come first, then name matches.
       const aliasOpts = Object.keys(aliases)
         .filter((a) => a.startsWith(w))
-        .map((a) => parse(words.slice(0, i).concat(a).join(" ")).primary)
+        .map((a) => {
+          const r = parse(words.slice(0, i).concat(a).join(" ")).primary;
+          return r && ops.concat(r.slice(ops.length).map((o) => Object.assign({}, o, { at: at(i, i + 1) })));
+        })
         .filter(Boolean);
-      const named = found.map((e) => ops.concat(nameOp(e)));
-      if (!partial.length && !aliasOpts.length && named.length) return { primary: named[0], alternatives: named.slice(1) };
-      if (partial.length || aliasOpts.length) return { primary: null, alternatives: aliasOpts.concat(partial, named) };
+      const named = found.map((e) => ops.concat(nameOp(e, at(i, i + 1))));
+      if (!aliasOpts.length && named.length) return { primary: named[0], alternatives: named.slice(1) };
+      if (aliasOpts.length) return { primary: null, alternatives: aliasOpts.concat(named) };
       return { error: 'No matches for "' + words[i] + '". Type ? for help' };
     }
     return { primary: ops.length ? ops : null, alternatives: [] };
   }
 
-  // The shortest readable built-in input for these ops ("pm gs", "p none",
-  // "fbase3"), or null if some op has none (components and most text styles are
-  // searched by name, and a color only gets one if its compact name is unique).
-  // Values longer than 3 characters get a space. Cached: the Fill group asks
-  // for hundreds at once.
+  // The shortest built-in input for these ops ("p m g s", "f base3"), or null
+  // if some op has none (components and most text styles are searched by name,
+  // and a color only gets one if its compact name is unique). Cached: the Fill
+  // group asks for hundreds at once.
   const shorthandCache = new Map();
   const COLOR_KEYS = { fill: "f", stroke: "b" };
   function shorthand(ops) {
@@ -339,7 +326,7 @@ function createParser(entries, aliases, options) {
     if (!shorthandCache.has(cacheKey)) shorthandCache.set(cacheKey, computeShorthand(ops));
     return shorthandCache.get(cacheKey);
   }
-  // "fbase3" for Base/bfc-base-3: the key plus the compact last segment, if that
+  // "f base3" for Base/bfc-base-3: the key plus the compact last segment, if that
   // gives exactly this color when parsed. Checked from a per-kind index instead
   // of a full parse per row, which took close to a second for all fills.
   const compactLast = (name) => name.toLowerCase().split("/").pop().replace(/^bfc-/, "").replace(/[^a-z0-9]/g, "");
@@ -358,28 +345,26 @@ function createParser(entries, aliases, options) {
     const { counts, segs } = colorIndex[kind];
     // Another color with the same compact name.
     if (!c || counts[c] !== 1) return null;
-    const word = COLOR_KEYS[kind] + c;
+    const word = COLOR_KEYS[kind] + " " + c;
     // A path segment equal to it ("brand" in Pop/Brand) makes ranking decide: parse to be sure.
     if (segs.has(c)) {
       const r = parse(word).primary;
       return r && r.length === 1 && r[0].slug === entry.slug ? word : null;
     }
-    return isStrongName(word) ? null : word;
+    return word;
   }
 
   function computeShorthand(ops) {
     const parts = [];
     for (const op of ops) {
-      if (WORD_OPS[op.key]) {
-        parts.push(op.key);
+      if (WORD_OPS[op.key] || op.value === "auto") {
+        parts.push(op.value === "auto" ? "g auto" : op.key);
         continue;
       }
       if (!bySlug[op.slug]) return null;
       const name = bySlug[op.slug].name.toLowerCase();
       if (op.key) {
-        const glued = parse(op.key + name).primary;
-        const ok = name.length <= 3 && glued && glued.length === 1 && glued[0].slug === op.slug && glued[0].side === op.side;
-        parts.push(ok ? op.key + name : op.key + " " + name);
+        parts.push(op.key + " " + name);
       } else if (op.kind === "textstyle" && /^h[1-5]$/.test(name)) {
         parts.push(name);
       } else if (COLOR_KEYS[op.kind]) {
@@ -396,11 +381,23 @@ function createParser(entries, aliases, options) {
   // Every entry of a kind as a one-op list (all sides/corners for spacing and radius).
   function list(kind) {
     if (kind === "layout") return Object.keys(WORD_OPS).map((k) => [wordOp(k)]);
-    const key = { padding: "p", gap: "g", radius: "r" }[kind];
+    if (kind === "gap") return sideValues("g").map((op) => [op]);
+    const key = { padding: "p", radius: "r" }[kind];
     return byKind(kind).map((e) => [key ? sideOp(key, e) : nameOp(e)]);
   }
 
-  return { parse, shorthand, list };
+  return { parse, shorthand, list, splitGlued };
+}
+
+// Aliases saved before a space was required ("pm gs") are rewritten with
+// spaces ("p m g s"). Returns the expansion unchanged if it already parses,
+// or null if the rewrite doesn't parse either.
+function respaceAlias(entries, expansion) {
+  const parser = createParser(entries, {});
+  if (!parser.parse(expansion).error) return expansion;
+  const words = expansion.trim().split(/\s+/);
+  const fixed = words.map((w) => parser.splitGlued(w.toLowerCase()) || w).join(" ");
+  return parser.parse(fixed).primary ? fixed : null;
 }
 
 // The Options tree: kinds, then the entry's group (a fill's collection, a
@@ -461,6 +458,8 @@ const INSERTED_CAPS = {
 };
 
 function opNeed(op) {
+  if (op.kind === "gap" && (op.side === "COL" || op.side === "ROW")) return "grid";
+  if (op.kind === "gap" && op.value === "auto") return "flow";
   if (op.kind === "padding" || op.kind === "gap") return "frame";
   if (op.kind === "radius") return op.side === "ALL" ? "radius" : "corners";
   if (op.kind === "fill") return "fills";
@@ -477,12 +476,16 @@ const NEED_MESSAGE = {
   fills: "needs a layer that can have a fill",
   strokes: "needs a layer that can have a border",
   canAutoLayout: "needs a frame (instances get auto layout from their component)",
+  grid: "needs a frame with grid layout",
+  flow: "needs a frame without grid layout",
 };
 
 // Padding and gap add auto layout to a frame that has none (applyOp in runtime.js).
+// Gap auto is space-between, which grid layout doesn't have.
 function opSupports(caps, op) {
   const need = opNeed(op);
   if (need === "frame") return Boolean(caps.autoLayout || caps.canAutoLayout);
+  if (need === "flow") return Boolean(caps.autoLayout || caps.canAutoLayout) && !caps.grid;
   return !need || Boolean(caps[need]);
 }
 
@@ -507,7 +510,7 @@ function checkOps(ops, selection) {
       const error = targets.length ? opLabel(op, "apply") + " " + NEED_MESSAGE[opNeed(op)] : "Select a layer first";
       return { error, index: i };
     }
-    const addsLayout = opNeed(op) === "frame" && targets.some((t) => !t.autoLayout && t.canAutoLayout);
+    const addsLayout = (opNeed(op) === "frame" || opNeed(op) === "flow") && targets.some((t) => !t.autoLayout && t.canAutoLayout);
     if (op.kind === "autolayout" || addsLayout) targets = targets.map((t) => (t.canAutoLayout ? Object.assign({}, t, { autoLayout: true }) : t));
     modes.push(addsLayout ? "autolayout" : "apply");
   }
@@ -561,7 +564,68 @@ function formatValue(value) {
   return typeof value === "string" ? value : null;
 }
 
-// The Numpad N menu commands run the alias named N without the palette.
+// ---------- Variable review ----------
+
+// Colors the review proposes: the Mode collection, which follows Light/Dark.
+// Not primitives (what those tokens point to), and not theme or effect
+// tokens, which are picked on purpose.
+const reviewColor = (e) => e.group === "Mode" && !/theme/i.test(e.name) && !e.name.startsWith("Effect variables/");
+// Content colors, for text and icons: bfc-base-c-1, bfc-alert-c, and the
+// high-contrast text on a Pop color, bfc-brand-hc.
+const isContentColor = (e) => /-h?c(-|$)/.test(e.name.split("/").pop());
+const COLOR_FAMILIES = ["Base", "Pop", "Miscellaneous"];
+
+// The token to propose for a value set by hand: a number for padding, gap and
+// radius, or "#RRGGBB(AA)" for fill and stroke, compared in the layer's modes.
+// It's the token with that value (exact), or else the closest one. Ties: the
+// larger size (3 between XXS 2 and XS 4 is XS); for colors, which share hexes
+// a lot (white is nine tokens), the one for the layer's role: content colors
+// for text (role "text"), background colors for anything else, Base before
+// Pop, Neutral before other Pop colors. Text only ever gets content or Pop
+// colors, never a Base background color, even if one is closer.
+// Returns { match: slug | null, exact }.
+function reviewChoices(entries, table, kind, value, modes, role) {
+  const own = entries.filter((e) => e.kind === kind);
+  if (typeof value === "number") {
+    const best = own.filter((e) => e.px !== undefined).sort((a, b) => Math.abs(a.px - value) - Math.abs(b.px - value) || b.px - a.px)[0];
+    return best ? { match: best.slug, exact: best.px === value } : { match: null, exact: false };
+  }
+  const forRole = (e) => isContentColor(e) === (role === "text");
+  const family = (e) => {
+    const i = COLOR_FAMILIES.indexOf(e.name.split("/")[0]);
+    return i < 0 ? COLOR_FAMILIES.length : i;
+  };
+  const allowed = (e) => role !== "text" || isContentColor(e) || e.name.startsWith("Pop/");
+  const neutral = (e) => e.name.startsWith("Pop/Neutral/");
+  const best = own
+    .filter((e) => reviewColor(e) && allowed(e))
+    .map((e) => [e, colorDistance(resolveValue(table, e.id, modes), value)])
+    .filter(([, d]) => d !== null)
+    .sort((a, b) => a[1] - b[1] || forRole(b[0]) - forRole(a[0]) || family(a[0]) - family(b[0]) || neutral(b[0]) - neutral(a[0]) || a[0].name.length - b[0].name.length)[0];
+  return best ? { match: best[0].slug, exact: best[1] === 0 } : { match: null, exact: false };
+}
+
+// "Padding 11px", "Text color #007375": a review group as the palette and the
+// canvas highlight show it.
+function reviewLabel(group) {
+  return (group.role === "text" ? "Text color" : KIND_LABEL[group.kind]) + " " + formatValue(group.value);
+}
+
+// Distance between two "#RRGGBB(AA)" colors, alpha included; null if either
+// isn't one.
+function colorDistance(a, b) {
+  const rgba = (hex) => {
+    const m = typeof hex === "string" && /^#([0-9a-f]{6})([0-9a-f]{2})?$/i.exec(hex);
+    if (!m) return null;
+    const n = parseInt(m[1], 16);
+    return [n >> 16, (n >> 8) & 255, n & 255, m[2] ? parseInt(m[2], 16) : 255];
+  };
+  const x = rgba(a);
+  const y = rgba(b);
+  return x && y ? Math.hypot(...x.map((v, i) => v - y[i])) : null;
+}
+
+// The Alias N menu commands run the alias named N without the palette.
 function aliasOps(entries, aliases, name) {
   if (!aliases[name]) return { error: 'No alias "' + name + '". Add one in the palette: ? › Aliases' };
   const r = createParser(entries, aliases).parse(name);
