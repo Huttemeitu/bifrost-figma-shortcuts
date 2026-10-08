@@ -21,19 +21,27 @@ struct Shortcut: Codable, Equatable, Sendable {
     return symbols.filter { flags.contains($0.0) }.map(\.1).joined() + keyName(keyCode)
   }
 
-  // ---------- Saved palette shortcut ----------
+  // ---------- Saved shortcuts ----------
 
-  private static let defaultsKey = "paletteShortcut"
+  private static let defaultsKey = "shortcuts"
 
-  /// nil when the user removed it. Never set: the default.
-  static func loadPalette() -> Shortcut? {
-    guard let data = UserDefaults.standard.data(forKey: defaultsKey) else { return paletteDefault }
-    return (try? JSONDecoder().decode(Shortcut?.self, from: data)) ?? nil
+  /// Recorded shortcuts by Bifrost command ("Open palette", "Alias 3"). Until
+  /// anything is recorded, the palette has the default.
+  static func load() -> [String: Shortcut] {
+    guard let data = UserDefaults.standard.data(forKey: defaultsKey) else { return [Figma.paletteCommand: paletteDefault] }
+    return (try? JSONDecoder().decode([String: Shortcut].self, from: data)) ?? [:]
   }
 
-  static func savePalette(_ shortcut: Shortcut?) {
-    UserDefaults.standard.set(try? JSONEncoder().encode(shortcut), forKey: defaultsKey)
+  static func save(_ shortcuts: [String: Shortcut]) {
+    UserDefaults.standard.set(try? JSONEncoder().encode(shortcuts), forKey: defaultsKey)
   }
+}
+
+/// What the recorder got: a new shortcut, ⌫ (remove it) or Esc (cancel).
+enum Recording: Sendable {
+  case shortcut(Shortcut)
+  case remove
+  case cancel
 }
 
 private let specialKeys: [Int: String] = [

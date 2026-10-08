@@ -1,17 +1,14 @@
 import AppKit
 import ServiceManagement
 
-/// Menu bar app: numpad digits in Figma run the Bifrost plugin's Numpad N
-/// command, which applies the alias named N (assigned in the plugin with
-/// =1 button pm). A recordable shortcut opens the palette.
+/// Menu bar app: numpad digits and recorded shortcuts in Figma press the
+/// Bifrost plugin's menu commands. Alias N applies the alias named N (saved in
+/// the palette's Aliases tab); Open palette and Fix variables can have one too.
 @MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWindowDelegate {
   private let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
   private let figma = Figma()
-  private lazy var tap = KeyTap(
-    figma: figma,
-    onDigit: { [weak self] digit in self?.run("Numpad \(digit)") },
-    onPalette: { [weak self] in self?.run("Open palette") })
+  private lazy var tap = KeyTap(figma: figma, onCommand: { [weak self] in self?.run($0) })
   private var permissionTimer: Timer?
   private var recordPanel: NSPanel?
 
@@ -19,13 +16,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
     let menu = NSMenu()
     menu.delegate = self
     statusItem.menu = menu
-    setIcon("square.grid.3x3")
-    tap.paletteShortcut = Shortcut.loadPalette()
+    statusItem.button?.image = logo
+    tap.shortcuts = Shortcut.load()
     startWhenTrusted()
   }
 
   private func run(_ command: String) {
-    flash(figma.run(command) ? "square.grid.3x3.fill" : "exclamationmark.triangle")
+    if figma.run(command) { flashSuccess() } else { flashFailure() }
   }
 
   // Without Accessibility permission the tap can't be created. Ask once, then
@@ -53,9 +50,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
       enabled.state = tap.isEnabled ? .on : .off
       menu.addItem(enabled)
       menu.addItem(.separator())
-      menu.addItem(withTitle: "Open palette: " + (tap.paletteShortcut?.description ?? "no shortcut"), action: nil, keyEquivalent: "")
-      menu.addItem(item("Record palette shortcut…", #selector(recordShortcut)))
-      if tap.paletteShortcut != nil { menu.addItem(item("Remove palette shortcut", #selector(removeShortcut))) }
+      menu.addItem(.sectionHeader(title: "Shortcuts: click to record"))
+      menu.addItem(shortcutItem(Figma.paletteCommand))
+      menu.addItem(shortcutItem(Figma.fixCommand))
+      let aliases = NSMenuItem(title: "Aliases", action: nil, keyEquivalent: "")
+      aliases.submenu = NSMenu()
+      for n in 0..<Figma.aliasCount {
+        aliases.submenu!.addItem(shortcutItem(Figma.aliasCommand(n), numpad: n < 10 ? "Numpad \(n)" : nil))
+      }
+      menu.addItem(aliases)
     } else {
       menu.addItem(item("Grant Accessibility access…", #selector(openAccessibilitySettings)))
     }
@@ -73,24 +76,42 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
     return item
   }
 
+  // "Alias 3      Numpad 3, ⌃⌥B", the keys right-aligned and grey.
+  private func shortcutItem(_ command: String, numpad: String? = nil) -> NSMenuItem {
+    let item = item(command, #selector(recordShortcut(_:)))
+    item.representedObject = command
+    let style = NSMutableParagraphStyle()
+    style.tabStops = [NSTextTab(textAlignment: .right, location: 200)]
+    let title = NSMutableAttributedString(string: command, attributes: [.font: NSFont.menuFont(ofSize: 0), .paragraphStyle: style])
+    let keys = [numpad, tap.shortcuts[command]?.description].compactMap { $0 }
+    if !keys.isEmpty {
+      title.append(NSAttributedString(
+        string: "\t" + keys.joined(separator: ", "),
+        attributes: [.font: NSFont.menuFont(ofSize: 0), .paragraphStyle: style, .foregroundColor: NSColor.secondaryLabelColor]))
+    }
+    item.attributedTitle = title
+    return item
+  }
+
   // Not saved: pausing is meant to be temporary, so every launch starts enabled.
   @objc private func toggleEnabled() {
     tap.isEnabled.toggle()
     updateIcon()
   }
 
-  // ---------- Recording the palette shortcut ----------
+  // ---------- Recording a shortcut ----------
 
   // A small window that only explains what to do; the key tap does the
   // recording, so it sees combos that a window would never get (like ⌘Q).
-  @objc private func recordShortcut() {
+  @objc private func recordShortcut(_ sender: NSMenuItem) {
+    guard let command = sender.representedObject as? String else { return }
     let panel = NSPanel(
-      contentRect: NSRect(x: 0, y: 0, width: 300, height: 80), styleMask: [.titled, .closable],
+      contentRect: NSRect(x: 0, y: 0, width: 300, height: 96), styleMask: [.titled, .closable],
       backing: .buffered, defer: false)
-    panel.title = "Palette shortcut"
+    panel.title = command
     panel.isReleasedWhenClosed = false
     panel.delegate = self
-    let label = NSTextField(wrappingLabelWithString: "Press the new shortcut for the palette.\nIt needs ⌘, ⌃ or ⌥. Esc cancels.")
+    let label = NSTextField(wrappingLabelWithString: "Press the new shortcut for \(command).\nIt needs ⌘, ⌃ or ⌥. ⌫ removes it, Esc cancels.")
     label.alignment = .center
     label.frame = panel.contentView!.bounds.insetBy(dx: 16, dy: 20)
     label.autoresizingMask = [.width, .height]
@@ -99,13 +120,21 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
     recordPanel = panel
     NSApp.activate()
     panel.makeKeyAndOrderFront(nil)
-    tap.recorder = { [weak self] shortcut in self?.finishRecording(shortcut) }
+    tap.recorder = { [weak self] result in self?.finishRecording(command, result) }
   }
 
-  private func finishRecording(_ shortcut: Shortcut?) {
-    if let shortcut {
-      tap.paletteShortcut = shortcut
-      Shortcut.savePalette(shortcut)
+  private func finishRecording(_ command: String, _ result: Recording) {
+    switch result {
+    case .shortcut(let shortcut):
+      // A shortcut runs one command, so it moves here from any other.
+      tap.shortcuts = tap.shortcuts.filter { $0.value != shortcut }
+      tap.shortcuts[command] = shortcut
+      Shortcut.save(tap.shortcuts)
+    case .remove:
+      tap.shortcuts[command] = nil
+      Shortcut.save(tap.shortcuts)
+    case .cancel:
+      break
     }
     recordPanel?.close()
   }
@@ -114,11 +143,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
   func windowWillClose(_ notification: Notification) {
     tap.recorder = nil
     recordPanel = nil
-  }
-
-  @objc private func removeShortcut() {
-    tap.paletteShortcut = nil
-    Shortcut.savePalette(nil)
   }
 
   @objc private func toggleLaunchAtLogin() {
@@ -143,17 +167,28 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
     statusItem.button?.appearsDisabled = !tap.isRunning || !tap.isEnabled
   }
 
-  private func setIcon(_ symbol: String) {
-    let image = NSImage(systemSymbolName: symbol, accessibilityDescription: "Bifrost Numpad")
-    image?.isTemplate = true
-    statusItem.button?.image = image
+  private let logo: NSImage = {
+    let image = Bundle.main.image(forResource: "MenuIcon")!
+    image.size = NSSize(width: 16, height: 16)
+    image.accessibilityDescription = "Bifrost Numpad"
+    return image
+  }()
+
+  // Shows that a key fired (highlight) or couldn't run (warning), then goes
+  // back to normal. Figma shows the plugin's own toast too.
+  private func flashSuccess() {
+    statusItem.button?.highlight(true)
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in self?.statusItem.button?.highlight(false) }
   }
 
-  // Shows that a key fired (filled grid) or couldn't run (warning), then
-  // goes back to the normal icon. Figma shows the plugin's own toast too.
-  private func flash(_ symbol: String) {
-    setIcon(symbol)
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in self?.setIcon("square.grid.3x3") }
+  private func flashFailure() {
+    let warning = NSImage(systemSymbolName: "exclamationmark.triangle", accessibilityDescription: "Bifrost Numpad")
+    warning?.isTemplate = true
+    statusItem.button?.image = warning
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
+      guard let self else { return }
+      self.statusItem.button?.image = self.logo
+    }
   }
 }
 
