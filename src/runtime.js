@@ -186,13 +186,19 @@ function bindPaint(node, prop, variable) {
 
 // Adding auto layout to a frame with children makes it hug them, like Shift+A in
 // Figma. An empty frame keeps its size, so "frame alh" doesn't collapse to 0x0.
-function setAutoLayout(node, direction) {
+// New auto layout gets Bifrost's padding M (12px) instead of Figma's default;
+// switching the direction of an existing one leaves its padding alone.
+async function setAutoLayout(node, direction) {
   const adding = node.layoutMode === "NONE";
   node.layoutMode = direction;
   if (adding && node.children.length) {
     node.primaryAxisSizingMode = "AUTO";
     node.counterAxisSizingMode = "AUTO";
   }
+  if (!adding) return;
+  const padding = ENTRIES.find((e) => e.kind === "padding" && e.name === "M");
+  const variable = padding && (await resolveVariable(padding));
+  if (variable) bindFields(node, FIELD_SETS.padding.ALL, variable);
 }
 
 // For padding or gap on a frame without auto layout: children spread out more
@@ -221,7 +227,30 @@ function nodeCaps(node) {
     text: node.type === "TEXT" || ("findOne" in node && node.findOne((n) => n.type === "TEXT") !== null),
     // Free text ("h1 Hello") only rewrites a text layer itself.
     textLayer: node.type === "TEXT",
+    // Fill only exists for children of an auto-layout frame.
+    inAutoLayout: Boolean(node.parent && "layoutMode" in node.parent && node.parent.layoutMode !== "NONE"),
   };
+}
+
+// Fill, hug or a fixed size on a layer's width (H), height (V) or both.
+// Figma only has these modes on auto-layout frames, their children and text;
+// anything else just gets resized for a fixed size. Text needs its fonts
+// loaded to change size, and a fixed width keeps growing in height.
+async function applySizing(node, op) {
+  if (node.type === "TEXT") {
+    for (const font of node.getRangeAllFontNames(0, node.characters.length)) await figma.loadFontAsync(font).catch(() => {});
+    if (op.value === "FIXED") node.textAutoResize = op.axes.includes("V") ? "NONE" : "HEIGHT";
+  }
+  for (const axis of op.axes) {
+    const prop = axis === "H" ? "layoutSizingHorizontal" : "layoutSizingVertical";
+    if (op.value !== "FIXED") {
+      node[prop] = op.value;
+      continue;
+    }
+    node.resize(axis === "H" ? op.size : node.width, axis === "V" ? op.size : node.height);
+    const hasModes = node.type === "TEXT" || nodeCaps(node).inAutoLayout || nodeCaps(node).autoLayout;
+    if (hasModes) node[prop] = "FIXED";
+  }
 }
 
 // Text styles can only be applied once their font is loaded. Figma gives no
@@ -264,11 +293,20 @@ async function applyTextStyle(node, style, content) {
   }
 }
 
+// New layers get Bifrost colors instead of Figma's defaults: frames
+// Base/bfc-base-3 (not plain white), text Base/bfc-base-c-1 (not black).
+// Left as Figma made it if the library isn't enabled.
+async function bindDefaultFill(node, name) {
+  const entry = ENTRIES.find((e) => e.kind === "fill" && e.name === name);
+  const variable = entry && (await resolveVariable(entry));
+  if (variable) bindPaint(node, "fills", variable);
+}
+
 // A new text layer with the given content, or by default "Header H5" for
 // headings, "icons" for Font Awesome styles
 // (the placeholder Bifrost puts in icon slots; the font draws it as an icon),
 // otherwise "Text". Style names are size/family/weight/usage. Its color is
-// the default text color, Base/bfc-base-c-1, instead of Figma's black.
+// the default text color (bindDefaultFill).
 async function insertText(style, anchor, content) {
   const text = figma.createText();
   await figma.loadFontAsync(text.fontName);
@@ -276,9 +314,7 @@ async function insertText(style, anchor, content) {
   const size = style.name.split("/")[0];
   text.characters = content || (/\/Font Awesome\//.test(style.name) ? "icons" : /^H[1-5]$/.test(size) ? "Header " + size : "Text");
   await text.setTextStyleIdAsync(style.id);
-  const textColor = ENTRIES.find((e) => e.kind === "fill" && e.name === "Base/bfc-base-c-1");
-  const variable = textColor && (await resolveVariable(textColor));
-  if (variable) bindPaint(text, "fills", variable);
+  await bindDefaultFill(text, "Base/bfc-base-c-1");
   placeNode(text, anchor);
   figma.currentPage.selection = [text];
 }
@@ -301,6 +337,7 @@ async function applyOp(op, target, nodes, mode) {
   if (op.kind === "frame") {
     const frame = figma.createFrame();
     frame.name = "Frame";
+    await bindDefaultFill(frame, "Base/bfc-base-3");
     placeNode(frame, nodes[0]);
     figma.currentPage.selection = [frame];
     return 1;
@@ -326,15 +363,18 @@ async function applyOp(op, target, nodes, mode) {
       // Borders always default to 1px on all sides, replacing per-side weights.
       if ("strokeWeight" in node) node.strokeWeight = 1;
     } else if (op.kind === "autolayout") {
-      setAutoLayout(node, op.value);
+      await setAutoLayout(node, op.value);
     } else if (op.kind === "gap") {
-      if (node.layoutMode === "NONE") setAutoLayout(node, guessDirection(node));
+      if (node.layoutMode === "NONE") await setAutoLayout(node, guessDirection(node));
       applyGap(node, op, target);
     } else if (op.kind === "padding") {
-      if (node.layoutMode === "NONE") setAutoLayout(node, guessDirection(node));
+      if (node.layoutMode === "NONE") await setAutoLayout(node, guessDirection(node));
       bindFields(node, FIELD_SETS[op.kind][op.side], target);
     } else if (op.kind === "textstyle") {
       await applyTextStyle(node, target, op.text);
+    } else if (op.kind === "sizing") {
+      if (op.value === "HUG" && node.layoutMode === "NONE") await setAutoLayout(node, guessDirection(node));
+      await applySizing(node, op);
     } else if (op.kind === "radius" && op.side === "ALL" && !nodeCaps(node).corners) {
       // Shapes like stars and polygons only have one uniform radius
       bindFields(node, ["cornerRadius"], target);
@@ -355,9 +395,22 @@ async function applyOps(ops) {
   const label = describeOpsIn(ops, check.modes);
   const done = slowNotice(label);
   const skipped = [];
+  // Inserts after "frame" go inside that frame ("frame alh button button"),
+  // which gets vertical auto layout if it has none yet. When the command is
+  // done, each new frame with children hugs them on every axis no resizing
+  // op set ("frame fixed 320 alh button" stays 320 wide).
+  let container = null;
+  const frames = [];
+  const sized = new Set();
   try {
     for (let i = 0; i < ops.length; i++) {
       const op = ops[i];
+      const inserting = check.modes[i] === "insert";
+      if (inserting && container && !container.removed) {
+        if (container.layoutMode === "NONE") await setAutoLayout(container, "VERTICAL");
+        nodes = [container];
+      }
+      if (op.kind === "sizing") for (const node of nodes) for (const axis of op.axes) sized.add(node.id + axis);
       // Word ops (frame, alh, alv) and gap auto have no token to resolve.
       let target = null;
       if (op.slug) {
@@ -373,7 +426,13 @@ async function applyOps(ops) {
         }
       }
       if ((await applyOp(op, target, nodes, check.modes[i])) === 0) skipped.push(op.label);
-      if (check.modes[i] === "insert") nodes = [...figma.currentPage.selection];
+      if (inserting) nodes = [...figma.currentPage.selection];
+      if (op.kind === "frame") frames.push((container = nodes[0]));
+    }
+    for (const frame of frames) {
+      if (frame.removed || !frame.children.length || frame.layoutMode === "NONE") continue;
+      if (!sized.has(frame.id + "H")) frame.layoutSizingHorizontal = "HUG";
+      if (!sized.has(frame.id + "V")) frame.layoutSizingVertical = "HUG";
     }
     await remember(ops, label);
   } catch (e) {

@@ -368,3 +368,32 @@ test("review proposes a text style for unstyled text by its font", () => {
   // The weight number wins over a variable font's style name.
   assert.equal(pick("Open Sans", "Regular", 14, 600), "M/Open Sans/Semibold/Text");
 });
+
+test("resizing: fill, hug and fixed per axis, fill only inside an auto layout", () => {
+  assert.deepEqual(labels(parse("fill fillv hughv").primary), ["Fill width", "Fill height", "Hug width and height"]);
+  assert.deepEqual(labels(parse("fixed 320 fixedv 48px").primary), ["Fixed width 320px", "Fixed height 48px"]);
+  assert.match(parse("fixed").error, /needs a size in px, like fixed 320/);
+  const p = ctx.createParser(ENTRIES, {});
+  assert.equal(p.shorthand(parse("fixed 320 fill").primary), "fixed 320 fill");
+
+  const caps = { fills: true, strokes: true, radius: true, corners: true, autoLayout: false, canAutoLayout: true, text: false };
+  const loose = Object.assign({ inAutoLayout: false }, caps);
+  const child = Object.assign({}, loose, { inAutoLayout: true });
+  const alFrame = Object.assign({}, loose, { autoLayout: true });
+  const check = (q, selection) => ctx.checkOps(parse(q).primary, selection);
+  assert.match(check("fill", [loose]).error, /Fill width needs a layer inside an auto layout frame/);
+  assert.equal(check("fill", [child]).error, undefined);
+  // An inserted layer is inside an auto layout when the selection is one, or is in one.
+  assert.equal(check("button fill", [alFrame]).error, undefined);
+  assert.match(check("button fill", [loose]).error, /needs a layer inside an auto layout/);
+  // Inserts after "frame" go inside it.
+  assert.equal(check("frame button fill", []).error, undefined);
+  // Hug adds auto layout to a frame without it.
+  assert.deepEqual(Array.from(check("hug", [loose]).modes), ["autolayout"]);
+  assert.equal(check("fixed 320", [loose]).error, undefined);
+});
+
+test("a repeated name is repeated inserts", () => {
+  assert.deepEqual(labels(parse("frame alh button button").primary), ["Insert frame", "Auto layout horizontal", "Insert Button", "Insert Button"]);
+  assert.deepEqual(labels(parse("icon button").primary), ["Insert Button (icon only)"]);
+});

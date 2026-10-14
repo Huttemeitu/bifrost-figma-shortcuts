@@ -156,9 +156,13 @@ The Options tab shows the same values.
 | `h1 This is a heading`, `icon m solid star` | Text after a text or icon style is its content: replaces the selected text's content, or goes in a new text (inside a selected frame). For icons it's the icon name. It ends at the next command: `h1 Welcome f brand` |
 | `regular`, `italic`, `l`, `link` with styled text or an icon selected | The selection's own style with only that part changed comes first: M Semibold + `regular` → M Regular, Icon H3 Solid + `reg` → Icon H3 Regular |
 | `h3`, `solid`, `duo` with an icon selected | Font Awesome icons first: the icon in another size (same variant) or another variant (same size). With an icon selected, the empty palette lists these on top |
-| `frame` | Insert a frame (placed like components, see below) |
+| `frame` | Insert a frame (placed like components, see below), filled with `bfc-base-3` |
 | `alh`, `alv` | Auto layout horizontal / vertical on the selected frames |
 | `frame alh p m r m b base-dimmed3` | Build a styled auto-layout frame in one go |
+| `frame alh button button` | Everything inserted after `frame` goes inside it (it gets auto layout if it has none), and the frame hugs its contents |
+| `fill`, `fillv`, `fillhv` | Fill the width, height or both; only for layers inside an auto layout (also one you just inserted into it: `button fill`) |
+| `hug`, `hugv`, `hughv` | Hug the content; on auto-layout frames and text (a frame without auto layout gets it) |
+| `fixed 320`, `fixedv 48`, `fixedhv 100` | A fixed size in px for the width, height or both |
 | `button`, `btn`, `basic input`, `brand` | Search components, text styles and colors by name |
 | `p m g s r l` | Several at once |
 | `button p m` | Insert a Button and give it padding M |
@@ -195,6 +199,8 @@ Some details:
   `p m` or `g s` works on any frame. The direction follows the children like Shift+A: side
   by side becomes horizontal, anything else vertical. The row says "(adds
   auto layout)" when this happens. Use `alh`/`alv` first to choose yourself.
+  New auto layout always starts with padding M (12px), Bifrost's default,
+  instead of Figma's; a padding in the same command replaces it.
 - **Frames** (`frame`) are placed the same way as components and become the
   selection, so everything after `frame` applies to the new frame. Adding auto
   layout (`alh`/`alv`) to a frame with children makes it hug them, like
