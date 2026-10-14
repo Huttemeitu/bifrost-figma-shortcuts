@@ -152,6 +152,9 @@ The Options tab shows the same values.
 | `f brand`, `f base3`, `f base-1` | Fill, fuzzy match on the color name (dashes optional) |
 | `b brand`, `b basedimmed3`, `b base-dimmed-3` | Border: that color, always 1px on all sides |
 | `h1` … `h5`, `t regular` | Text style on the selected text, or on all text inside a selected frame; with no text in the selection it inserts a text layer ("Header H5", or "icons" for an icon style) colored `bfc-base-c-1` |
+| `icon m`, `icon h3 solid` | Icon styles (Font Awesome), found by size and variant like text styles; only the ones turned on in the Options tab |
+| `h1 This is a heading`, `icon m solid star` | Text after a text or icon style is its content: replaces the selected text's content, or goes in a new text (inside a selected frame). For icons it's the icon name. It ends at the next command: `h1 Welcome f brand` |
+| `regular`, `italic`, `l`, `link` with styled text or an icon selected | The selection's own style with only that part changed comes first: M Semibold + `regular` → M Regular, Icon H3 Solid + `reg` → Icon H3 Regular |
 | `h3`, `solid`, `duo` with an icon selected | Font Awesome icons first: the icon in another size (same variant) or another variant (same size). With an icon selected, the empty palette lists these on top |
 | `frame` | Insert a frame (placed like components, see below) |
 | `alh`, `alv` | Auto layout horizontal / vertical on the selected frames |
@@ -234,7 +237,12 @@ machine and included in the help view's Copy as JSON backup.
 
 **Review variables in the selection** (on the empty palette, or type
 `review`) checks the selection and everything inside it for padding, gap,
-radius, fill and border values set by hand instead of with a variable.
+radius, fill and border values set by hand instead of with a variable, and
+for text without a text style.
+- Unstyled text gets the text style that matches its font: the same family,
+  weight and size, or else the closest (an Inter 12 text becomes
+  `S/Open Sans/Regular/Text`, an unstyled icon its icon style). Body text is
+  preferred over links; text with mixed fonts or sizes is left alone.
 
 - Every value gets one proposal: **Exact matches** like `Padding 12px → M`,
   and **Nearest value** for values off the scale (`Padding 11px → M`; a tie

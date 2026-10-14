@@ -47,8 +47,9 @@ const GROUPS = [
 
 const ALIAS_NAME = /^[a-z0-9][a-z0-9-]*$/;
 
-// Icon font styles share sizes with real text styles; rank them last in fuzzy matches.
-const DEMOTED = /\/font awesome\//i;
+// Icon styles ("Icon/M/Solid", from generate.js) share sizes with real text
+// styles; rank them last in fuzzy matches.
+const DEMOTED = /^icon\//i;
 
 // The help view's Guide tab: sections of [examples, meaning]. Every example is
 // clickable and must parse. Keep in sync with parse() and the README table.
@@ -71,6 +72,8 @@ const SYNTAX = [
       [["f brand", "f base1", "f base-1"], "Fill, matched by color name (dashes optional)"],
       [["b brand", "b basedimmed3", "b base-dimmed-3"], "Border, 1px on all sides, matched by color name"],
       [["h1", "h3", "t regular"], "Text style: changes selected text, or inserts a new text layer"],
+      [["icon m", "icon m solid"], "Icon style (Font Awesome), by size and variant"],
+      [["h1 This is a heading", "icon m solid star"], "Text after a style is its content: replaces the selected text's, or goes in a new text (for icons, the icon name)"],
     ],
   },
   {
@@ -158,16 +161,25 @@ function createParser(entries, aliases, options) {
   const sideValues = (key, at) => byKind(SIDE_OPS[key][0]).map((x) => sideOp(key, x, at)).concat(key === "g" ? [autoGapOp(at)] : []);
   const startsSideValue = (op, v) => (op.value === "auto" ? "auto".startsWith(v) : startsValue(bySlug[op.slug], v));
 
+  // A query with the word "icon" ranks icon styles first, before how well
+  // names match ("Icon (Medium)", a component, starts with "icon m"). Ties
+  // otherwise: icon styles last, then kind order, then Regular weights (text
+  // after a style has no list to pick from), then shorter names.
   function fuzzy(kinds, q, limit) {
+    const iconQuery = /(^|\s)icon(\s|$)/.test(q);
+    const icon = (e) => (DEMOTED.test(e.name) ? 1 : 0);
+    const regular = (e) => /\/regular(\/|$)/i.test(e.name);
     return kinds
       .flatMap(byKind)
       .map((e) => [e, matchScore(e.name, q)])
       .filter(([, s]) => s >= 0)
       .sort(
         (a, b) =>
+          (iconQuery ? icon(b[0]) - icon(a[0]) : 0) ||
           a[1] - b[1] ||
-          DEMOTED.test(a[0].name) - DEMOTED.test(b[0].name) ||
+          (iconQuery ? 0 : icon(a[0]) - icon(b[0])) ||
           kinds.indexOf(a[0].kind) - kinds.indexOf(b[0].kind) ||
+          regular(b[0]) - regular(a[0]) ||
           a[0].name.length - b[0].name.length
       )
       .slice(0, limit)
@@ -211,6 +223,19 @@ function createParser(entries, aliases, options) {
     const src = words.map((_, i) => i);
     const at = (from, to) => [src[from], src[to - 1] + 1];
     const ops = [];
+    // Words after a text style are its text, up to the next op keyword:
+    // "h1 This is a heading", "h1 Welcome f brand". If what follows that
+    // keyword doesn't parse, it's all text ("h3 Plan b for later"). The tag
+    // covers the text too. Returns where parsing continues.
+    const takeText = (op, from) => {
+      let end = from;
+      while (end < words.length && !isKeyword(words[end].toLowerCase())) end++;
+      if (end < words.length && end > from && parse(words.slice(end).join(" ")).error) end = words.length;
+      if (end === from) return from;
+      op.text = words.slice(from, end).join(" ");
+      op.at = [op.at[0], src[end - 1] + 1];
+      return end;
+    };
     // Aliases only expand where an op can start, never where a value is
     // expected, so an alias named "m" or "brand" can't break "p m" or "f brand".
     // Words that came from an alias (up to aliasEnd) aren't expanded again.
@@ -235,12 +260,16 @@ function createParser(entries, aliases, options) {
         if (i === words.length - 1) return fuzzySlot(ops, [kind], q, at(i - 1, i + 1));
         const best = fuzzy([kind], q, 1)[0];
         if (!best) return { error: "No " + KIND_LABEL[kind].toLowerCase() + ' matches "' + q + '"' };
-        ops.push(nameOp(best, at(i - 1, i + 1)));
+        const op = nameOp(best, at(i - 1, i + 1));
+        ops.push(op);
+        if (kind === "textstyle") i = takeText(op, i + 1) - 1;
         continue;
       }
 
       if (/^h[1-5]$/.test(w) && valueEntry("textstyle", w)) {
-        ops.push(nameOp(valueEntry("textstyle", w), at(i, i + 1)));
+        const op = nameOp(valueEntry("textstyle", w), at(i, i + 1));
+        ops.push(op);
+        i = takeText(op, i + 1) - 1;
         continue;
       }
 
@@ -286,15 +315,24 @@ function createParser(entries, aliases, options) {
           const match = fuzzy(searchKinds, name, 1)[0];
           if (!match) continue;
           if (j === words.length) return fuzzySlot(ops, searchKinds, name, at(i, j));
+          // A text style takes what follows as its text ("m open Hello world").
+          const op = nameOp(match, at(i, j));
+          if (match.kind === "textstyle") {
+            ops.push(op);
+            i = takeText(op, j) - 1;
+            continue words;
+          }
           if (parse(words.slice(j).join(" ")).error) continue;
-          ops.push(nameOp(match, at(i, j)));
+          ops.push(op);
           i = j - 1;
           continue words;
         }
       }
       const found = search && w.length >= 2 ? fuzzy(searchKinds, w, limit) : [];
       if (!isLast && found.length) {
-        ops.push(nameOp(found[0], at(i, i + 1)));
+        const op = nameOp(found[0], at(i, i + 1));
+        ops.push(op);
+        if (op.kind === "textstyle") i = takeText(op, i + 1) - 1;
         continue;
       }
       if (!isLast) return { error: 'No matches for "' + words[i] + '". Type ? for help' };
@@ -322,7 +360,7 @@ function createParser(entries, aliases, options) {
   const shorthandCache = new Map();
   const COLOR_KEYS = { fill: "f", stroke: "b" };
   function shorthand(ops) {
-    const cacheKey = ops.map((o) => (o.slug || o.key) + ":" + (o.side || "")).join(",");
+    const cacheKey = ops.map((o) => (o.slug || o.key) + ":" + (o.side || "") + ":" + (o.text || "")).join(",");
     if (!shorthandCache.has(cacheKey)) shorthandCache.set(cacheKey, computeShorthand(ops));
     return shorthandCache.get(cacheKey);
   }
@@ -366,7 +404,7 @@ function createParser(entries, aliases, options) {
       if (op.key) {
         parts.push(op.key + " " + name);
       } else if (op.kind === "textstyle" && /^h[1-5]$/.test(name)) {
-        parts.push(name);
+        parts.push(op.text ? name + " " + op.text : name);
       } else if (COLOR_KEYS[op.kind]) {
         const word = colorShorthand(op.kind, bySlug[op.slug]);
         if (!word) return null;
@@ -454,7 +492,7 @@ function buildOptionTree(entries) {
 const INSERTED_CAPS = {
   frame: { fills: true, strokes: true, radius: true, corners: true, autoLayout: false, canAutoLayout: true, text: false },
   component: { fills: true, strokes: true, radius: true, corners: true, autoLayout: true, canAutoLayout: false, text: false },
-  textstyle: { fills: true, strokes: true, radius: false, corners: false, autoLayout: false, canAutoLayout: false, text: true },
+  textstyle: { fills: true, strokes: true, radius: false, corners: false, autoLayout: false, canAutoLayout: false, text: true, textLayer: true },
 };
 
 function opNeed(op) {
@@ -500,7 +538,11 @@ function checkOps(ops, selection) {
   const modes = [];
   for (let i = 0; i < ops.length; i++) {
     const op = ops[i];
-    const inserts = op.kind === "frame" || op.kind === "component" || (op.kind === "textstyle" && !targets.some((t) => t.text));
+    // A text style changes text in the targets; with free text ("h1 Hello")
+    // only a text layer itself, so a selected frame gets a new text instead
+    // of every text inside it rewritten.
+    const textTarget = (t) => (op.text ? t.textLayer : t.text);
+    const inserts = op.kind === "frame" || op.kind === "component" || (op.kind === "textstyle" && !targets.some(textTarget));
     if (inserts) {
       targets = [INSERTED_CAPS[op.kind]];
       modes.push("insert");
@@ -520,9 +562,10 @@ function checkOps(ops, selection) {
 // A text style inserts a new text layer when no text is selected, and padding
 // or gap on a frame without auto layout adds it.
 function opLabel(op, mode) {
-  if (op.kind === "textstyle" && mode === "insert") return "Insert text " + op.label.replace(/^Text /, "");
+  const text = op.text ? " “" + op.text + "”" : "";
+  if (op.kind === "textstyle" && mode === "insert") return "Insert text " + op.label.replace(/^Text /, "") + text;
   if (mode === "autolayout") return op.label + " (adds auto layout)";
-  return op.label;
+  return op.label + text;
 }
 function describeOpsIn(ops, modes) {
   return ops.map((op, i) => opLabel(op, modes && modes[i])).join(" · ");
@@ -605,6 +648,55 @@ function reviewChoices(entries, table, kind, value, modes, role) {
   return best ? { match: best[0].slug, exact: best[1] === 0 } : { match: null, exact: false };
 }
 
+// A font style name as a weight and slant: "Semibold Italic" is 600, italic.
+const WEIGHTS = { thin: 100, extralight: 200, light: 300, regular: 400, medium: 500, semibold: 600, bold: 700, extrabold: 800, black: 900 };
+function styleWeight(style) {
+  const words = style.toLowerCase().replace(/[\s-]+/g, "");
+  const key = Object.keys(WEIGHTS).sort((a, b) => b.length - a.length).find((w) => words.includes(w));
+  return { weight: key ? WEIGHTS[key] : 400, italic: words.includes("italic") };
+}
+
+// The text style to propose for a text layer without one, from its font:
+// { family, style, weight, size }, where family and style can be null (Figma
+// gives no fontName for some Open Sans text) and weight is Figma's number,
+// which is also right for variable fonts whose style is called "Regular".
+// Entries carry `font` ({ family, style }) from generate.js. The style with
+// the same family, weight and size is exact; otherwise the closest, ranked
+// by same family, body text over links, same weight and nearest size (size
+// first for other families), then the larger size. An unknown family counts
+// as the same, an unknown slant as upright. Families compare loosely
+// ("Satoshi Variable" is "Satoshi"). Icon fonts only get icon styles, and
+// other text never does. Returns { match: slug | null, exact }.
+function reviewTextStyle(entries, font) {
+  const family = (f) => f.toLowerCase().replace(/ variable$/, "");
+  const iconFont = Boolean(font.family) && /^font awesome/i.test(font.family);
+  const italic = Boolean(font.style) && styleWeight(font.style).italic;
+  const sameFamily = (e) => !font.family || family(e.font.family) === family(font.family);
+  const sameWeight = (e) => {
+    const w = styleWeight(e.font.style);
+    return w.weight === font.weight && w.italic === italic;
+  };
+  // Same family: weight, then size. Another family (Inter, Roboto): size says
+  // more about the role than the weight does.
+  const rank = (e) => {
+    const link = /\/link$/i.test(e.name) ? 1 : 0;
+    const weight = sameWeight(e) ? 0 : 1;
+    const distance = Math.abs(e.value - font.size);
+    return sameFamily(e) ? [0, link, weight, distance, -e.value] : [1, link, distance, weight, -e.value];
+  };
+  const before = (a, b) => {
+    const x = rank(a);
+    const y = rank(b);
+    const i = x.findIndex((v, k) => v !== y[k]);
+    return i < 0 ? 0 : x[i] - y[i];
+  };
+  const best = entries
+    .filter((e) => e.kind === "textstyle" && e.font && DEMOTED.test(e.name) === iconFont)
+    .sort(before)[0];
+  if (!best) return { match: null, exact: false };
+  return { match: best.slug, exact: sameFamily(best) && sameWeight(best) && best.value === font.size };
+}
+
 // "Padding 11px", "Text color #007375": a review group as the palette and the
 // canvas highlight show it.
 function reviewLabel(group) {
@@ -634,5 +726,5 @@ function aliasOps(entries, aliases, name) {
 }
 
 function describeOps(ops) {
-  return ops.map((o) => o.label).join(" · ");
+  return ops.map((o) => opLabel(o)).join(" · ");
 }

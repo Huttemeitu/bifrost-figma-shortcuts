@@ -55,11 +55,24 @@ function stripPrefix(name, prefix) {
 }
 
 // The standard headings get clean names ("H1") so "h1" in the prompt matches them
-// exactly, ahead of the same-sized Font Awesome icon styles.
+// exactly, ahead of the same-sized Font Awesome icon styles. Those become
+// "Icon/M/Solid", so they're found like text styles ("icon m" is every M icon
+// that's turned on in the Options tab) and get their own branch in the tree.
 const HEADING_STYLE = /^(H[1-5])\/Satoshi\/Text$/;
+const ICON_STYLE = /^([^/]+)\/Font Awesome\/(.+)$/;
 function textStyleLabel(name) {
-  const m = name.match(HEADING_STYLE);
-  return m ? m[1] : name;
+  const heading = name.match(HEADING_STYLE);
+  if (heading) return heading[1];
+  const icon = name.match(ICON_STYLE);
+  return icon ? "Icon/" + icon[1] + "/" + icon[2] : name;
+}
+
+// A text style's font, for the review to match unstyled text against. Figma
+// gives none for some Open Sans styles, so then it comes from the name,
+// size/family/weight/usage (like loadStyleFont in runtime.js).
+function styleFont(s) {
+  const [, family, style] = s.name.split("/");
+  return s.fontFamily ? { family: s.fontFamily, style: s.fontStyle } : family && style ? { family, style } : undefined;
 }
 
 // Component names like "Image" or "Basic input" say little on their own, so they
@@ -133,6 +146,7 @@ const KINDS = {
     id: s.id,
     key: s.key,
     value: s.fontSize,
+    font: styleFont(s),
   })),
   component: components.map((c) => {
     const name = componentLabel(c);
@@ -180,6 +194,7 @@ for (const [kind, entries] of Object.entries(KINDS)) {
     if (e.group) flatMap[e.slug].group = e.group;
     if (e.value) flatMap[e.slug].value = e.value;
     if (e.px !== undefined) flatMap[e.slug].px = e.px;
+    if (e.font) flatMap[e.slug].font = e.font;
   }
 }
 

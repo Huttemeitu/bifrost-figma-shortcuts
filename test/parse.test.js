@@ -14,7 +14,7 @@ const ENTRIES = [
   ...["None", "S", "M", "L", "XL"].flatMap((n) => [entry("padding", n, PX[n]), entry("gap", n, PX[n])]),
   ...["S", "M", "L", "Full"].map((n) => entry("radius", n, PX[n])),
   ...["Pop/Brand/bfc-brand", "Pop/Brand/bfc-brand-hc", "Base/bfc-base-c-brand", "Base/bfc-base-1", "Base/bfc-base-dimmed-3"].flatMap((n) => [entry("fill", n), entry("stroke", n)]),
-  ...["H1", "S/Font Awesome/Solid", "S/Open Sans/Regular/Text"].map((n) => entry("textstyle", n)),
+  ...["H1", "Icon/S/Solid", "Icon/M/Regular", "Icon/M/Solid", "S/Open Sans/Regular/Text"].map((n) => entry("textstyle", n)),
   ...["Button", "Button (icon only)", "Radio-button", "Box", "Checkbox-indeterminate", "Input/Basic input"].map((n) => entry("component", n)),
 ];
 
@@ -315,4 +315,56 @@ test("gap auto spreads children out, and grid gaps only apply to grid frames", (
   assert.equal(check("g s", grid).error, undefined);
   assert.match(check("g auto", grid).error, /without grid/);
   assert.deepEqual(Array.from(check("g auto", Object.assign({}, frame, { autoLayout: false })).modes), ["autolayout"]);
+});
+
+test("text after a text style is its content, up to the next command", () => {
+  const first = (q) => parse(q).primary[0];
+  assert.equal(first("h1 This is a heading").text, "This is a heading");
+  assert.equal(ctx.describeOps(parse("h1 This is a heading").primary), "Text H1 “This is a heading”");
+  assert.deepEqual(Array.from(first("h1 This is a heading").at), [0, 5]);
+  assert.deepEqual(labels(parse("h1 Welcome f brand").primary), ["Text H1", "Fill Pop/Brand/bfc-brand"]);
+  assert.equal(first("h1 Welcome f brand").text, "Welcome");
+  assert.equal(first("h1 p m").text, undefined);
+  assert.equal(first("h1 Plan b for later").text, "Plan b for later");
+  assert.equal(first("icon m solid star").text, "star");
+  assert.equal(first("icon m solid star").label, "Text Icon/M/Solid");
+
+  // Icons are found by name like text styles, ahead of components named "Icon …".
+  const icons = ctx.createParser(ENTRIES.concat(entry("component", "Icon (Medium)")), {}).parse("icon m");
+  assert.deepEqual([icons.primary].concat(icons.alternatives).map((ops) => ops[0].label), ["Text Icon/M/Regular", "Text Icon/M/Solid", "Insert Icon (Medium)"]);
+
+  // With content, only a text layer itself is rewritten; a frame gets a new text.
+  const caps = { fills: true, strokes: true, radius: true, corners: true, autoLayout: true, canAutoLayout: true };
+  const frameWithText = Object.assign({ text: true, textLayer: false }, caps);
+  const textLayer = Object.assign({}, caps, { radius: false, corners: false, text: true, textLayer: true });
+  assert.deepEqual(Array.from(ctx.checkOps(parse("h1 Hello").primary, [frameWithText]).modes), ["insert"]);
+  assert.deepEqual(Array.from(ctx.checkOps(parse("h1").primary, [frameWithText]).modes), ["apply"]);
+  assert.deepEqual(Array.from(ctx.checkOps(parse("h1 Hello").primary, [textLayer]).modes), ["apply"]);
+});
+
+test("review proposes a text style for unstyled text by its font", () => {
+  const style = (name, family, weight, size) => ({ slug: name, kind: "textstyle", name, value: size, font: { family, style: weight } });
+  const styles = [
+    style("H1", "Satoshi Variable", "Regular", 32),
+    style("S/Open Sans/Regular/Text", "Open Sans", "Regular", 12),
+    style("S/Open Sans/Regular/Link", "Open Sans", "Regular", 12),
+    style("M/Open Sans/Regular/Text", "Open Sans", "Regular", 14),
+    style("M/Open Sans/Semibold/Text", "Open Sans", "Semibold", 14),
+    style("Icon/M/Solid", "Font Awesome 7 Pro", "Solid", 14),
+  ];
+  const pick = (family, style, size, weight = ctx.styleWeight(style).weight) => {
+    const r = ctx.reviewTextStyle(styles, { family, style, weight, size });
+    return r.match + (r.exact ? "" : " (nearest)");
+  };
+  assert.equal(pick("Open Sans", "Semibold", 14), "M/Open Sans/Semibold/Text");
+  assert.equal(pick("Open Sans", "Regular", 12), "S/Open Sans/Regular/Text");
+  assert.equal(pick("Open Sans", "Regular", 13), "M/Open Sans/Regular/Text (nearest)");
+  assert.equal(pick("Satoshi", "Regular", 32), "H1");
+  assert.equal(pick("Inter", "Regular", 12), "S/Open Sans/Regular/Text (nearest)");
+  assert.equal(pick("Font Awesome 7 Pro", "Solid", 14), "Icon/M/Solid");
+  // Figma gives no font name for some detached Open Sans text: weight 400, 14px.
+  assert.equal(pick(null, null, 14, 400), "M/Open Sans/Regular/Text");
+  assert.equal(pick(null, null, 14, 600), "M/Open Sans/Semibold/Text");
+  // The weight number wins over a variable font's style name.
+  assert.equal(pick("Open Sans", "Regular", 14, 600), "M/Open Sans/Semibold/Text");
 });

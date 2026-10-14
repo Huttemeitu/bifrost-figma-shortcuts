@@ -423,12 +423,16 @@
     return GROUPS.filter(groupVisible).sort((a, b) => (first.includes(b.kind) ? 1 : 0) - (first.includes(a.kind) ? 1 : 0));
   }
 
+  // Rows already shown above (a style swap, an icon choice) aren't repeated.
   function pushParsed(out, r) {
-    if (r.primary && runnable(r.primary)) out.push(actionRow(r.primary));
-    for (const ops of r.alternatives.filter(runnable).slice(0, 100)) out.push(actionRow(ops));
+    const key = (ops) => ops.map((o) => (o.slug || o.key) + (o.text ? ":" + o.text : "")).join(",");
+    const shown = new Set(out.filter((row) => row.ops).map((row) => key(row.ops)));
+    const fresh = (ops) => runnable(ops) && !shown.has(key(ops));
+    if (r.primary && fresh(r.primary)) out.push(actionRow(r.primary));
+    for (const ops of r.alternatives.filter(fresh).slice(0, 100)) out.push(actionRow(ops));
   }
 
-  // Icons are Font Awesome text styles, "H3/Font Awesome/Solid": size, then
+  // Icons are Font Awesome text styles, "Icon/H3/Solid": size, then
   // variant. With only icons selected, the palette offers the icon's other
   // sizes (same variant) and other variants (same size) before anything else,
   // so "h3" is the icon in H3 rather than the Satoshi heading. Duotone and
@@ -438,7 +442,7 @@
     if (!icon) return [];
     const all = entries
       .filter((e) => e.kind === "textstyle" && DEMOTED.test(e.name) && !hidden.has(e.slug))
-      .map((e) => ({ entry: e, size: e.name.split("/")[0], variant: e.name.split("/")[2] }));
+      .map((e) => ({ entry: e, size: e.name.split("/")[1], variant: e.name.split("/")[2] }));
     const variant = /Duotone/.test(icon.family) ? "Duotone" : /Brands/.test(icon.family) ? "Brands" : icon.style;
     const sameVariant = all.filter((s) => s.variant === variant).sort((a, b) => a.entry.value - b.entry.value);
     const distance = (s) => Math.abs(s.entry.value - icon.fontSize);
@@ -452,6 +456,25 @@
       .map((s) => choice(s, "size"))
       .concat(current ? all.filter((s) => s.size === current.size && s.variant !== variant).map((s) => choice(s, "variant")) : [])
       .filter((c) => runnable(c.row.ops));
+  }
+
+  // The selection's text style with exactly one part of its name changed to
+  // one starting with the query: M/Open Sans/Semibold/Text and "regular" give
+  // M/Open Sans/Regular/Text, Icon/H3/Solid and "reg" give Icon/H3/Regular.
+  // Only options that are turned on.
+  function styleSwaps(lower) {
+    const current = selection.textStyle && entryBySlug[selection.textStyle];
+    if (!current || !lower) return [];
+    const parts = current.name.split("/");
+    return entries
+      .filter((e) => e.kind === "textstyle" && e !== current && !hidden.has(e.slug))
+      .filter((e) => {
+        const other = e.name.split("/");
+        const changed = other.map((part, i) => part !== parts[i]);
+        return other.length === parts.length && changed.filter(Boolean).length === 1 && other[changed.indexOf(true)].toLowerCase().startsWith(lower);
+      })
+      .map((e) => actionRow([{ slug: e.slug, kind: "textstyle", label: "Text " + e.name }]))
+      .filter((row) => runnable(row.ops));
   }
 
   function homeRows() {
@@ -489,11 +512,15 @@
     if (t === "!vars") return [{ type: "vars", label: "Log local variables as JSON to the console", icon: "{}" }];
     const out = [];
     const lower = t.toLowerCase();
+    // With styled text selected, one part of a style name ("regular", "l",
+    // "link") means the same style with that part changed, before anything
+    // else. Icons without a style fall back to their font ("h3", "solid").
+    const swaps = styleSwaps(lower);
+    const icons = swaps.length ? [] : iconChoices().filter((c) => c.size.toLowerCase() === lower || c.variant.toLowerCase().startsWith(lower));
+    if (swaps.length) out.push(section("Selected style"), ...swaps, section(""));
+    if (icons.length) out.push(section("Icon"), ...icons.map((c) => c.row), section(""));
     for (const g of orderedGroups()) if (g.label.toLowerCase().startsWith(lower)) out.push(groupRow(g));
     if (lower.length >= 2 && "review".startsWith(lower)) out.push(reviewRow());
-    // With an icon selected, a size or variant ("h3", "solid") means the icon first.
-    const icons = iconChoices().filter((c) => c.size.toLowerCase() === lower || c.variant.toLowerCase().startsWith(lower));
-    if (icons.length) out.push(section("Icon"), ...icons.map((c) => c.row), section(""));
     const r = parser.parse(t);
     parsed = { r, skip: 0 };
     if (r.error) {
