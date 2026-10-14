@@ -2,8 +2,8 @@
 
 A keyboard-first Figma plugin for applying Bifrost design tokens (fill and
 border colors, padding, gap, radius, text styles) to the selection and inserting Bifrost
-components, from a small command palette. With the optional **Bifrost Numpad**
-app, a keyboard shortcut opens the palette and a single numpad key applies a
+components, from a small command palette. With the optional **Bifrost Figma
+Companion** app, a keyboard shortcut opens the palette and a single numpad key applies a
 command of your choice.
 
 It covers 796 colors (as fill or border), 12 spacing values (padding and gap), 7 radius
@@ -59,17 +59,19 @@ Without them, commands fail with "not in an enabled library".
 
 ### 5. Optional: shortcuts and numpad keys
 
-With **Bifrost Numpad** running, **⌃⌥Space** in Figma opens the palette (no
+With **Bifrost Figma Companion** running, **⌃⌥Space** in Figma opens the palette (no
 Actions menu needed), and if your keyboard has a numpad, pressing numpad 1
 runs your alias `1`, numpad 2 runs alias `2`, and so on. You can also record
 a shortcut for any alias from `0` to `29`, so it works without a numpad too.
+You can start typing right after the shortcut: the app holds the keys until
+the palette is open and types them into it (Esc drops them).
 
 1. In Finder, open the repo folder, go to `companion/dist/` and copy
-   **Bifrost Numpad.app** to **Applications**.
+   **Bifrost Figma Companion.app** to **Applications**.
 2. Open it from Applications. It has no window; the Bifrost logo appears in
    the menu bar.
 3. macOS asks to give it **Accessibility** access. Click **Open System
-   Settings** and turn on Bifrost Numpad (needs an admin password). If you
+   Settings** and turn on Bifrost Figma Companion (needs an admin password). If you
    missed the prompt: menu bar icon › **Grant Accessibility access…**. The
    icon turns from grey to normal within a couple of seconds.
 4. Press ⌃⌥Space in Figma to check that the palette opens. To use another
@@ -97,11 +99,14 @@ cd ~/Code/bifrost-figma-shortcuts && git pull
 
 - **Plugin:** nothing else to do. The next time you open the palette it runs
   the new version.
-- **Numpad app:** only if `git pull` lists changes in `companion/dist/`. Quit
-  Bifrost Numpad (menu bar icon › Quit), copy the new app over the old one in
+- **Companion app:** only if `git pull` lists changes in `companion/dist/`.
+  Quit it (menu bar icon › Quit), copy the new app over the old one in
   Applications, and open it. macOS treats it as a new app: in **System
-  Settings › Privacy & Security › Accessibility**, remove the old Bifrost
-  Numpad entry with `−` and turn the new one on.
+  Settings › Privacy & Security › Accessibility**, remove the old entry with
+  `−` and turn the new one on. Until 0.4.0 the app was called **Bifrost
+  Numpad**: delete that one from Applications (and turn off its **Launch at
+  login** first, if you use it). Your shortcuts carry over, and a shortcut
+  for Fix variables now opens Review variables.
 
 ### Troubleshooting
 
@@ -113,6 +118,7 @@ cd ~/Code/bifrost-figma-shortcuts && git pull
 | Nothing happens, and the menu bar icon flashes a warning sign | The plugin isn't installed, or was imported from a folder that moved (step 2) |
 | Toast: `No alias "3"` | Save an alias named `3` in the palette's Aliases tab (`?` › Aliases) |
 | Numpad types digits instead | You're in a text field (W/H, layer name, a text layer); that's on purpose. Click the canvas first |
+| Text typed right after the shortcut is lost, and the icon flashes a warning sign | The palette took over 3 s to open, so the held keys were dropped instead of reaching Figma as shortcuts. Type again |
 | A shortcut also does something else in Figma | Record another one (step 5.4 or 5.6); the app takes it over while Figma is in front |
 | macOS says the app "can't be opened" or "is damaged" | The repo was downloaded as a zip. Delete it and use `git clone` (step 1) |
 
@@ -150,6 +156,9 @@ The Options tab shows the same values.
 | `r l`, `r full` | Radius on all corners |
 | `rt m`, `rtl s`, `rbr m` | Radius on two corners / one corner |
 | `f brand`, `f base3`, `f base-1` | Fill, fuzzy match on the color name (dashes optional) |
+| `f`, `b` on text, an icon or a bordered layer | Colors allowed on the background behind the selection come first; others are marked ⚠ (hover it for the reason: not allowed here, or too little contrast in Light or Dark), but can still be applied |
+| `f` on a frame or rectangle | Background colors come first; text-only colors (`bfc-base-c-*`, the `fade-c` colors) are marked ⚠ not a background color |
+| Enter on "N colors break the color rules" | Shows or hides the colors marked ⚠ (folded away by default; the color you typed exactly is always shown) |
 | `b brand`, `b basedimmed3`, `b base-dimmed-3` | Border: that color, always 1px on all sides |
 | `h1` … `h5`, `t regular` | Text style on the selected text, or on all text inside a selected frame; with no text in the selection it inserts a text layer ("Header H5", or "icons" for an icon style) colored `bfc-base-c-1` |
 | `icon m`, `icon h3 solid` | Icon styles (Font Awesome), found by size and variant like text styles; only the ones turned on in the Options tab |
@@ -245,9 +254,17 @@ machine and included in the help view's Copy as JSON backup.
 `review`) checks the selection and everything inside it for padding, gap,
 radius, fill and border values set by hand instead of with a variable, and
 for text without a text style.
+- Text, icon and border colors are checked against the color behind them
+  (the nearest parent with a fill), using Bifrost's pairing rules:
+  `bfc-neutral-hc` text on `bfc-alert` gets an allowed replacement
+  (`bfc-alert-c`), and hovering its ⚠ shows why and the contrast in
+  Light and Dark. Fills on frames and rectangles are checked as
+  backgrounds: a frame bound to `bfc-base-c-1` is "not a background color".
+  Both are listed under **Against the color rules**. Proposals for colors
+  set by hand only use colors allowed there.
 - Unstyled text gets the text style that matches its font: the same family,
   weight and size, or else the closest (an Inter 12 text becomes
-  `S/Open Sans/Regular/Text`, an unstyled icon its icon style). Body text is
+  `S Regular`, an unstyled icon its icon style). Body text is
   preferred over links; text with mixed fonts or sizes is left alone.
 
 - Every value gets one proposal: **Exact matches** like `Padding 12px → M`,
@@ -255,9 +272,13 @@ for text without a text style.
   goes to the larger size, so 3px becomes XS 4px).
 - All proposals start checked. **Space** (or a click) unchecks the focused
   one, **Tab** (or a click on the header) its whole section. **Enter** applies
-  everything checked; the rows on top do the same, or only the checked exact
-  matches or nearest values. Unchecked proposals are never applied and stay
-  unchecked while you edit. Each apply is one undo step.
+  the focused row (checked or not), or what an Accept row on top says
+  (only the checked exact matches or nearest values); **Shift+Enter**
+  applies everything checked. Unchecked proposals are never applied and stay
+  unchecked while you edit. Each apply is one undo step. The footer says
+  how many layers failed to bind (details in the console) and how many new
+  findings the fix uncovered, e.g. text that can be checked against the
+  color rules once its background is a token.
 - Colors are matched against the Mode tokens (Light/Dark) in the layer's
   modes; theme, effect and primitive tokens are never proposed. Many tokens
   share a hex (white is nine), so the layer's role decides: text gets content
@@ -279,16 +300,16 @@ for text without a text style.
   the corner. The preview is an exported image, so it changes nothing in
   the file: no undo steps, nothing visible to others.
 
-**Plugins › Bifrost › Fix variables** does what Fix all does, without
-opening the palette. Give it a
-shortcut in Bifrost Numpad (menu bar icon › **Fix variables**).
+**Plugins › Bifrost › Review variables** opens the palette straight in the
+review. Give it a shortcut in Bifrost Figma Companion (menu bar icon ›
+**Review variables**).
 
 ### Stream Deck
 
 Use a text or multi-action key that types the whole sequence, e.g.
 ⌘K → `bif` → Enter → `p m g s` → Enter.
 
-## Bifrost Numpad
+## Bifrost Figma Companion
 
 The plugin has thirty menu commands, **Plugins › Development › Bifrost ›
 Aliases › Alias 0–29**. Each runs the alias with that name directly, without
@@ -296,10 +317,10 @@ opening the palette. If the alias is missing or can't apply to the selection,
 a toast says why. Figma plugin menus are fixed in the manifest, so commands
 can't be named after your aliases; that's why the aliases are numbered.
 
-**Bifrost Numpad** (`companion/`, set up in [step 5](#5-optional-shortcuts-and-numpad-keys))
+**Bifrost Figma Companion** (`companion/`, set up in [step 5](#5-optional-shortcuts-and-numpad-keys))
 is a small menu bar app that presses those commands for you: **Alias N** when
 you press numpad N or a shortcut recorded for that alias, and **Open palette**
-for the palette shortcut. What an alias does is set in the palette; the app
+or **Review variables** for their shortcuts. What an alias does is set in the palette; the app
 only stores which keys run which command.
 
 - It only acts while Figma is the frontmost app. Other apps never see a
@@ -316,12 +337,12 @@ only stores which keys run which command.
   command couldn't be found in Figma's menu. It's dimmed while paused or without
   Accessibility access.
 - Its menu has **Enabled** (a pause for all keys; every launch starts
-  enabled), the shortcuts (Open palette, Fix variables, and Aliases with one
+  enabled), the shortcuts (Open palette, Review variables, and Aliases with one
   row per alias command), **Launch at login** and **Quit**.
 
 ## Maintaining the plugin
 
-### Releasing a new version of the numpad app
+### Releasing a new version of the companion app
 
 Needs Xcode. Bump `CFBundleShortVersionString` in `companion/Info.plist`, run
 `companion/build.sh --release` and commit `companion/dist/`. Plain `build.sh`
@@ -377,8 +398,11 @@ Mac.
    internal parts.
 5. Regenerate (Node.js only, no dependencies):
    ```bash
-   node generate.js bifrost-variables.json . bifrost-text-styles.json bifrost-components.json
+   node generate.js bifrost-variables.json . bifrost-text-styles.json bifrost-components.json bifrost-color-rules.json
    ```
+   `bifrost-color-rules.json` is written by hand from the Variables file's
+   Color systems page (which colors may be text, icon or border on which
+   background); update it when that page changes.
 
 ### Files
 
@@ -392,4 +416,4 @@ Mac.
 | `generate.js` | Builds `manifest.json` + `code.js` from the JSON exports and `src/` |
 | `bifrost-*.json` | Exports of variables, text styles and components from Figma |
 | `test/parse.test.js` | Parser tests: `node --test test/` |
-| `companion/` | Bifrost Numpad menu bar app (Swift package, `build.sh`) |
+| `companion/` | Bifrost Figma Companion menu bar app (Swift package, `build.sh`) |
