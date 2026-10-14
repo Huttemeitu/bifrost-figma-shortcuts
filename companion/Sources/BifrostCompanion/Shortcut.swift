@@ -27,9 +27,15 @@ struct Shortcut: Codable, Equatable, Sendable {
 
   /// Recorded shortcuts by Bifrost command ("Open palette", "Alias 3"). Until
   /// anything is recorded, the palette has the default.
+  /// A shortcut for "Fix variables", the item Review variables replaced in
+  /// 0.4.0, moves over to it.
   static func load() -> [String: Shortcut] {
     guard let data = UserDefaults.standard.data(forKey: defaultsKey) else { return [Figma.paletteCommand: paletteDefault] }
-    return (try? JSONDecoder().decode([String: Shortcut].self, from: data)) ?? [:]
+    var shortcuts = (try? JSONDecoder().decode([String: Shortcut].self, from: data)) ?? [:]
+    if let fix = shortcuts.removeValue(forKey: "Fix variables"), shortcuts[Figma.reviewCommand] == nil {
+      shortcuts[Figma.reviewCommand] = fix
+    }
+    return shortcuts
   }
 
   static func save(_ shortcuts: [String: Shortcut]) {

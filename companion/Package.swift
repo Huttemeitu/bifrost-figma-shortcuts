@@ -2,9 +2,9 @@
 import PackageDescription
 
 let package = Package(
-  name: "BifrostNumpad",
+  name: "BifrostCompanion",
   platforms: [.macOS(.v14)],
   targets: [
-    .executableTarget(name: "BifrostNumpad", path: "Sources/BifrostNumpad"),
+    .executableTarget(name: "BifrostCompanion", path: "Sources/BifrostCompanion"),
   ]
 )

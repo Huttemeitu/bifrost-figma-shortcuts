@@ -1,10 +1,12 @@
 import AppKit
 import Carbon.HIToolbox
+import os
 
 /// Watches every keypress. While Figma is frontmost it swallows recorded
 /// shortcuts and plain numpad digits (unless a text field has focus) and hands
 /// their Bifrost command to onCommand: numpad N runs Alias N. While recording,
-/// it captures the next shortcut instead. Everything else passes through.
+/// it captures the next shortcut instead. After the palette shortcut it holds
+/// what's typed until the palette can take it. Everything else passes through.
 @MainActor
 final class KeyTap {
   private static let digits: [Int64: Int] = [
@@ -26,6 +28,22 @@ final class KeyTap {
   // focus moved in between, so Figma never sees half a keypress.
   private var swallowed: Set<Int64> = []
 
+  // Figma takes a moment to open the palette, and keys typed meanwhile would
+  // reach Figma as shortcuts. They're held (nil = not holding) until a new
+  // text field has focus, the palette's input, and then typed into it.
+  private var held: [HeldKey]?
+  private var holdStart = Date()
+  private var focusBefore: AXUIElement?
+  private var holdTimer: Timer?
+  /// Long enough for a cold plugin start. After it, held keys go to Figma's
+  /// focused text field if there is one, else they're dropped.
+  private static let holdTimeout: TimeInterval = 3
+  /// Marks replayed keys, so the tap lets them through.
+  private static let replayMarker: Int64 = 0x4249_4652
+  /// Called when held keys were dropped because the palette never got focus.
+  var onDropped: (() -> Void)?
+  private let log = Logger(subsystem: "no.intility.bifrost-numpad", category: "palette")
+
   init(figma: Figma, onCommand: @escaping (String) -> Void) {
     self.figma = figma
     self.onCommand = onCommand
@@ -41,7 +59,8 @@ final class KeyTap {
       let tap = Unmanaged<KeyTap>.fromOpaque(info!).takeUnretainedValue()
       let key = Key(
         code: event.getIntegerValueField(.keyboardEventKeycode), flags: event.flags,
-        isRepeat: event.getIntegerValueField(.keyboardEventAutorepeat) != 0)
+        isRepeat: event.getIntegerValueField(.keyboardEventAutorepeat) != 0,
+        isReplay: event.getIntegerValueField(.eventSourceUserData) == KeyTap.replayMarker)
       // The tap's run loop source is on the main run loop.
       let swallow = MainActor.assumeIsolated { tap.shouldSwallow(type, key) }
       return swallow ? nil : Unmanaged.passUnretained(event)
@@ -62,7 +81,8 @@ final class KeyTap {
       if let tap { CGEvent.tapEnable(tap: tap, enable: true) }
       return false
     }
-    if type == .keyUp { return swallowed.remove(key.code) != nil }
+    if key.isReplay { return false }
+    if type == .keyUp { return swallowed.remove(key.code) != nil || hold(key, isDown: false) }
 
     let shortcut = Shortcut(keyCode: key.code, flags: key.flags)
     if let recorder {
@@ -79,9 +99,23 @@ final class KeyTap {
     }
 
     guard isEnabled, figma.isFrontmost else { return false }
+    if held != nil {
+      if key.code == Int64(kVK_Escape) && shortcut.modifiers == 0 {
+        swallowed.insert(key.code)
+        dropHeld(reason: "Esc")
+        return true
+      }
+      // The shortcut again (or its auto-repeat) isn't text for the palette.
+      if Figma.windowCommands.contains(where: { shortcuts[$0] == shortcut }) {
+        swallowed.insert(key.code)
+        return true
+      }
+      return hold(key, isDown: true)
+    }
     // Unlike digits, shortcuts also work in text fields: a modifier combo
     // doesn't type anything.
     if let command = shortcuts.first(where: { $0.value == shortcut })?.key {
+      if Figma.windowCommands.contains(command) { startHolding() }
       return swallow(key) { $0.onCommand(command) }
     }
     guard let digit = Self.digits[key.code], shortcut.modifiers == 0, !figma.isTyping else { return false }
@@ -99,6 +133,84 @@ final class KeyTap {
     self.recorder = nil
     DispatchQueue.main.async { recorder(result) }
   }
+
+  // ---------- Holding keys for the palette ----------
+
+  private func startHolding() {
+    held = []
+    holdStart = Date()
+    focusBefore = figma.focusedElement
+    holdTimer?.invalidate()
+    holdTimer = Timer.scheduledTimer(withTimeInterval: 0.025, repeats: true) { [weak self] _ in
+      MainActor.assumeIsolated { self?.checkHold() }
+    }
+  }
+
+  private func hold(_ key: Key, isDown: Bool) -> Bool {
+    guard held != nil else { return false }
+    held?.append(HeldKey(code: key.code, flags: key.flags, isDown: isDown))
+    return true
+  }
+
+  /// The menu press failed, so no palette is coming.
+  func cancelHold() {
+    dropHeld(reason: "menu press failed", quietly: true)
+  }
+
+  private var waited: Int { Int(Date().timeIntervalSince(holdStart) * 1000) }
+
+  private func checkHold() {
+    guard let keys = held else { return }
+    if let focused = figma.focusedElement, figma.isTextField(focused),
+      !(focusBefore.map { CFEqual($0, focused) } ?? false)
+    {
+      log.notice("Palette input focused after \(self.waited) ms, typing \(keys.count) held key events")
+      return release(keys)
+    }
+    guard Date().timeIntervalSince(holdStart) > Self.holdTimeout else { return }
+    // Focus never moved (the palette was already open, or Figma's text field
+    // isn't one to Accessibility): a text field can still take the keys.
+    if figma.isTyping {
+      log.notice("No new text field after \(self.waited) ms, typing \(keys.count) held key events into the focused one")
+      release(keys)
+    } else {
+      dropHeld(reason: "no text field after \(waited) ms")
+    }
+  }
+
+  private func stopHolding() {
+    held = nil
+    focusBefore = nil
+    holdTimer?.invalidate()
+    holdTimer = nil
+  }
+
+  private func dropHeld(reason: String, quietly: Bool = false) {
+    guard let keys = held else { return }
+    stopHolding()
+    log.notice("Dropped \(keys.count) held key events: \(reason, privacy: .public)")
+    if !keys.isEmpty && !quietly { onDropped?() }
+  }
+
+  // Posted straight to Figma, past every event tap: keys typed while these
+  // are posted still wait in the tap, so the order stays as typed.
+  private func release(_ keys: [HeldKey]) {
+    stopHolding()
+    guard let pid = figma.pid else { return }
+    let source = CGEventSource(stateID: .privateState)
+    for key in keys {
+      guard let event = CGEvent(keyboardEventSource: source, virtualKey: CGKeyCode(key.code), keyDown: key.isDown) else { continue }
+      event.flags = key.flags
+      event.setIntegerValueField(.eventSourceUserData, value: Self.replayMarker)
+      event.postToPid(pid)
+    }
+  }
+}
+
+private struct HeldKey {
+  let code: Int64
+  let flags: CGEventFlags
+  let isDown: Bool
 }
 
 // CGEvent isn't Sendable, so the callback copies out what it needs.
@@ -106,4 +218,5 @@ private struct Key: Sendable {
   let code: Int64
   let flags: CGEventFlags
   let isRepeat: Bool
+  let isReplay: Bool
 }

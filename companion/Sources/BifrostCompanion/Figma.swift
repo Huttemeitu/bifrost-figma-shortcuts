@@ -7,7 +7,9 @@ import ApplicationServices
 final class Figma {
   static let bundleID = "com.figma.Desktop"
   nonisolated static let paletteCommand = "Open palette"
-  nonisolated static let fixCommand = "Fix variables"
+  nonisolated static let reviewCommand = "Review variables"
+  /// Commands that open the palette window, so keys typed right after them are held for it.
+  nonisolated static let windowCommands: Set<String> = [paletteCommand, reviewCommand]
   /// Alias 0 to 29: must match ALIAS_COMMANDS in generate.js.
   nonisolated static let aliasCount = 30
   nonisolated static func aliasCommand(_ n: Int) -> String { "Alias \(n)" }
@@ -24,14 +26,20 @@ final class Figma {
   }
 
   var isFrontmost: Bool { frontmost != nil }
+  var pid: pid_t? { frontmost?.processIdentifier }
 
-  /// True while the user types in a field (W/H, layer name, text layer), so
-  /// numpad digits should reach Figma as digits.
-  var isTyping: Bool {
-    guard let app = frontmost,
-      let focused: AXUIElement = attribute(AXUIElementCreateApplication(app.processIdentifier), kAXFocusedUIElementAttribute),
-      let role: String = attribute(focused, kAXRoleAttribute)
-    else { return false }
+  /// True while the user types in a field (W/H, layer name, text layer, the
+  /// palette's input), so numpad digits should reach Figma as digits.
+  var isTyping: Bool { focusedElement.map(isTextField) ?? false }
+
+  /// What has keyboard focus in Figma, while Figma is frontmost.
+  var focusedElement: AXUIElement? {
+    guard let app = frontmost else { return nil }
+    return attribute(AXUIElementCreateApplication(app.processIdentifier), kAXFocusedUIElementAttribute)
+  }
+
+  func isTextField(_ element: AXUIElement) -> Bool {
+    guard let role: String = attribute(element, kAXRoleAttribute) else { return false }
     return Self.textRoles.contains(role)
   }
 
