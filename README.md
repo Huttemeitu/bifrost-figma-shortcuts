@@ -151,10 +151,18 @@ The Options tab shows the same values.
 | `rt m`, `rtl s`, `rbr m` | Radius on two corners / one corner |
 | `f brand`, `f base3`, `f base-1` | Fill, fuzzy match on the color name (dashes optional) |
 | `b brand`, `b basedimmed3`, `b base-dimmed-3` | Border: that color, always 1px on all sides |
-| `h1` … `h5`, `t regular` | Text style on selected text; with no text selected it inserts a text layer ("Header H5") |
-| `frame` | Insert a frame (placed like components, see below) |
+| `h1` … `h5`, `t regular` | Text style on the selected text, or on all text inside a selected frame; with no text in the selection it inserts a text layer ("Header H5", or "icons" for an icon style) colored `bfc-base-c-1` |
+| `icon m`, `icon h3 solid` | Icon styles (Font Awesome), found by size and variant like text styles; only the ones turned on in the Options tab |
+| `h1 This is a heading`, `icon m solid star` | Text after a text or icon style is its content: replaces the selected text's content, or goes in a new text (inside a selected frame). For icons it's the icon name. It ends at the next command: `h1 Welcome f brand` |
+| `regular`, `italic`, `l`, `link` with styled text or an icon selected | The selection's own style with only that part changed comes first: M Semibold + `regular` → M Regular, Icon H3 Solid + `reg` → Icon H3 Regular |
+| `h3`, `solid`, `duo` with an icon selected | Font Awesome icons first: the icon in another size (same variant) or another variant (same size). With an icon selected, the empty palette lists these on top |
+| `frame` | Insert a frame (placed like components, see below), filled with `bfc-base-3` |
 | `alh`, `alv` | Auto layout horizontal / vertical on the selected frames |
 | `frame alh p m r m b base-dimmed3` | Build a styled auto-layout frame in one go |
+| `frame alh button button` | Everything inserted after `frame` goes inside it (it gets auto layout if it has none), and the frame hugs its contents |
+| `fill`, `fillv`, `fillhv` | Fill the width, height or both; only for layers inside an auto layout (also one you just inserted into it: `button fill`) |
+| `hug`, `hugv`, `hughv` | Hug the content; on auto-layout frames and text (a frame without auto layout gets it) |
+| `fixed 320`, `fixedv 48`, `fixedhv 100` | A fixed size in px for the width, height or both |
 | `button`, `btn`, `basic input`, `brand` | Search components, text styles and colors by name |
 | `p m g s r l` | Several at once |
 | `button p m` | Insert a Button and give it padding M |
@@ -191,6 +199,8 @@ Some details:
   `p m` or `g s` works on any frame. The direction follows the children like Shift+A: side
   by side becomes horizontal, anything else vertical. The row says "(adds
   auto layout)" when this happens. Use `alh`/`alv` first to choose yourself.
+  New auto layout always starts with padding M (12px), Bifrost's default,
+  instead of Figma's; a padding in the same command replaces it.
 - **Frames** (`frame`) are placed the same way as components and become the
   selection, so everything after `frame` applies to the new frame. Adding auto
   layout (`alh`/`alv`) to a frame with children makes it hug them, like
@@ -233,13 +243,21 @@ machine and included in the help view's Copy as JSON backup.
 
 **Review variables in the selection** (on the empty palette, or type
 `review`) checks the selection and everything inside it for padding, gap,
-radius, fill and border values set by hand instead of with a variable.
+radius, fill and border values set by hand instead of with a variable, and
+for text without a text style.
+- Unstyled text gets the text style that matches its font: the same family,
+  weight and size, or else the closest (an Inter 12 text becomes
+  `S/Open Sans/Regular/Text`, an unstyled icon its icon style). Body text is
+  preferred over links; text with mixed fonts or sizes is left alone.
 
 - Every value gets one proposal: **Exact matches** like `Padding 12px → M`,
   and **Nearest value** for values off the scale (`Padding 11px → M`; a tie
-  goes to the larger size, so 3px becomes XS 4px). **Fix all** at the top
-  takes every proposal; Enter on a row takes just that one. Each fix is one
-  undo step.
+  goes to the larger size, so 3px becomes XS 4px).
+- All proposals start checked. **Space** (or a click) unchecks the focused
+  one, **Tab** (or a click on the header) its whole section. **Enter** applies
+  everything checked; the rows on top do the same, or only the checked exact
+  matches or nearest values. Unchecked proposals are never applied and stay
+  unchecked while you edit. Each apply is one undo step.
 - Colors are matched against the Mode tokens (Light/Dark) in the layer's
   modes; theme, effect and primitive tokens are never proposed. Many tokens
   share a hex (white is nine), so the layer's role decides: text gets content

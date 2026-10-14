@@ -14,7 +14,7 @@ const ENTRIES = [
   ...["None", "S", "M", "L", "XL"].flatMap((n) => [entry("padding", n, PX[n]), entry("gap", n, PX[n])]),
   ...["S", "M", "L", "Full"].map((n) => entry("radius", n, PX[n])),
   ...["Pop/Brand/bfc-brand", "Pop/Brand/bfc-brand-hc", "Base/bfc-base-c-brand", "Base/bfc-base-1", "Base/bfc-base-dimmed-3"].flatMap((n) => [entry("fill", n), entry("stroke", n)]),
-  ...["H1", "S/Font Awesome/Solid", "S/Open Sans/Regular/Text"].map((n) => entry("textstyle", n)),
+  ...["H1", "Icon/S/Solid", "Icon/M/Regular", "Icon/M/Solid", "S/Open Sans/Regular/Text"].map((n) => entry("textstyle", n)),
   ...["Button", "Button (icon only)", "Radio-button", "Box", "Checkbox-indeterminate", "Input/Basic input"].map((n) => entry("component", n)),
 ];
 
@@ -315,4 +315,85 @@ test("gap auto spreads children out, and grid gaps only apply to grid frames", (
   assert.equal(check("g s", grid).error, undefined);
   assert.match(check("g auto", grid).error, /without grid/);
   assert.deepEqual(Array.from(check("g auto", Object.assign({}, frame, { autoLayout: false })).modes), ["autolayout"]);
+});
+
+test("text after a text style is its content, up to the next command", () => {
+  const first = (q) => parse(q).primary[0];
+  assert.equal(first("h1 This is a heading").text, "This is a heading");
+  assert.equal(ctx.describeOps(parse("h1 This is a heading").primary), "Text H1 “This is a heading”");
+  assert.deepEqual(Array.from(first("h1 This is a heading").at), [0, 5]);
+  assert.deepEqual(labels(parse("h1 Welcome f brand").primary), ["Text H1", "Fill Pop/Brand/bfc-brand"]);
+  assert.equal(first("h1 Welcome f brand").text, "Welcome");
+  assert.equal(first("h1 p m").text, undefined);
+  assert.equal(first("h1 Plan b for later").text, "Plan b for later");
+  assert.equal(first("icon m solid star").text, "star");
+  assert.equal(first("icon m solid star").label, "Text Icon/M/Solid");
+
+  // Icons are found by name like text styles, ahead of components named "Icon …".
+  const icons = ctx.createParser(ENTRIES.concat(entry("component", "Icon (Medium)")), {}).parse("icon m");
+  assert.deepEqual([icons.primary].concat(icons.alternatives).map((ops) => ops[0].label), ["Text Icon/M/Regular", "Text Icon/M/Solid", "Insert Icon (Medium)"]);
+
+  // With content, only a text layer itself is rewritten; a frame gets a new text.
+  const caps = { fills: true, strokes: true, radius: true, corners: true, autoLayout: true, canAutoLayout: true };
+  const frameWithText = Object.assign({ text: true, textLayer: false }, caps);
+  const textLayer = Object.assign({}, caps, { radius: false, corners: false, text: true, textLayer: true });
+  assert.deepEqual(Array.from(ctx.checkOps(parse("h1 Hello").primary, [frameWithText]).modes), ["insert"]);
+  assert.deepEqual(Array.from(ctx.checkOps(parse("h1").primary, [frameWithText]).modes), ["apply"]);
+  assert.deepEqual(Array.from(ctx.checkOps(parse("h1 Hello").primary, [textLayer]).modes), ["apply"]);
+});
+
+test("review proposes a text style for unstyled text by its font", () => {
+  const style = (name, family, weight, size) => ({ slug: name, kind: "textstyle", name, value: size, font: { family, style: weight } });
+  const styles = [
+    style("H1", "Satoshi Variable", "Regular", 32),
+    style("S/Open Sans/Regular/Text", "Open Sans", "Regular", 12),
+    style("S/Open Sans/Regular/Link", "Open Sans", "Regular", 12),
+    style("M/Open Sans/Regular/Text", "Open Sans", "Regular", 14),
+    style("M/Open Sans/Semibold/Text", "Open Sans", "Semibold", 14),
+    style("Icon/M/Solid", "Font Awesome 7 Pro", "Solid", 14),
+  ];
+  const pick = (family, style, size, weight = ctx.styleWeight(style).weight) => {
+    const r = ctx.reviewTextStyle(styles, { family, style, weight, size });
+    return r.match + (r.exact ? "" : " (nearest)");
+  };
+  assert.equal(pick("Open Sans", "Semibold", 14), "M/Open Sans/Semibold/Text");
+  assert.equal(pick("Open Sans", "Regular", 12), "S/Open Sans/Regular/Text");
+  assert.equal(pick("Open Sans", "Regular", 13), "M/Open Sans/Regular/Text (nearest)");
+  assert.equal(pick("Satoshi", "Regular", 32), "H1");
+  assert.equal(pick("Inter", "Regular", 12), "S/Open Sans/Regular/Text (nearest)");
+  assert.equal(pick("Font Awesome 7 Pro", "Solid", 14), "Icon/M/Solid");
+  // Figma gives no font name for some detached Open Sans text: weight 400, 14px.
+  assert.equal(pick(null, null, 14, 400), "M/Open Sans/Regular/Text");
+  assert.equal(pick(null, null, 14, 600), "M/Open Sans/Semibold/Text");
+  // The weight number wins over a variable font's style name.
+  assert.equal(pick("Open Sans", "Regular", 14, 600), "M/Open Sans/Semibold/Text");
+});
+
+test("resizing: fill, hug and fixed per axis, fill only inside an auto layout", () => {
+  assert.deepEqual(labels(parse("fill fillv hughv").primary), ["Fill width", "Fill height", "Hug width and height"]);
+  assert.deepEqual(labels(parse("fixed 320 fixedv 48px").primary), ["Fixed width 320px", "Fixed height 48px"]);
+  assert.match(parse("fixed").error, /needs a size in px, like fixed 320/);
+  const p = ctx.createParser(ENTRIES, {});
+  assert.equal(p.shorthand(parse("fixed 320 fill").primary), "fixed 320 fill");
+
+  const caps = { fills: true, strokes: true, radius: true, corners: true, autoLayout: false, canAutoLayout: true, text: false };
+  const loose = Object.assign({ inAutoLayout: false }, caps);
+  const child = Object.assign({}, loose, { inAutoLayout: true });
+  const alFrame = Object.assign({}, loose, { autoLayout: true });
+  const check = (q, selection) => ctx.checkOps(parse(q).primary, selection);
+  assert.match(check("fill", [loose]).error, /Fill width needs a layer inside an auto layout frame/);
+  assert.equal(check("fill", [child]).error, undefined);
+  // An inserted layer is inside an auto layout when the selection is one, or is in one.
+  assert.equal(check("button fill", [alFrame]).error, undefined);
+  assert.match(check("button fill", [loose]).error, /needs a layer inside an auto layout/);
+  // Inserts after "frame" go inside it.
+  assert.equal(check("frame button fill", []).error, undefined);
+  // Hug adds auto layout to a frame without it.
+  assert.deepEqual(Array.from(check("hug", [loose]).modes), ["autolayout"]);
+  assert.equal(check("fixed 320", [loose]).error, undefined);
+});
+
+test("a repeated name is repeated inserts", () => {
+  assert.deepEqual(labels(parse("frame alh button button").primary), ["Insert frame", "Auto layout horizontal", "Insert Button", "Insert Button"]);
+  assert.deepEqual(labels(parse("icon button").primary), ["Insert Button (icon only)"]);
 });

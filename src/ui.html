@@ -99,6 +99,10 @@
   .row .keys { display: flex; gap: var(--spacing-xs); flex-shrink: 0; }
   .row.error { color: var(--danger); }
   .row.note { color: var(--text-3); }
+  /* Review checkboxes: on proposals, and on section headers for the whole section. */
+  .row.proposal .icon { width: 16px; overflow: visible; }
+  .row.proposal.off .label, .row.proposal.off .meta, .row.proposal.off .value { opacity: .5; }
+  .section.toggle { display: flex; align-items: center; gap: var(--spacing-m); cursor: pointer; }
   /* The focused row's background: one element that glides between rows. */
   #hl { position: absolute; left: var(--spacing-s); right: var(--spacing-s); top: 0; border-radius: var(--border-radius-s); pointer-events: none;
     background: var(--selected); transition: transform .16s cubic-bezier(.2, .8, .2, 1), height .16s, opacity .1s; }
@@ -332,9 +336,10 @@
     textstyle: "h1  ·  regular",
     component: "button  ·  modal",
     layout: "frame  ·  h  ·  v",
+    sizing: "fill  ·  hugv  ·  fixed 320",
     review: "Filter, e.g. padding or #fff",
   };
-  const REVIEW_FOOTER = "<span><b>↵</b> fix</span><span><b>esc</b> back</span>";
+  const REVIEW_FOOTER = "<span><b>↵</b> apply selected</span><span><b>space</b> check</span><span><b>⇥</b> check section</span><span><b>esc</b> back</span>";
   const FOOTER = "<span><b>↵</b> apply</span><span><b>⇧↵</b> apply, keep open</span><span><b>⇥</b> open group / chain</span><span><b>esc</b> back</span>";
 
   let entries = [];
@@ -349,7 +354,8 @@
   const groupParsers = {};
   let group = null;
   // The Review view: { groups (null while scanning), errors (layers the scan
-  // couldn't read) }. null when not reviewing.
+  // couldn't read), unchecked (keys of deselected proposals) }. null when not
+  // reviewing.
   let reviewView = null;
   let rows = [];
   // What the input parsed to, for the tags: { r, skip } (skip: words of the
@@ -357,12 +363,15 @@
   let parsed = null;
   let active = 0;
 
-  const count = {};
   // Only ops that would do something to the current selection are offered
   // (checkOps in parse.js, the same check the plugin runs before applying).
   const check = (ops) => checkOps(ops, selection.nodes);
   const runnable = (ops) => !check(ops).error;
-  const groupVisible = (g) => count[g.kind] > 0 && parser.list(g.kind).some(runnable);
+  // A group's count is what it offers right now: the options that apply to
+  // the selection, without those turned off in the Options tab (the parser
+  // only has shown ones). With text selected, Layout has just "Insert frame".
+  const groupActions = (g) => parser.list(g.kind).filter(runnable).length;
+  const groupVisible = (g) => groupActions(g) > 0;
   const selHas = (cap) => selection.nodes.some((n) => n[cap]);
 
   // Options turned off in the Options tab are left out of the palette's parser,
@@ -374,11 +383,6 @@
     for (const e of entries) entryBySlug[e.slug] = e;
     parser = createParser(visible, aliases, { limit: 100 });
     for (const g of GROUPS) if (g.search) groupParsers[g.kind] = createParser(visible, aliases, { limit: 100, search: g.search });
-    for (const k of Object.keys(count)) delete count[k];
-    for (const e of visible) count[e.kind] = (count[e.kind] || 0) + 1;
-    count.layout = Object.keys(WORD_OPS).length;
-    // Gap auto has no token, but it's a row in the Gap group.
-    if (count.gap) count.gap++;
     const plain = createParser(entries, {});
     aliasIndex = {};
     for (const name of Object.keys(aliases).sort()) {
@@ -406,7 +410,10 @@
   }
   // Labels follow the selection: a text style reads "Insert text H5" when no text is selected.
   const actionRow = (ops, extra) => Object.assign({ type: "action", ops, label: describeOpsIn(ops, check(ops).modes), keys: keysFor(ops) }, extra);
-  const groupRow = (g) => ({ type: "group", group: g, label: g.label, meta: count[g.kind] + " actions", keys: g.key ? [g.key] : [], icon: "▸" });
+  const groupRow = (g) => {
+    const n = groupActions(g);
+    return { type: "group", group: g, label: g.label, meta: n + (n === 1 ? " action" : " actions"), keys: g.key ? [g.key] : [], icon: "▸" };
+  };
   const section = (label) => ({ type: "section", label });
   const helpRow = () => ({ type: "help", label: "Help, aliases and recents", keys: ["?"], icon: "?" });
   const reviewRow = () => ({ type: "review", label: "Review variables in the selection", icon: "◎", keys: ["review"] });
@@ -418,13 +425,67 @@
     return GROUPS.filter(groupVisible).sort((a, b) => (first.includes(b.kind) ? 1 : 0) - (first.includes(a.kind) ? 1 : 0));
   }
 
+  // Rows already shown above (a style swap, an icon choice) aren't repeated.
   function pushParsed(out, r) {
-    if (r.primary && runnable(r.primary)) out.push(actionRow(r.primary));
-    for (const ops of r.alternatives.filter(runnable).slice(0, 100)) out.push(actionRow(ops));
+    const key = (ops) => ops.map((o) => (o.slug || o.key) + (o.text ? ":" + o.text : "")).join(",");
+    const shown = new Set(out.filter((row) => row.ops).map((row) => key(row.ops)));
+    const fresh = (ops) => runnable(ops) && !shown.has(key(ops));
+    if (r.primary && fresh(r.primary)) out.push(actionRow(r.primary));
+    for (const ops of r.alternatives.filter(fresh).slice(0, 100)) out.push(actionRow(ops));
+  }
+
+  // Icons are Font Awesome text styles, "Icon/H3/Solid": size, then
+  // variant. With only icons selected, the palette offers the icon's other
+  // sizes (same variant) and other variants (same size) before anything else,
+  // so "h3" is the icon in H3 rather than the Satoshi heading. Duotone and
+  // Brands are font families of their own; the rest are styles of the Pro font.
+  function iconChoices() {
+    const icon = selection.icon;
+    if (!icon) return [];
+    const all = entries
+      .filter((e) => e.kind === "textstyle" && DEMOTED.test(e.name) && !hidden.has(e.slug))
+      .map((e) => ({ entry: e, size: e.name.split("/")[1], variant: e.name.split("/")[2] }));
+    const variant = /Duotone/.test(icon.family) ? "Duotone" : /Brands/.test(icon.family) ? "Brands" : icon.style;
+    const sameVariant = all.filter((s) => s.variant === variant).sort((a, b) => a.entry.value - b.entry.value);
+    const distance = (s) => Math.abs(s.entry.value - icon.fontSize);
+    const current = icon.fontSize === null ? null : sameVariant.reduce((best, s) => (!best || distance(s) < distance(best) ? s : best), null);
+    const choice = (s, by) => {
+      const ops = [{ slug: s.entry.slug, kind: "textstyle", label: "Icon " + s.size + " " + s.variant }];
+      return { size: s.size, variant: s.variant, by, row: actionRow(ops) };
+    };
+    return sameVariant
+      .filter((s) => s !== current)
+      .map((s) => choice(s, "size"))
+      .concat(current ? all.filter((s) => s.size === current.size && s.variant !== variant).map((s) => choice(s, "variant")) : [])
+      .filter((c) => runnable(c.row.ops));
+  }
+
+  // The selection's text style with exactly one part of its name changed to
+  // one starting with the query: M/Open Sans/Semibold/Text and "regular" give
+  // M/Open Sans/Regular/Text, Icon/H3/Solid and "reg" give Icon/H3/Regular.
+  // Only options that are turned on.
+  function styleSwaps(lower) {
+    const current = selection.textStyle && entryBySlug[selection.textStyle];
+    if (!current || !lower) return [];
+    const parts = current.name.split("/");
+    return entries
+      .filter((e) => e.kind === "textstyle" && e !== current && !hidden.has(e.slug))
+      .filter((e) => {
+        const other = e.name.split("/");
+        const changed = other.map((part, i) => part !== parts[i]);
+        return other.length === parts.length && changed.filter(Boolean).length === 1 && other[changed.indexOf(true)].toLowerCase().startsWith(lower);
+      })
+      .map((e) => actionRow([{ slug: e.slug, kind: "textstyle", label: "Text " + e.name }]))
+      .filter((row) => runnable(row.ops));
   }
 
   function homeRows() {
     const out = [];
+    const icons = iconChoices();
+    for (const by of ["size", "variant"]) {
+      const rows = icons.filter((c) => c.by === by).map((c) => c.row);
+      if (rows.length) out.push(section(by === "size" ? "Icon size" : "Icon style"), ...rows);
+    }
     const rec = recents.filter((r) => runnable(r.ops)).slice(0, 3);
     if (rec.length) {
       out.push(section("Recent"));
@@ -453,6 +514,13 @@
     if (t === "!vars") return [{ type: "vars", label: "Log local variables as JSON to the console", icon: "{}" }];
     const out = [];
     const lower = t.toLowerCase();
+    // With styled text selected, one part of a style name ("regular", "l",
+    // "link") means the same style with that part changed, before anything
+    // else. Icons without a style fall back to their font ("h3", "solid").
+    const swaps = styleSwaps(lower);
+    const icons = swaps.length ? [] : iconChoices().filter((c) => c.size.toLowerCase() === lower || c.variant.toLowerCase().startsWith(lower));
+    if (swaps.length) out.push(section("Selected style"), ...swaps, section(""));
+    if (icons.length) out.push(section("Icon"), ...icons.map((c) => c.row), section(""));
     for (const g of orderedGroups()) if (g.label.toLowerCase().startsWith(lower)) out.push(groupRow(g));
     if (lower.length >= 2 && "review".startsWith(lower)) out.push(reviewRow());
     const r = parser.parse(t);
@@ -491,8 +559,11 @@
   }
 
   // Values set by hand in the selection, from the plugin's scan, each with the
-  // token the plugin proposes: the same value, or else the nearest. One row on
-  // top takes every proposal. Typing filters.
+  // token the plugin proposes: the same value, or else the nearest. Every
+  // proposal starts checked; Space unchecks the focused one, Tab its whole
+  // section, and unchecked ones are never applied, also not by the "Accept"
+  // rows. Unchecked keys survive rescans. On top: apply everything checked,
+  // or only the checked exact matches or nearest values. Typing filters.
   function reviewMeta(g) {
     // The same hex in another mode is another group; say which is which.
     const twin = g.modes && reviewView.groups.some((o) => o !== g && o.kind === g.kind && o.role === g.role && o.value === g.value);
@@ -506,18 +577,38 @@
     if (!reviewView.groups.length) return [{ type: "note", label: selection.count ? "Everything in the selection uses variables" : "Select layers to review" }].concat(errors);
     const lower = t.toLowerCase();
     const proposed = reviewView.groups.filter((g) => g.match && entryBySlug[g.match] && (!lower || reviewLabel(g).toLowerCase().includes(lower)));
+    const isChecked = (g) => !reviewView.unchecked.has(g.key);
+    const fixesOf = (gs) => gs.filter(isChecked).map((g) => ({ key: g.key, slug: g.match }));
+    const exact = proposed.filter((g) => g.exact);
     const nearest = proposed.filter((g) => !g.exact);
     const out = [];
-    if (proposed.length > 1) {
-      const label = "Fix all " + proposed.length + (nearest.length ? " (" + nearest.length + " to the nearest value)" : "");
-      out.push({ type: "fix", fixes: proposed.map((g) => ({ key: g.key, slug: g.match })), label, icon: "✓" });
+    const all = fixesOf(proposed);
+    out.push(all.length ? { type: "fix", all: true, fixes: all, label: "Apply " + all.length + " selected", icon: "✓" } : { type: "note", label: "Nothing selected" });
+    if (exact.length && nearest.length) {
+      for (const [gs, one, many] of [[exact, "exact match", "exact matches"], [nearest, "nearest value", "nearest values"]]) {
+        const fixes = fixesOf(gs);
+        const skipped = gs.length - fixes.length;
+        if (fixes.length) out.push({ type: "fix", fixes, label: "Accept " + fixes.length + " " + (fixes.length === 1 ? one : many), meta: skipped ? skipped + " deselected skipped" : "", icon: "✓" });
+      }
     }
-    const proposalRow = (g) => ({ type: "fix", fixes: [{ key: g.key, slug: g.match }], label: reviewLabel(g) + " → " + entryBySlug[g.match].name, meta: reviewMeta(g), slug: g.match, modes: g.modes });
-    if (proposed.length > nearest.length) out.push(section("Exact matches"));
-    for (const g of proposed) if (g.exact) out.push(proposalRow(g));
-    if (nearest.length) out.push(section("Nearest value"));
-    for (const g of nearest) out.push(proposalRow(g));
+    for (const [gs, label] of [[exact, "Exact matches"], [nearest, "Nearest value"]]) {
+      if (!gs.length) continue;
+      const keys = gs.map((g) => g.key);
+      const on = gs.filter(isChecked).length;
+      out.push({ type: "section", label, keys, check: on === gs.length ? "on" : on ? "mixed" : "" });
+      for (const g of gs) {
+        out.push({ type: "proposal", key: g.key, checked: isChecked(g), sectionKeys: keys, fixes: [{ key: g.key, slug: g.match }],
+          label: reviewLabel(g) + " → " + entryBySlug[g.match].name, meta: reviewMeta(g), slug: g.match, modes: g.modes });
+      }
+    }
     return out.concat(errors);
+  }
+
+  // Checks the keys, or unchecks them if they're all checked already.
+  function toggleProposals(keys) {
+    const allOn = keys.every((k) => !reviewView.unchecked.has(k));
+    for (const k of keys) allOn ? reviewView.unchecked.add(k) : reviewView.unchecked.delete(k);
+    render(true);
   }
 
   // The focused row's places, previewed above the list (sendPreview in
@@ -576,7 +667,7 @@
 
   function startReview() {
     group = null;
-    reviewView = { groups: null, errors: [] };
+    reviewView = { groups: null, errors: [], unchecked: new Set() };
     q.value = "";
     send({ type: "review" });
     render();
@@ -595,6 +686,8 @@
   const rowId = (row) => row && row.type + ":" + row.label;
   // The focused action row gets a checkmark: it's what Enter applies.
   const iconFor = (row, isActive) => (isActive && (row.type === "action" || row.type === "fix") ? "✓" : row.icon || "");
+  // Review proposals show their checkbox instead.
+  const iconHtml = (row, isActive) => (row.type === "proposal" ? `<span class="cb${row.checked ? " on" : ""}"></span>` : esc(iconFor(row, isActive)));
 
   // keepFocus: re-render after a state or selection update without moving focus
   // (the focused row is found again by identity, even if it moved).
@@ -613,10 +706,13 @@
     q.placeholder = reviewView ? PLACEHOLDER.review : group ? PLACEHOLDER[group.kind] : PLACEHOLDER.root;
     $("list").innerHTML = '<div id="hl"></div>' + rows
       .map((r, i) => {
+        if (r.type === "section" && r.check !== undefined) {
+          return `<div class="section toggle" data-section="${i}"><span class="cb ${r.check}"></span>${esc(r.label)}</div>`;
+        }
         if (r.type === "section") return r.label ? `<div class="section">${esc(r.label)}</div>` : "";
-        const keys = (r.keys || []).map((k) => `<kbd>${esc(k)}</kbd>`).join("");
-        return `<div class="row ${r.type}${i === active ? " active" : ""}" data-i="${i}">` +
-          `<span class="icon">${esc(iconFor(r, i === active))}</span><span class="label">${esc(r.label)}</span>` +
+        const keys = r.type === "proposal" ? "" : (r.keys || []).map((k) => `<kbd>${esc(k)}</kbd>`).join("");
+        return `<div class="row ${r.type}${r.checked === false ? " off" : ""}${i === active ? " active" : ""}" data-i="${i}">` +
+          `<span class="icon">${iconHtml(r, i === active)}</span><span class="label">${esc(r.label)}</span>` +
           (r.meta ? `<span class="meta">${esc(r.meta)}</span>` : "") +
           (r.slug ? valueHtml(r.slug, r.modes) : r.ops && r.ops.length === 1 ? valueHtml(r.ops[0].slug) : "") +
           `<span class="keys">${keys}</span></div>`;
@@ -676,13 +772,13 @@
     const prev = rowEl(active);
     if (prev) {
       prev.classList.remove("active");
-      prev.querySelector(".icon").textContent = iconFor(rows[active], false);
+      prev.querySelector(".icon").innerHTML = iconHtml(rows[active], false);
     }
     active = i;
     const el = rowEl(i);
     if (el) {
       el.classList.add("active");
-      el.querySelector(".icon").textContent = iconFor(rows[i], true);
+      el.querySelector(".icon").innerHTML = iconHtml(rows[i], true);
       scrollToActive();
     }
     placeHighlight(true);
@@ -721,6 +817,8 @@
     if (row.type === "options") return showHelp("options");
     if (row.type === "vars") return send({ type: "vars" });
     if (row.type === "review") return startReview();
+    // Enter on a proposal applies everything checked, like the top row.
+    if (row.type === "proposal") return activate(rows.find((r) => r.all));
     if (row.type === "fix") {
       send({ type: "fixReview", fixes: row.fixes });
       return setFooter("Binding variables…", "notice");
@@ -733,6 +831,7 @@
   // can be chained after it ("p m " then type "g s").
   function tab(row) {
     if (!row) return;
+    if (row.type === "proposal") return toggleProposals(row.sectionKeys);
     if (row.type === "group") return enterGroup(row.group);
     if (row.type === "action" && row.keys && row.keys.length) {
       group = null;
@@ -752,6 +851,7 @@
     else if (e.key === "ArrowUp") move(-1);
     else if (e.key === "Enter") activate(rows[active], e.shiftKey);
     else if (e.key === "Tab") tab(rows[active]);
+    else if (e.key === " " && rows[active] && rows[active].type === "proposal") toggleProposals([rows[active].key]);
     else if (e.key === "Escape") {
       if (reviewView) leaveReview();
       else if (group) leaveGroup();
@@ -769,8 +869,13 @@
     if (el && Number(el.dataset.i) !== active) setActive(Number(el.dataset.i));
   });
   $("list").addEventListener("click", (e) => {
+    const sectionEl = e.target.closest("[data-section]");
     const el = e.target.closest("[data-i]");
-    if (el) activate(rows[Number(el.dataset.i)], e.shiftKey);
+    const row = el && rows[Number(el.dataset.i)];
+    // In the review, clicking a proposal or a section header checks or unchecks it.
+    if (sectionEl) toggleProposals(rows[Number(sectionEl.dataset.section)].keys);
+    else if (row && row.type === "proposal") toggleProposals([row.key]);
+    else if (row) activate(row, e.shiftKey);
     q.focus();
   });
 

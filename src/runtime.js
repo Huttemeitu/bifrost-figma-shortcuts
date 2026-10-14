@@ -11,7 +11,9 @@
 //             vars | close
 // code -> UI: init {entries, values, aliases, recents, hidden, selection} | selection {selection} |
 //             (selection = {count, nodes: distinct nodeCaps of the selected layers,
-//              modes: {collection name: mode name} of the first selected layer})
+//              modes: {collection name: mode name} of the first selected layer,
+//              icon: {family, style, fontSize} when only Font Awesome icons are selected,
+//              textStyle: slug of the text style all selected text uses, or null})
 //             state {aliases, recents, hidden, error, notice} |
 //             review {groups: [{key, kind, value, modes, role, layers, match, exact}], layers, errors} |
 //             changed (the document changed; an open review scans again) |
@@ -184,13 +186,19 @@ function bindPaint(node, prop, variable) {
 
 // Adding auto layout to a frame with children makes it hug them, like Shift+A in
 // Figma. An empty frame keeps its size, so "frame alh" doesn't collapse to 0x0.
-function setAutoLayout(node, direction) {
+// New auto layout gets Bifrost's padding M (12px) instead of Figma's default;
+// switching the direction of an existing one leaves its padding alone.
+async function setAutoLayout(node, direction) {
   const adding = node.layoutMode === "NONE";
   node.layoutMode = direction;
   if (adding && node.children.length) {
     node.primaryAxisSizingMode = "AUTO";
     node.counterAxisSizingMode = "AUTO";
   }
+  if (!adding) return;
+  const padding = ENTRIES.find((e) => e.kind === "padding" && e.name === "M");
+  const variable = padding && (await resolveVariable(padding));
+  if (variable) bindFields(node, FIELD_SETS.padding.ALL, variable);
 }
 
 // For padding or gap on a frame without auto layout: children spread out more
@@ -214,27 +222,99 @@ function nodeCaps(node) {
     grid: "layoutMode" in node && node.layoutMode === "GRID",
     // Instances get their auto layout from the main component.
     canAutoLayout: "layoutMode" in node && node.type !== "INSTANCE",
-    text: node.type === "TEXT",
+    // Text, or a frame or group with text inside: text styles then apply to
+    // all of it, like Figma's design panel. Otherwise they insert a new text.
+    text: node.type === "TEXT" || ("findOne" in node && node.findOne((n) => n.type === "TEXT") !== null),
+    // Free text ("h1 Hello") only rewrites a text layer itself.
+    textLayer: node.type === "TEXT",
+    // Fill only exists for children of an auto-layout frame.
+    inAutoLayout: Boolean(node.parent && "layoutMode" in node.parent && node.parent.layoutMode !== "NONE"),
   };
 }
 
-// Text styles can only be applied once their font is loaded. Throws a readable
-// error if the font isn't available on this machine.
-async function loadStyleFont(style) {
-  try {
-    await figma.loadFontAsync(style.fontName);
-  } catch (e) {
-    throw new Error("font " + style.fontName.family + " " + style.fontName.style + " isn't available");
+// Fill, hug or a fixed size on a layer's width (H), height (V) or both.
+// Figma only has these modes on auto-layout frames, their children and text;
+// anything else just gets resized for a fixed size. Text needs its fonts
+// loaded to change size, and a fixed width keeps growing in height.
+async function applySizing(node, op) {
+  if (node.type === "TEXT") {
+    for (const font of node.getRangeAllFontNames(0, node.characters.length)) await figma.loadFontAsync(font).catch(() => {});
+    if (op.value === "FIXED") node.textAutoResize = op.axes.includes("V") ? "NONE" : "HEIGHT";
+  }
+  for (const axis of op.axes) {
+    const prop = axis === "H" ? "layoutSizingHorizontal" : "layoutSizingVertical";
+    if (op.value !== "FIXED") {
+      node[prop] = op.value;
+      continue;
+    }
+    node.resize(axis === "H" ? op.size : node.width, axis === "V" ? op.size : node.height);
+    const hasModes = node.type === "TEXT" || nodeCaps(node).inAutoLayout || nodeCaps(node).autoLayout;
+    if (hasModes) node[prop] = "FIXED";
   }
 }
 
-// H1-H5 get "Header H5" as their text, other styles "Text".
-async function insertText(style, anchor) {
+// Text styles can only be applied once their font is loaded. Figma gives no
+// fontName for some Bifrost styles (the Open Sans Regular and Italic ones,
+// checked 2026-10-14: missing even with no variables bound), so then the font
+// comes from the style's name, size/family/weight/usage. Throws a readable
+// error if the font isn't available on this machine.
+async function loadStyleFont(style) {
+  const [, family, weight] = style.name.split("/");
+  const font = style.fontName && style.fontName.family ? style.fontName : { family, style: weight };
+  if (!font.family || !font.style) throw new Error(style.name + " has no font Figma can read");
+  try {
+    await figma.loadFontAsync(font);
+  } catch (e) {
+    throw new Error("font " + font.family + " " + font.style + " isn't available");
+  }
+}
+
+// A text style goes to the layer if it's text, or to every text layer inside
+// it. Figma can accept the call and still not apply the style (seen
+// 2026-10-14 on a selected text layer, cause unknown), so the result is
+// checked and reported instead of the command silently doing nothing.
+// With content ("h1 This is a heading") only text layers themselves are
+// changed, and get the new content too; text inside a frame is left alone.
+async function applyTextStyle(node, style, content) {
+  if (content !== undefined && node.type !== "TEXT") return;
+  const texts = node.type === "TEXT" ? [node] : node.findAll((n) => n.type === "TEXT");
+  const failed = [];
+  for (const text of texts) {
+    await text.setTextStyleIdAsync(style.id);
+    // The style's font is loaded and now covers the whole layer.
+    if (content !== undefined) text.characters = content;
+    if (text.textStyleId !== style.id) {
+      console.warn("Text style not applied", { layer: text.name, expected: style.id, actual: text.textStyleId, key: style.key, remote: style.remote });
+      failed.push(text.name);
+    }
+  }
+  if (failed.length) {
+    throw new Error("Figma didn't apply " + style.name + " to " + failed.slice(0, 2).join(", ") + (failed.length > 2 ? " and " + (failed.length - 2) + " more" : ""));
+  }
+}
+
+// New layers get Bifrost colors instead of Figma's defaults: frames
+// Base/bfc-base-3 (not plain white), text Base/bfc-base-c-1 (not black).
+// Left as Figma made it if the library isn't enabled.
+async function bindDefaultFill(node, name) {
+  const entry = ENTRIES.find((e) => e.kind === "fill" && e.name === name);
+  const variable = entry && (await resolveVariable(entry));
+  if (variable) bindPaint(node, "fills", variable);
+}
+
+// A new text layer with the given content, or by default "Header H5" for
+// headings, "icons" for Font Awesome styles
+// (the placeholder Bifrost puts in icon slots; the font draws it as an icon),
+// otherwise "Text". Style names are size/family/weight/usage. Its color is
+// the default text color (bindDefaultFill).
+async function insertText(style, anchor, content) {
   const text = figma.createText();
   await figma.loadFontAsync(text.fontName);
   await loadStyleFont(style);
-  text.characters = /^H[1-5]$/.test(style.name) ? "Header " + style.name : "Text";
+  const size = style.name.split("/")[0];
+  text.characters = content || (/\/Font Awesome\//.test(style.name) ? "icons" : /^H[1-5]$/.test(size) ? "Header " + size : "Text");
   await text.setTextStyleIdAsync(style.id);
+  await bindDefaultFill(text, "Base/bfc-base-c-1");
   placeNode(text, anchor);
   figma.currentPage.selection = [text];
 }
@@ -257,6 +337,7 @@ async function applyOp(op, target, nodes, mode) {
   if (op.kind === "frame") {
     const frame = figma.createFrame();
     frame.name = "Frame";
+    await bindDefaultFill(frame, "Base/bfc-base-3");
     placeNode(frame, nodes[0]);
     figma.currentPage.selection = [frame];
     return 1;
@@ -268,7 +349,7 @@ async function applyOp(op, target, nodes, mode) {
     return 1;
   }
   if (op.kind === "textstyle" && mode === "insert") {
-    await insertText(target, nodes[0]);
+    await insertText(target, nodes[0], op.text);
     return 1;
   }
   if (op.kind === "textstyle") await loadStyleFont(target);
@@ -282,15 +363,18 @@ async function applyOp(op, target, nodes, mode) {
       // Borders always default to 1px on all sides, replacing per-side weights.
       if ("strokeWeight" in node) node.strokeWeight = 1;
     } else if (op.kind === "autolayout") {
-      setAutoLayout(node, op.value);
+      await setAutoLayout(node, op.value);
     } else if (op.kind === "gap") {
-      if (node.layoutMode === "NONE") setAutoLayout(node, guessDirection(node));
+      if (node.layoutMode === "NONE") await setAutoLayout(node, guessDirection(node));
       applyGap(node, op, target);
     } else if (op.kind === "padding") {
-      if (node.layoutMode === "NONE") setAutoLayout(node, guessDirection(node));
+      if (node.layoutMode === "NONE") await setAutoLayout(node, guessDirection(node));
       bindFields(node, FIELD_SETS[op.kind][op.side], target);
     } else if (op.kind === "textstyle") {
-      await node.setTextStyleIdAsync(target.id);
+      await applyTextStyle(node, target, op.text);
+    } else if (op.kind === "sizing") {
+      if (op.value === "HUG" && node.layoutMode === "NONE") await setAutoLayout(node, guessDirection(node));
+      await applySizing(node, op);
     } else if (op.kind === "radius" && op.side === "ALL" && !nodeCaps(node).corners) {
       // Shapes like stars and polygons only have one uniform radius
       bindFields(node, ["cornerRadius"], target);
@@ -311,9 +395,22 @@ async function applyOps(ops) {
   const label = describeOpsIn(ops, check.modes);
   const done = slowNotice(label);
   const skipped = [];
+  // Inserts after "frame" go inside that frame ("frame alh button button"),
+  // which gets vertical auto layout if it has none yet. When the command is
+  // done, each new frame with children hugs them on every axis no resizing
+  // op set ("frame fixed 320 alh button" stays 320 wide).
+  let container = null;
+  const frames = [];
+  const sized = new Set();
   try {
     for (let i = 0; i < ops.length; i++) {
       const op = ops[i];
+      const inserting = check.modes[i] === "insert";
+      if (inserting && container && !container.removed) {
+        if (container.layoutMode === "NONE") await setAutoLayout(container, "VERTICAL");
+        nodes = [container];
+      }
+      if (op.kind === "sizing") for (const node of nodes) for (const axis of op.axes) sized.add(node.id + axis);
       // Word ops (frame, alh, alv) and gap auto have no token to resolve.
       let target = null;
       if (op.slug) {
@@ -329,7 +426,13 @@ async function applyOps(ops) {
         }
       }
       if ((await applyOp(op, target, nodes, check.modes[i])) === 0) skipped.push(op.label);
-      if (check.modes[i] === "insert") nodes = [...figma.currentPage.selection];
+      if (inserting) nodes = [...figma.currentPage.selection];
+      if (op.kind === "frame") frames.push((container = nodes[0]));
+    }
+    for (const frame of frames) {
+      if (frame.removed || !frame.children.length || frame.layoutMode === "NONE") continue;
+      if (!sized.has(frame.id + "H")) frame.layoutSizingHorizontal = "HUG";
+      if (!sized.has(frame.id + "V")) frame.layoutSizingVertical = "HUG";
     }
     await remember(ops, label);
   } catch (e) {
@@ -403,13 +506,13 @@ async function importBackup(json) {
 let review = new Map();
 
 // Padding, gap, radius, fill and stroke values in the selection (and everything
-// inside it) that aren't bound to a variable, grouped by kind, value and, for
-// colors, the layer's modes (the same hex can be another token in Dark) and
-// role (text gets content colors).
-// Returns { groups, layers, errors }. Skipped: zeros (every plain frame has them) and
-// gap with space-between, which Figma shows as Auto. Inside an
-// instance only its overrides count, the values changed on that instance; the
-// rest comes from the main component and is fixed there.
+// inside it) that aren't bound to a variable, and text without a text style,
+// grouped by kind, value (a text's font) and, for colors, the layer's modes
+// (the same hex can be another token in Dark) and role (text gets content
+// colors). Returns { groups, layers, errors }. Skipped: zeros (every plain
+// frame has them) and gap with space-between, which Figma shows as Auto.
+// Inside an instance only its overrides count, the values changed on that
+// instance; the rest comes from the main component and is fixed there.
 async function scanSelection() {
   const groups = new Map();
   const errors = [];
@@ -419,6 +522,7 @@ async function scanSelection() {
     const key = [kind, value, role || "", modes ? JSON.stringify(modes) : ""].join(" ");
     if (!groups.has(key)) groups.set(key, { key, kind, value, modes, role, targets: [] });
     groups.get(key).targets.push(target);
+    return groups.get(key);
   };
   // overrides: layer id -> overridden fields, for everything inside an instance.
   const scanNode = async (node, overrides) => {
@@ -437,6 +541,20 @@ async function scanSelection() {
     }
     if ("topLeftRadius" in node) numbers("radius", FIELD_SETS.radius.ALL);
     else if ("cornerRadius" in node) numbers("radius", ["cornerRadius"]);
+    // Text without a text style, by font: "Open Sans Regular 14px". Text with
+    // several weights or sizes in one layer is left alone. Figma reports no
+    // usable fontName for some Open Sans text (missing or figma.mixed even for
+    // one run of text, like the styles it came from; seen 2026-10-14), so the
+    // weight number and size carry the match and the family is used when
+    // there is one.
+    const textChanged = counts("textStyleId") || counts("fontName") || counts("fontSize");
+    const uniform = node.fontSize !== figma.mixed && node.fontWeight !== figma.mixed;
+    if (node.type === "TEXT" && node.textStyleId === "" && textChanged && uniform) {
+      const name = node.fontName && node.fontName !== figma.mixed && node.fontName.family ? node.fontName : null;
+      const font = { family: name && name.family, style: name && name.style, weight: node.fontWeight, size: node.fontSize };
+      const value = (name ? name.family + " " + name.style : "weight " + font.weight) + " " + formatValue(font.size);
+      add("textstyle", value, null, null, { node, textStyle: true }).font = font;
+    }
     let modes = null;
     for (const [prop, kind] of [["fills", "fill"], ["strokes", "stroke"]]) {
       if (!(prop in node) || node[prop] === figma.mixed || (prop === "strokes" && node.strokeWeight === 0) || !counts(prop)) continue;
@@ -474,7 +592,9 @@ async function startReview() {
   // best token takes their place.
   const hidden = new Set(state.hidden);
   const offered = ENTRIES.filter((e) => !hidden.has(e.slug));
-  for (const g of scan.groups) Object.assign(g, reviewChoices(offered, VARIABLE_VALUES, g.kind, g.value, g.modes || {}, g.role));
+  for (const g of scan.groups) {
+    Object.assign(g, g.font ? reviewTextStyle(offered, g.font) : reviewChoices(offered, VARIABLE_VALUES, g.kind, g.value, g.modes || {}, g.role));
+  }
   review = new Map(scan.groups.map((g) => [g.key, g]));
   sentImages = new Set();
   return {
@@ -487,7 +607,8 @@ async function startReview() {
   };
 }
 
-// Binds every place in each group to the chosen token: [{ key, slug }].
+// Binds every place in each group to the chosen token, or sets the chosen
+// text style on text layers: [{ key, slug }].
 // One undo step for the whole fix.
 async function fixReview(fixes) {
   const done = slowNotice("Binding variables");
@@ -498,19 +619,30 @@ async function fixReview(fixes) {
       const group = review.get(key);
       const entry = VARIABLE_MAP[slug];
       if (!group || !entry) continue;
-      const variable = await resolveVariable(entry);
-      if (!variable) {
+      // A variable to bind, or a text style (with its font loaded) to set.
+      const target = await RESOLVE_FN[entry.type](entry);
+      if (!target) {
         skipped.push(entry.name + " (not in an enabled library)");
         continue;
+      }
+      if (entry.type === "style") {
+        try {
+          await loadStyleFont(target);
+        } catch (e) {
+          skipped.push(entry.name + " (" + e.message + ")");
+          continue;
+        }
       }
       for (const t of group.targets) {
         if (t.node.removed) continue;
         try {
-          if (t.field) {
-            t.node.setBoundVariable(t.field, variable);
+          if (t.textStyle) {
+            await t.node.setTextStyleIdAsync(target.id);
+          } else if (t.field) {
+            t.node.setBoundVariable(t.field, target);
           } else {
             const paints = clone(t.node[t.prop]);
-            paints[t.index] = figma.variables.setBoundVariableForPaint(paints[t.index], "color", variable);
+            paints[t.index] = figma.variables.setBoundVariableForPaint(paints[t.index], "color", target);
             t.node[t.prop] = paints;
           }
           bound++;
@@ -695,7 +827,41 @@ async function selectionInfo() {
     const caps = nodeCaps(node);
     seen.set(JSON.stringify(caps), caps);
   }
-  return { count: sel.length, nodes: [...seen.values()], modes: await layerModes(sel[0]) };
+  const texts = selectionTexts(sel);
+  return { count: sel.length, nodes: [...seen.values()], modes: await layerModes(sel[0]), icon: selectionIcon(texts), textStyle: await selectionTextStyle(texts) };
+}
+
+// The text layers in the selection: selected ones, and those inside selected frames.
+function selectionTexts(sel) {
+  return sel.flatMap((n) => (n.type === "TEXT" ? [n] : "findAllWithCriteria" in n ? n.findAllWithCriteria({ types: ["TEXT"] }) : []));
+}
+
+// The slug of the Bifrost text style all selected text uses, or null, so the
+// palette can offer the same style with one part changed ("regular" turns
+// M/Open Sans/Semibold/Text into M/Open Sans/Regular/Text). Matched by key,
+// since a library style has another id in each file.
+const styleSlugs = new Map();
+async function selectionTextStyle(texts) {
+  const ids = new Set(texts.map((t) => t.textStyleId));
+  const [id] = ids;
+  if (ids.size !== 1 || typeof id !== "string" || !id) return null;
+  if (!styleSlugs.has(id)) {
+    const style = await figma.getStyleByIdAsync(id).catch(() => null);
+    const entry = style && ENTRIES.find((e) => e.kind === "textstyle" && e.key === style.key);
+    styleSlugs.set(id, entry ? entry.slug : null);
+  }
+  return styleSlugs.get(id);
+}
+
+// The selected icon, if every selected text is a Font Awesome icon (an icon
+// text layer, or an icon component with one inside): its font and size, so
+// the palette can offer the icon's other sizes and variants first.
+function selectionIcon(texts) {
+  // Some text has no fontName at all (see scanNode), so check before reading it.
+  const isIcon = (t) => t.fontName && t.fontName !== figma.mixed && /^Font Awesome/.test(t.fontName.family);
+  if (!texts.length || !texts.every(isIcon)) return null;
+  const t = texts[0];
+  return { family: t.fontName.family, style: t.fontName.style, fontSize: t.fontSize === figma.mixed ? null : t.fontSize };
 }
 
 // The variable modes a layer resolves to (its own or inherited from a parent),
