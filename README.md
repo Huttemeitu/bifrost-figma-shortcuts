@@ -238,9 +238,12 @@ radius, fill and border values set by hand instead of with a variable.
 
 - Every value gets one proposal: **Exact matches** like `Padding 12px → M`,
   and **Nearest value** for values off the scale (`Padding 11px → M`; a tie
-  goes to the larger size, so 3px becomes XS 4px). **Fix all** at the top
-  takes every proposal; Enter on a row takes just that one. Each fix is one
-  undo step.
+  goes to the larger size, so 3px becomes XS 4px).
+- All proposals start checked. **Space** (or a click) unchecks the focused
+  one, **Tab** (or a click on the header) its whole section. **Enter** applies
+  everything checked; the rows on top do the same, or only the checked exact
+  matches or nearest values. Unchecked proposals are never applied and stay
+  unchecked while you edit. Each apply is one undo step.
 - Colors are matched against the Mode tokens (Light/Dark) in the layer's
   modes; theme, effect and primitive tokens are never proposed. Many tokens
   share a hex (white is nine), so the layer's role decides: text gets content
