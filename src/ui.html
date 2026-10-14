@@ -362,12 +362,15 @@
   let parsed = null;
   let active = 0;
 
-  const count = {};
   // Only ops that would do something to the current selection are offered
   // (checkOps in parse.js, the same check the plugin runs before applying).
   const check = (ops) => checkOps(ops, selection.nodes);
   const runnable = (ops) => !check(ops).error;
-  const groupVisible = (g) => count[g.kind] > 0 && parser.list(g.kind).some(runnable);
+  // A group's count is what it offers right now: the options that apply to
+  // the selection, without those turned off in the Options tab (the parser
+  // only has shown ones). With text selected, Layout has just "Insert frame".
+  const groupActions = (g) => parser.list(g.kind).filter(runnable).length;
+  const groupVisible = (g) => groupActions(g) > 0;
   const selHas = (cap) => selection.nodes.some((n) => n[cap]);
 
   // Options turned off in the Options tab are left out of the palette's parser,
@@ -379,11 +382,6 @@
     for (const e of entries) entryBySlug[e.slug] = e;
     parser = createParser(visible, aliases, { limit: 100 });
     for (const g of GROUPS) if (g.search) groupParsers[g.kind] = createParser(visible, aliases, { limit: 100, search: g.search });
-    for (const k of Object.keys(count)) delete count[k];
-    for (const e of visible) count[e.kind] = (count[e.kind] || 0) + 1;
-    count.layout = Object.keys(WORD_OPS).length;
-    // Gap auto has no token, but it's a row in the Gap group.
-    if (count.gap) count.gap++;
     const plain = createParser(entries, {});
     aliasIndex = {};
     for (const name of Object.keys(aliases).sort()) {
@@ -411,7 +409,10 @@
   }
   // Labels follow the selection: a text style reads "Insert text H5" when no text is selected.
   const actionRow = (ops, extra) => Object.assign({ type: "action", ops, label: describeOpsIn(ops, check(ops).modes), keys: keysFor(ops) }, extra);
-  const groupRow = (g) => ({ type: "group", group: g, label: g.label, meta: count[g.kind] + " actions", keys: g.key ? [g.key] : [], icon: "▸" });
+  const groupRow = (g) => {
+    const n = groupActions(g);
+    return { type: "group", group: g, label: g.label, meta: n + (n === 1 ? " action" : " actions"), keys: g.key ? [g.key] : [], icon: "▸" };
+  };
   const section = (label) => ({ type: "section", label });
   const helpRow = () => ({ type: "help", label: "Help, aliases and recents", keys: ["?"], icon: "?" });
   const reviewRow = () => ({ type: "review", label: "Review variables in the selection", icon: "◎", keys: ["review"] });
