@@ -1,12 +1,13 @@
 // generate.js: rerun whenever the Bifrost library gets new variables, styles or
 // components, or after editing anything in src/.
-// Usage: node generate.js <variables.json> <outDir> [textstyles.json] [components.json]
+// Usage: node generate.js <variables.json> <outDir> [textstyles.json] [components.json] [color-rules.json]
 //
 // Reads the JSON exports from the Figma console snippets (see README) and writes:
-//  - manifest.json: "Open palette", "Fix variables" (bind exact review matches
-//    without a window) and "Alias 0-29" (run alias 0-29 without a window)
+//  - manifest.json: "Open palette", "Review variables" (the palette, opened in
+//    the review) and "Alias 0-29" (run alias 0-29 without a window)
 //  - code.js: VARIABLE_MAP (slug -> token/component) + VARIABLE_VALUES (values per
-//    mode) + UI_HTML (src/ui.html with the Bifrost tokens as CSS variables and
+//    mode) + COLOR_RULES (which colors may go on which, hand-written from the
+//    Variables file into bifrost-color-rules.json) + UI_HTML (src/ui.html with the Bifrost tokens as CSS variables and
 //    src/parse.js inlined) + src/parse.js + src/runtime.js
 //
 // Classification: COLOR variables (except Light/ and Dark/ ones) -> fill AND stroke, FLOAT "Spacing/..." -> padding AND gap,
@@ -19,6 +20,7 @@ const inputPath = process.argv[2];
 const outDir = process.argv[3] || ".";
 const textStylesPath = process.argv[4];
 const componentsPath = process.argv[5];
+const colorRulesPath = process.argv[6];
 
 if (!inputPath) {
   console.error("Usage: node generate.js <variables.json> <outDir> [textstyles.json] [components.json]");
@@ -28,6 +30,7 @@ if (!inputPath) {
 const variables = JSON.parse(fs.readFileSync(inputPath, "utf8"));
 const textStyles = textStylesPath ? JSON.parse(fs.readFileSync(textStylesPath, "utf8")) : [];
 const components = componentsPath ? JSON.parse(fs.readFileSync(componentsPath, "utf8")) : [];
+const colorRules = colorRulesPath ? JSON.parse(fs.readFileSync(colorRulesPath, "utf8")) : { pairs: [] };
 
 function slugify(prefix, name) {
   return (
@@ -170,7 +173,7 @@ const manifest = {
   editorType: ["figma"],
   menu: [
     { name: "Open palette", command: "open" },
-    { name: "Fix variables", command: "fix" },
+    { name: "Review variables", command: "review" },
     { separator: true },
     {
       name: "Aliases",
@@ -251,6 +254,8 @@ const codeJs = [
   `const VARIABLE_MAP = ${JSON.stringify(flatMap, null, 2)};`,
   "",
   `const VARIABLE_VALUES = ${JSON.stringify(valueTable)};`,
+  "",
+  `const COLOR_RULES = ${JSON.stringify({ pairs: colorRules.pairs })};`,
   "",
   `const UI_HTML = ${JSON.stringify(uiHtml)};`,
   "",

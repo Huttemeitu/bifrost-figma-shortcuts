@@ -1,21 +1,23 @@
 // --- Runtime ---
 // "Open palette" opens the palette window (UI_HTML). Parsing happens inside the
 // window for instant feedback; this side applies ops and owns storage.
-// "Alias N" runs alias N headless (runAlias); "Fix variables" binds the
-// review's proposals headless (runFix).
+// "Review variables" opens it in the review (init's `start`, so a shortcut can
+// go straight there). "Alias N" runs alias N headless (runAlias).
 //
 // UI -> code: ready | apply {ops, keepOpen} | saveAlias {name, expansion} |
 //             deleteAlias {name} | clearRecents | setHidden {hidden} | import {json} |
 //             resize {width, height, save} | review | fixReview {fixes: [{key, slug}]} |
 //             preview {keys, width, height} (show these review groups in the palette) |
 //             vars | close
-// code -> UI: init {entries, values, aliases, recents, hidden, selection} | selection {selection} |
+// code -> UI: init {entries, values, rules, aliases, recents, hidden, start, selection} | selection {selection} |
 //             (selection = {count, nodes: distinct nodeCaps of the selected layers,
 //              modes: {collection name: mode name} of the first selected layer,
 //              icon: {family, style, fontSize} when only Font Awesome icons are selected,
-//              textStyle: slug of the text style all selected text uses, or null})
+//              textStyle: slug of the text style all selected text uses, or null,
+//              background: slug of the Bifrost color behind every selected layer, or null})
 //             state {aliases, recents, hidden, error, notice} |
-//             review {groups: [{key, kind, value, modes, role, layers, match, exact}], layers, errors} |
+//             review {groups: [{key, kind, value, modes, role, layers, match, exact, background,
+//                     pairing: {from, reason, detail} | null}], layers, errors} |
 //             changed (the document changed; an open review scans again) |
 //             preview {keys, imageId, image?, origin, focus, marks, elsewhere} or {keys, empty}
 
@@ -60,7 +62,7 @@ const stateReady = Promise.all([
 ]).then(([aliases, recents, hidden, size]) => {
   state.aliases = respaceAliases(aliases || {});
   if (aliases && JSON.stringify(state.aliases) !== JSON.stringify(aliases)) figma.clientStorage.setAsync("aliases", state.aliases);
-  state.recents = recents || [];
+  state.recents = (recents || []).map(shortenRecent);
   state.size = size || DEFAULT_SIZE;
   // Drop slugs that are no longer generated (e.g. after a library update), so
   // the "N hidden" count stays right.
@@ -227,6 +229,8 @@ function nodeCaps(node) {
     text: node.type === "TEXT" || ("findOne" in node && node.findOne((n) => n.type === "TEXT") !== null),
     // Free text ("h1 Hello") only rewrites a text layer itself.
     textLayer: node.type === "TEXT",
+    // Its fill is a background (colorUse).
+    surface: isSurface(node),
     // Fill only exists for children of an auto-layout frame.
     inAutoLayout: Boolean(node.parent && "layoutMode" in node.parent && node.parent.layoutMode !== "NONE"),
   };
@@ -458,6 +462,15 @@ function slowNotice(label) {
   };
 }
 
+// Recents saved before display names (2026-10-14) have full token paths in
+// their labels; shortened so they read and dedupe like new ones.
+function shortenRecent(recent) {
+  const shorten = (label, ops) =>
+    ops.reduce((text, op) => (op.slug && VARIABLE_MAP[op.slug] ? text.replace(VARIABLE_MAP[op.slug].name, displayName(VARIABLE_MAP[op.slug])) : text), label);
+  const ops = recent.ops.map((op) => Object.assign({}, op, { label: shorten(op.label, [op]) }));
+  return { ops, label: shorten(recent.label, recent.ops) };
+}
+
 async function remember(ops, label) {
   state.recents = [{ ops, label }].concat(state.recents.filter((r) => r.label !== label)).slice(0, MAX_RECENTS);
   await figma.clientStorage.setAsync("recents", state.recents);
@@ -499,6 +512,51 @@ async function importBackup(json) {
   return rejected.length ? "Skipped: " + rejected.join(", ") : null;
 }
 
+// ---------- Color pairing ----------
+
+// The Bifrost fill entry a paint is bound to, or null (hex, or another
+// library). Matched by variable key, since library variables have other ids
+// in each file. Cached per variable id.
+const paintEntries = new Map();
+async function paintEntry(paint) {
+  const id = paint && paint.boundVariables && paint.boundVariables.color && paint.boundVariables.color.id;
+  if (!id) return null;
+  if (!paintEntries.has(id)) {
+    const variable = await figma.variables.getVariableByIdAsync(id).catch(() => null);
+    paintEntries.set(id, (variable && ENTRIES.find((e) => e.kind === "fill" && e.key === variable.key)) || null);
+  }
+  return paintEntries.get(id);
+}
+
+// The color behind a layer: the top visible fill of its nearest parent that
+// has one, as a Bifrost fill entry. null when that fill isn't one solid
+// Bifrost token (a hex, another library, nothing with a fill) or can't be
+// judged as one color: a gradient, an image, or a see-through solid, where
+// the color under it shows. Siblings underneath aren't considered:
+// overlapping layers are guesswork.
+async function backgroundEntry(node) {
+  for (let p = node.parent; p && p.type !== "PAGE" && p.type !== "DOCUMENT"; p = p.parent) {
+    if (!("fills" in p) || p.fills === figma.mixed) continue;
+    const top = [...p.fills].reverse().find((f) => f.visible !== false && (f.opacity === undefined || f.opacity > 0));
+    if (top) return top.type === "SOLID" && (top.opacity === undefined || top.opacity === 1) ? paintEntry(top) : null;
+  }
+  return null;
+}
+
+// What a color is on a layer, for the pairing rules: a border, a text or icon
+// fill, or a background (a fill on a frame or rectangle). Fills on other
+// shapes (vectors, ellipses) can be either, so they're left alone (null).
+function colorUse(node, prop) {
+  if (prop === "strokes") return "border";
+  if (isSurface(node)) return "background";
+  if (node.type !== "TEXT") return null;
+  return node.fontName && node.fontName !== figma.mixed && /^Font Awesome/.test(node.fontName.family) ? "icon" : "text";
+}
+
+function isSurface(node) {
+  return "layoutMode" in node || node.type === "RECTANGLE";
+}
+
 // ---------- Variable review ----------
 
 // The last scan, by group key, so fixReview gets layers and fields from here
@@ -518,9 +576,13 @@ async function scanSelection() {
   const errors = [];
   let layers = 0;
   // role (fills only): "text" or "shape", since text gets content colors.
-  const add = (kind, value, modes, role, target) => {
-    const key = [kind, value, role || "", modes ? JSON.stringify(modes) : ""].join(" ");
-    if (!groups.has(key)) groups.set(key, { key, kind, value, modes, role, targets: [] });
+  // context (colors only): { background?, use, from? } where background is the
+  // fill entry behind the layer (none for use "background") and from the
+  // token a pairing problem is about.
+  const add = (kind, value, modes, role, target, context) => {
+    const where = context ? [context.background ? context.background.slug : "", context.use, context.from ? context.from.slug : ""].join(" ") : "";
+    const key = [kind, value, role || "", modes ? JSON.stringify(modes) : "", where].join(" ");
+    if (!groups.has(key)) groups.set(key, Object.assign({ key, kind, value, modes, role, targets: [] }, context));
     groups.get(key).targets.push(target);
     return groups.get(key);
   };
@@ -555,15 +617,33 @@ async function scanSelection() {
       const value = (name ? name.family + " " + name.style : "weight " + font.weight) + " " + formatValue(font.size);
       add("textstyle", value, null, null, { node, textStyle: true }).font = font;
     }
+    // Colors set by hand get a token; text, icon and border colors are also
+    // checked against the background (Bifrost's pairing rules), bound or not,
+    // and backgrounds against being a background color at all: a bound color
+    // that isn't allowed there, or reads badly in Light or Dark, is a finding
+    // of its own with an allowed replacement.
     let modes = null;
+    let background;
     for (const [prop, kind] of [["fills", "fill"], ["strokes", "stroke"]]) {
       if (!(prop in node) || node[prop] === figma.mixed || (prop === "strokes" && node.strokeWeight === 0) || !counts(prop)) continue;
+      const use = colorUse(node, prop);
       for (let index = 0; index < node[prop].length; index++) {
         const paint = node[prop][index];
-        if (paint.type !== "SOLID" || paint.visible === false || (paint.boundVariables && paint.boundVariables.color)) continue;
+        if (paint.type !== "SOLID" || paint.visible === false) continue;
         modes = modes || (await layerModes(node));
-        const hex = exportValue(Object.assign({}, paint.color, { a: paint.opacity === undefined ? 1 : paint.opacity }));
-        add(kind, hex, modes, kind === "fill" ? (node.type === "TEXT" ? "text" : "shape") : null, { node, prop, index });
+        if (use && use !== "background" && background === undefined) background = await backgroundEntry(node);
+        const role = kind === "fill" ? (node.type === "TEXT" ? "text" : "shape") : null;
+        const context = use === "background" ? { use } : use && background ? { background, use } : null;
+        const bound = paint.boundVariables && paint.boundVariables.color;
+        if (!bound) {
+          const hex = exportValue(Object.assign({}, paint.color, { a: paint.opacity === undefined ? 1 : paint.opacity }));
+          add(kind, hex, modes, role, { node, prop, index }, context);
+          continue;
+        }
+        const judged = context && (use === "background" || colorKnown(COLOR_RULES, tokenName(background)));
+        const from = judged && (await paintEntry(paint));
+        const problem = from && pairingProblem(COLOR_RULES, VARIABLE_VALUES, from, context.background || null, use, modes);
+        if (problem) add(kind, resolveValue(VARIABLE_VALUES, from.id, modes), modes, role, { node, prop, index }, Object.assign({ from, problem }, context));
       }
     }
   };
@@ -593,7 +673,9 @@ async function startReview() {
   const hidden = new Set(state.hidden);
   const offered = ENTRIES.filter((e) => !hidden.has(e.slug));
   for (const g of scan.groups) {
-    Object.assign(g, g.font ? reviewTextStyle(offered, g.font) : reviewChoices(offered, VARIABLE_VALUES, g.kind, g.value, g.modes || {}, g.role));
+    // Only colors allowed for this use (on this background).
+    const fits = g.use ? (e) => colorFit(COLOR_RULES, tokenName(e), g.background ? tokenName(g.background) : null, g.use) === "allowed" : null;
+    Object.assign(g, g.font ? reviewTextStyle(offered, g.font) : reviewChoices(offered, VARIABLE_VALUES, g.kind, g.value, g.modes || {}, g.role, fits));
   }
   review = new Map(scan.groups.map((g) => [g.key, g]));
   sentImages = new Set();
@@ -603,6 +685,8 @@ async function startReview() {
     groups: scan.groups.map((g) => ({
       key: g.key, kind: g.kind, value: g.value, modes: g.modes, role: g.role, match: g.match, exact: g.exact,
       layers: new Set(g.targets.map((t) => t.node.id)).size,
+      background: g.background ? displayName(g.background) : null,
+      pairing: g.problem ? { from: displayName(g.from), reason: g.problem.reason, detail: g.problem.detail } : null,
     })),
   };
 }
@@ -613,6 +697,7 @@ async function startReview() {
 async function fixReview(fixes) {
   const done = slowNotice("Binding variables");
   let bound = 0;
+  let failed = 0;
   const skipped = [];
   try {
     for (const { key, slug } of fixes) {
@@ -647,7 +732,9 @@ async function fixReview(fixes) {
           }
           bound++;
         } catch (e) {
-          console.error(t.node.name, e);
+          // Per layer, e.g. a field an instance won't let you override.
+          console.error("Couldn't bind " + t.node.name, e);
+          failed++;
         }
       }
       review.delete(key);
@@ -656,20 +743,11 @@ async function fixReview(fixes) {
     done();
   }
   figma.commitUndo();
-  const message = (bound ? "✓ Bound " + bound + (bound === 1 ? " value" : " values") : "Nothing bound") + (skipped.length ? ". Skipped: " + skipped.join(", ") : "");
+  const message =
+    (bound ? "✓ Bound " + bound + (bound === 1 ? " value" : " values") : "Nothing bound") +
+    (failed ? " · " + failed + " failed (see console)" : "") +
+    (skipped.length ? ". Skipped: " + skipped.join(", ") : "");
   return { message, failed: bound === 0 };
-}
-
-// Fix variables does what Fix all does in the palette, with no window: binds
-// every proposal, the same or the nearest value.
-async function runFix() {
-  if (!figma.currentPage.selection.length) return closeWith({ message: "Select layers to fix", failed: true });
-  const { groups, errors } = await startReview();
-  const proposed = groups.filter((g) => g.match);
-  const skipped = errors.length ? " · Couldn't read " + errors.length + (errors.length === 1 ? " layer" : " layers") : "";
-  if (!proposed.length) return closeWith({ message: "Everything uses variables" + skipped, failed: errors.length > 0 });
-  const result = await fixReview(proposed.map((g) => ({ key: g.key, slug: g.match })));
-  closeWith({ message: result.message + skipped, failed: result.failed });
 }
 
 // ---------- Review preview ----------
@@ -691,7 +769,7 @@ async function sendPreview(keys, width, height) {
   // Per layer: the fields and whether paints are involved, and its label lines.
   const places = new Map();
   for (const group of keys.map((key) => review.get(key)).filter(Boolean)) {
-    const name = VARIABLE_MAP[group.match] ? VARIABLE_MAP[group.match].name : "?";
+    const name = VARIABLE_MAP[group.match] ? displayName(VARIABLE_MAP[group.match]) : "?";
     for (const t of group.targets) {
       if (t.node.removed || !t.node.absoluteBoundingBox) continue;
       if (!places.has(t.node)) places.set(t.node, { fields: new Set(), paints: false, labels: new Set() });
@@ -828,7 +906,23 @@ async function selectionInfo() {
     seen.set(JSON.stringify(caps), caps);
   }
   const texts = selectionTexts(sel);
-  return { count: sel.length, nodes: [...seen.values()], modes: await layerModes(sel[0]), icon: selectionIcon(texts), textStyle: await selectionTextStyle(texts) };
+  return {
+    count: sel.length, nodes: [...seen.values()], modes: await layerModes(sel[0]), icon: selectionIcon(texts),
+    textStyle: await selectionTextStyle(texts), background: await selectionBackground(sel),
+  };
+}
+
+// The slug of the Bifrost color behind every selected layer, or null if they
+// differ or it isn't known, so the palette can rank colors by what's allowed
+// on it.
+async function selectionBackground(sel) {
+  const slugs = new Set();
+  for (const node of sel) {
+    const entry = await backgroundEntry(node);
+    slugs.add(entry ? entry.slug : null);
+  }
+  const [slug] = slugs;
+  return slugs.size === 1 ? slug : null;
 }
 
 // The text layers in the selection: selected ones, and those inside selected frames.
@@ -891,9 +985,11 @@ async function handleMessage(msg) {
       type: "init",
       entries: ENTRIES.map((e) => ({ slug: e.slug, id: e.id, kind: e.kind, name: e.name, group: e.group, value: e.value, px: e.px })),
       values: VARIABLE_VALUES,
+      rules: COLOR_RULES,
       aliases: state.aliases,
       recents: state.recents,
       hidden: state.hidden,
+      start: figma.command === "review" ? "review" : null,
       selection: await selectionInfo(),
     });
   } else if (msg.type === "apply") {
@@ -934,9 +1030,16 @@ async function handleMessage(msg) {
   } else if (msg.type === "review") {
     figma.ui.postMessage(Object.assign({ type: "review" }, await startReview()));
   } else if (msg.type === "fixReview") {
+    // Fixes can uncover findings (a background that's now a token gets its
+    // text checked against the color rules), so new rows are counted, or
+    // they'd look like leftovers.
+    const before = new Set(review.keys());
     const result = await fixReview(msg.fixes);
-    figma.ui.postMessage(Object.assign({ type: "review" }, await startReview()));
-    postState(result.failed ? result.message : null, result.failed ? null : result.message);
+    const scan = await startReview();
+    const fresh = scan.groups.filter((g) => !before.has(g.key)).length;
+    const message = result.message + (fresh ? " · " + fresh + (fresh === 1 ? " new finding" : " new findings") : "");
+    figma.ui.postMessage(Object.assign({ type: "review" }, scan));
+    postState(result.failed ? message : null, result.failed ? null : message);
   } else if (msg.type === "vars") {
     await listVariables();
   } else if (msg.type === "close") {
@@ -960,7 +1063,6 @@ async function runAlias(name) {
 stateReady.then(() => {
   const alias = /^alias-(\d+)$/.exec(figma.command);
   if (alias) return runAlias(alias[1]);
-  if (figma.command === "fix") return runFix();
   figma.showUI(UI_HTML, Object.assign({ themeColors: true, title: "Bifrost" }, state.size));
   figma.ui.onmessage = (msg) =>
     handleMessage(msg).catch((e) => {

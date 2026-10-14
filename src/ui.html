@@ -95,6 +95,14 @@
   .row.active .icon { color: var(--accent); }
   .row .label { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .row .meta { color: var(--text-3); font-size: 12px; flex-shrink: 0; }
+  .row.fold .label { color: var(--text-3); }
+  /* A color rule warning: just the triangle, the reason as an inverted
+     Neutral badge on hover, to its left so the list never clips it. */
+  .row .tip { position: relative; flex-shrink: 0; color: var(--bfc-base-c-warning); font-size: 12px; cursor: help; }
+  .row .tip::after { content: attr(data-tip); position: absolute; right: calc(100% + var(--spacing-xs)); top: 50%; transform: translateY(-50%);
+    background: var(--bfc-neutral); color: var(--bfc-neutral-hc); font: 600 12px/18px var(--font); padding: 0 6px;
+    border-radius: var(--border-radius-xs); white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity .1s; }
+  .row .tip:hover::after { opacity: 1; }
   .row.active .meta { color: var(--selected-text); opacity: .75; }
   .row .keys { display: flex; gap: var(--spacing-xs); flex-shrink: 0; }
   .row.error { color: var(--danger); }
@@ -339,7 +347,7 @@
     sizing: "fill  ·  hugv  ·  fixed 320",
     review: "Filter, e.g. padding or #fff",
   };
-  const REVIEW_FOOTER = "<span><b>↵</b> apply selected</span><span><b>space</b> check</span><span><b>⇥</b> check section</span><span><b>esc</b> back</span>";
+  const REVIEW_FOOTER = "<span><b>↵</b> apply this row</span><span><b>⇧↵</b> apply selected</span><span><b>space</b> check</span><span><b>⇥</b> check section</span><span><b>esc</b> back</span>";
   const FOOTER = "<span><b>↵</b> apply</span><span><b>⇧↵</b> apply, keep open</span><span><b>⇥</b> open group / chain</span><span><b>esc</b> back</span>";
 
   let entries = [];
@@ -350,6 +358,7 @@
   let parser = null;
   let aliasIndex = {};
   let valueTable = {};
+  let rules = { pairs: [] };
   let entryBySlug = {};
   const groupParsers = {};
   let group = null;
@@ -409,7 +418,43 @@
     return [parser.shorthand(ops)].concat(aliasIndex[describeOps(ops)] || []).filter(Boolean);
   }
   // Labels follow the selection: a text style reads "Insert text H5" when no text is selected.
-  const actionRow = (ops, extra) => Object.assign({ type: "action", ops, label: describeOpsIn(ops, check(ops).modes), keys: keysFor(ops) }, extra);
+  const actionRow = (ops, extra) => Object.assign({ type: "action", ops, label: describeOpsIn(ops, check(ops).modes), keys: keysFor(ops) }, colorFitFor(ops), extra);
+
+  // A single fill or border follows Bifrost's pairing rules: text, icon and
+  // border colors need the selection on a known Bifrost color, fills on
+  // frames and rectangles are judged as backgrounds by themselves. fit 0 =
+  // allowed, 1 = not covered by the rules, 2 = not allowed or too little
+  // contrast in Light or Dark, with the reason as a warning.
+  function colorFitFor(ops) {
+    const op = ops.length === 1 && ops[0];
+    if (!op || !selection.nodes.length || (op.kind !== "fill" && op.kind !== "stroke")) return { fit: 1 };
+    const every = (cap) => selection.nodes.every((n) => n[cap]);
+    const use = op.kind === "stroke" ? "border" : selection.icon ? "icon" : every("textLayer") ? "text" : every("surface") ? "background" : null;
+    const background = use !== "background" && selection.background && entryBySlug[selection.background];
+    const color = entryBySlug[op.slug];
+    if (!use || !color || (use !== "background" && !background)) return { fit: 1 };
+    const problem = pairingProblem(rules, valueTable, color, background || null, use, selection.modes);
+    // Every row is about the same background, so "here" is enough.
+    if (problem) return { fit: 2, warning: sentence(problem.reason.replace(/^not allowed on .*$/, "not allowed here")) };
+    return { fit: colorFit(rules, tokenName(color), background ? tokenName(background) : null, use) === "allowed" ? 0 : 1 };
+  }
+  // Rows sorted by fit, with the ones that break the rules folded away behind
+  // one row (Enter shows them), unless nothing else is left. `typed`
+  // (a row whose shorthand or alias is exactly what was typed) is never
+  // folded, only sorted down.
+  let showMisfits = false;
+  const sentence = (text) => text.charAt(0).toUpperCase() + text.slice(1);
+  function byFit(rows, typed) {
+    rows.sort((a, b) => (a.fit || 1) - (b.fit || 1));
+    const misfits = rows.filter((r) => r.fit === 2 && r !== typed);
+    if (!misfits.length || misfits.length === rows.length) return rows;
+    const fold = { type: "fold", label: misfits.length + (misfits.length === 1 ? " color breaks" : " colors break") + " the color rules", icon: showMisfits ? "▾" : "▸" };
+    return rows.filter((r) => !misfits.includes(r)).concat(fold, showMisfits ? misfits : []);
+  }
+  function toggleMisfits() {
+    showMisfits = !showMisfits;
+    render(true);
+  }
   const groupRow = (g) => {
     const n = groupActions(g);
     return { type: "group", group: g, label: g.label, meta: n + (n === 1 ? " action" : " actions"), keys: g.key ? [g.key] : [], icon: "▸" };
@@ -426,12 +471,18 @@
   }
 
   // Rows already shown above (a style swap, an icon choice) aren't repeated.
-  function pushParsed(out, r) {
+  // query: the parsed text, to spot a row typed out in full ("f base-c-1").
+  function pushParsed(out, r, query) {
     const key = (ops) => ops.map((o) => (o.slug || o.key) + (o.text ? ":" + o.text : "")).join(",");
     const shown = new Set(out.filter((row) => row.ops).map((row) => key(row.ops)));
     const fresh = (ops) => runnable(ops) && !shown.has(key(ops));
-    if (r.primary && fresh(r.primary)) out.push(actionRow(r.primary));
-    for (const ops of r.alternatives.filter(fresh).slice(0, 100)) out.push(actionRow(ops));
+    const rows = [];
+    const primary = r.primary && fresh(r.primary) ? actionRow(r.primary) : null;
+    if (primary) rows.push(primary);
+    for (const ops of r.alternatives.filter(fresh).slice(0, 100)) rows.push(actionRow(ops));
+    const compact = (text) => text.toLowerCase().replace(/[\s-]+/g, "");
+    const exact = primary && primary.keys.some((k) => compact(k) === compact(query)) ? primary : null;
+    out.push(...byFit(rows, exact));
   }
 
   // Icons are Font Awesome text styles, "Icon/H3/Solid": size, then
@@ -475,7 +526,7 @@
         const changed = other.map((part, i) => part !== parts[i]);
         return other.length === parts.length && changed.filter(Boolean).length === 1 && other[changed.indexOf(true)].toLowerCase().startsWith(lower);
       })
-      .map((e) => actionRow([{ slug: e.slug, kind: "textstyle", label: "Text " + e.name }]))
+      .map((e) => actionRow([{ slug: e.slug, kind: "textstyle", label: "Text " + displayName(e) }]))
       .filter((row) => runnable(row.ops));
   }
 
@@ -529,7 +580,7 @@
       if (!out.length) out.push({ type: "error", label: r.error });
       return out;
     }
-    pushParsed(out, r);
+    pushParsed(out, r, t);
     if (!out.length) out.push({ type: "error", label: check(r.primary || r.alternatives[0]).error });
     return out;
   }
@@ -544,12 +595,12 @@
 
   function groupRows(t) {
     if (!groupVisible(group)) return [{ type: "error", label: check(parser.list(group.kind)[0]).error }];
-    if (!t) return parser.list(group.kind).filter(runnable).map((ops) => actionRow(ops));
+    if (!t) return byFit(parser.list(group.kind).filter(runnable).map((ops) => actionRow(ops)));
     const out = [];
     const { query, skip } = groupQuery(t);
     const r = (groupParsers[group.kind] || parser).parse(query);
     parsed = { r, skip };
-    if (!r.error) pushParsed(out, r);
+    if (!r.error) pushParsed(out, r, query);
     if (!out.length) {
       const lower = t.toLowerCase();
       for (const ops of parser.list(group.kind)) if (matchScore(ops[0].label, lower) >= 0 && runnable(ops)) out.push(actionRow(ops));
@@ -569,6 +620,15 @@
     const twin = g.modes && reviewView.groups.some((o) => o !== g && o.kind === g.kind && o.role === g.role && o.value === g.value);
     return g.layers + (g.layers === 1 ? " layer" : " layers") + (twin ? " · " + Object.values(g.modes).join(", ") : "");
   }
+  // The ⚠ tooltip: what's wrong, on which background, and the contrast.
+  function pairingTip(g) {
+    if (!g.pairing) return "";
+    const reason = g.background ? g.pairing.reason.replace(/^low contrast/, "low contrast on " + g.background) : g.pairing.reason;
+    return sentence(reason) + (g.pairing.detail ? " · " + g.pairing.detail : "");
+  }
+  // A pairing problem is about a token, not a value set by hand.
+  const reviewRowLabel = (g) =>
+    (g.pairing ? (g.role === "text" ? "Text color " : KIND_LABEL[g.kind] + " ") + g.pairing.from : reviewLabel(g)) + " → " + displayName(entryBySlug[g.match]);
   function reviewRows(t) {
     if (!reviewView.groups) return [{ type: "note", label: "Checking the selection…" }];
     const errors = reviewView.errors.length
@@ -576,11 +636,12 @@
       : [];
     if (!reviewView.groups.length) return [{ type: "note", label: selection.count ? "Everything in the selection uses variables" : "Select layers to review" }].concat(errors);
     const lower = t.toLowerCase();
-    const proposed = reviewView.groups.filter((g) => g.match && entryBySlug[g.match] && (!lower || reviewLabel(g).toLowerCase().includes(lower)));
+    const proposed = reviewView.groups.filter((g) => g.match && entryBySlug[g.match] && (!lower || reviewRowLabel(g).toLowerCase().includes(lower)));
     const isChecked = (g) => !reviewView.unchecked.has(g.key);
     const fixesOf = (gs) => gs.filter(isChecked).map((g) => ({ key: g.key, slug: g.match }));
-    const exact = proposed.filter((g) => g.exact);
-    const nearest = proposed.filter((g) => !g.exact);
+    const exact = proposed.filter((g) => g.exact && !g.pairing);
+    const nearest = proposed.filter((g) => !g.exact && !g.pairing);
+    const pairing = proposed.filter((g) => g.pairing);
     const out = [];
     const all = fixesOf(proposed);
     out.push(all.length ? { type: "fix", all: true, fixes: all, label: "Apply " + all.length + " selected", icon: "✓" } : { type: "note", label: "Nothing selected" });
@@ -591,14 +652,14 @@
         if (fixes.length) out.push({ type: "fix", fixes, label: "Accept " + fixes.length + " " + (fixes.length === 1 ? one : many), meta: skipped ? skipped + " deselected skipped" : "", icon: "✓" });
       }
     }
-    for (const [gs, label] of [[exact, "Exact matches"], [nearest, "Nearest value"]]) {
+    for (const [gs, label] of [[exact, "Exact matches"], [nearest, "Nearest value"], [pairing, "Against the color rules"]]) {
       if (!gs.length) continue;
       const keys = gs.map((g) => g.key);
       const on = gs.filter(isChecked).length;
       out.push({ type: "section", label, keys, check: on === gs.length ? "on" : on ? "mixed" : "" });
       for (const g of gs) {
         out.push({ type: "proposal", key: g.key, checked: isChecked(g), sectionKeys: keys, fixes: [{ key: g.key, slug: g.match }],
-          label: reviewLabel(g) + " → " + entryBySlug[g.match].name, meta: reviewMeta(g), slug: g.match, modes: g.modes });
+          label: reviewRowLabel(g), meta: reviewMeta(g), warning: pairingTip(g), slug: g.match, modes: g.modes });
       }
     }
     return out.concat(errors);
@@ -665,10 +726,11 @@
     box.innerHTML = html;
   }
 
-  function startReview() {
+  // filter: text already typed, when the window opens straight in the review.
+  function startReview(filter) {
     group = null;
     reviewView = { groups: null, errors: [], unchecked: new Set() };
-    q.value = "";
+    q.value = filter || "";
     send({ type: "review" });
     render();
     setFooter();
@@ -690,14 +752,19 @@
   const iconHtml = (row, isActive) => (row.type === "proposal" ? `<span class="cb${row.checked ? " on" : ""}"></span>` : esc(iconFor(row, isActive)));
 
   // keepFocus: re-render after a state or selection update without moving focus
-  // (the focused row is found again by identity, even if it moved).
+  // (the focused row is found again by identity, even if it moved). If it's
+  // gone (a review row that was just applied), focus goes to the next row
+  // that's still there, else the one before, not back to the top.
   function render(keepFocus) {
     const t = q.value.trim();
-    const focused = keepFocus ? rowId(rows[active]) : null;
+    const before = rows;
+    const was = active;
     parsed = null;
     rows = reviewView ? reviewRows(t) : group ? groupRows(t) : t ? queryRows(t) : homeRows();
     drawTags();
-    const kept = focused ? rows.findIndex((r) => selectable(r) && rowId(r) === focused) : -1;
+    const find = (row) => (selectable(row) ? rows.findIndex((r) => selectable(r) && rowId(r) === rowId(row)) : -1);
+    const nearby = keepFocus ? [before[was]].concat(before.slice(was + 1), before.slice(0, was).reverse()) : [];
+    const kept = nearby.reduce((found, row) => (found >= 0 ? found : find(row)), -1);
     active = kept >= 0 ? kept : rows.findIndex(selectable);
     const trail = reviewView ? ["Review"] : group ? [group.label] : [];
     $("crumb").innerHTML = "Bifrost" + trail.map((c) => '<span class="sep">›</span>' + esc(c)).join("");
@@ -714,6 +781,7 @@
         return `<div class="row ${r.type}${r.checked === false ? " off" : ""}${i === active ? " active" : ""}" data-i="${i}">` +
           `<span class="icon">${iconHtml(r, i === active)}</span><span class="label">${esc(r.label)}</span>` +
           (r.meta ? `<span class="meta">${esc(r.meta)}</span>` : "") +
+          (r.warning ? `<span class="tip" data-tip="${esc(r.warning)}" aria-label="${esc(r.warning)}">⚠</span>` : "") +
           (r.slug ? valueHtml(r.slug, r.modes) : r.ops && r.ops.length === 1 ? valueHtml(r.ops[0].slug) : "") +
           `<span class="keys">${keys}</span></div>`;
       })
@@ -800,12 +868,14 @@
 
   function enterGroup(g) {
     group = g;
+    showMisfits = false;
     q.value = "";
     render();
   }
 
   function leaveGroup() {
     group = null;
+    showMisfits = false;
     q.value = "";
     render();
   }
@@ -817,9 +887,11 @@
     if (row.type === "options") return showHelp("options");
     if (row.type === "vars") return send({ type: "vars" });
     if (row.type === "review") return startReview();
-    // Enter on a proposal applies everything checked, like the top row.
-    if (row.type === "proposal") return activate(rows.find((r) => r.all));
-    if (row.type === "fix") {
+    if (row.type === "fold") return toggleMisfits();
+    // In the review, Enter applies the focused row (a proposal, checked or
+    // not, or an Accept row); Shift+Enter everything checked, like the top row.
+    if (reviewView && keepOpen && !row.all) return activate(rows.find((r) => r.all));
+    if (row.type === "proposal" || row.type === "fix") {
       send({ type: "fixReview", fixes: row.fixes });
       return setFooter("Binding variables…", "notice");
     }
@@ -841,6 +913,7 @@
   }
 
   q.addEventListener("input", () => {
+    showMisfits = false;
     render();
     setFooter();
   });
@@ -1262,14 +1335,18 @@
     if (msg.type === "init") {
       entries = msg.entries;
       valueTable = msg.values || {};
+      rules = msg.rules || { pairs: [] };
       hidden = new Set(msg.hidden || []);
       optTree = buildOptionTree(entries);
       aliases = msg.aliases;
       recents = msg.recents;
       selection = msg.selection;
       rebuild();
-      render();
-      setFooter();
+      if (msg.start === "review") startReview(q.value);
+      else {
+        render();
+        setFooter();
+      }
       q.focus();
     } else if (msg.type === "review") {
       if (!reviewView) return;

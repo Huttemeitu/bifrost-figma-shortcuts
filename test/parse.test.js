@@ -46,7 +46,7 @@ test("the old glued form says where the space goes", () => {
   assert.match(parse("pm").error, /"p m"/);
   assert.match(parse("p m rtll").error, /"rtl l"/);
   assert.match(parse("fbase1 p m").error, /"f base1"/);
-  assert.deepEqual(labels(parse("brand").primary), ["Fill Pop/Brand/bfc-brand"]);
+  assert.deepEqual(labels(parse("brand").primary), ["Fill brand"]);
   assert.deepEqual(labels(parse("button").primary), ["Insert Button"]);
 });
 
@@ -71,23 +71,23 @@ test("ops know which typed words they came from, so the palette can box them", (
 });
 
 test("fuzzy matches rank exact path segments first and icon fonts last", () => {
-  assert.deepEqual(labels(parse("f brand").primary), ["Fill Pop/Brand/bfc-brand"]);
-  assert.deepEqual(labels(parse("f base-1 p m").primary), ["Fill Base/bfc-base-1", "Padding M"]);
-  assert.deepEqual(labels(parse("t s").primary), ["Text S/Open Sans/Regular/Text"]);
+  assert.deepEqual(labels(parse("f brand").primary), ["Fill brand"]);
+  assert.deepEqual(labels(parse("f base-1 p m").primary), ["Fill base-1", "Padding M"]);
+  assert.deepEqual(labels(parse("t s").primary), ["Text S Regular"]);
   assert.deepEqual(labels(parse("h1").primary), ["Text H1"]);
 });
 
 test("aliases expand where an op starts and complete while typing", () => {
   const aliases = { cta: "f brand p m", 1: "g s r l" };
-  assert.deepEqual(labels(parse("cta r l", aliases).primary), ["Fill Pop/Brand/bfc-brand", "Padding M", "Radius L"]);
-  assert.deepEqual(labels(parse("ct", aliases).alternatives[0]), ["Fill Pop/Brand/bfc-brand", "Padding M"]);
+  assert.deepEqual(labels(parse("cta r l", aliases).primary), ["Fill brand", "Padding M", "Radius L"]);
+  assert.deepEqual(labels(parse("ct", aliases).alternatives[0]), ["Fill brand", "Padding M"]);
   assert.deepEqual(labels(parse("p m 1", aliases).primary), ["Padding M", "Gap S", "Radius L"]);
 });
 
 test("aliases never replace a value", () => {
   const aliases = { m: "r l", brand: "g s" };
   assert.deepEqual(labels(parse("p m", aliases).primary), ["Padding M"]);
-  assert.deepEqual(labels(parse("f brand", aliases).primary), ["Fill Pop/Brand/bfc-brand"]);
+  assert.deepEqual(labels(parse("f brand", aliases).primary), ["Fill brand"]);
 });
 
 test("alias names may shadow name search but not op syntax", () => {
@@ -112,17 +112,17 @@ test("shorthand is the shortest input that gives the same ops", () => {
 });
 
 test("b sets a border color, and bare color names stay fills", () => {
-  assert.deepEqual(labels(parse("b base-dimmed-3").primary), ["Border Base/bfc-base-dimmed-3"]);
-  assert.deepEqual(labels(parse("b brand p m").primary), ["Border Pop/Brand/bfc-brand", "Padding M"]);
-  assert.deepEqual(labels(parse("button b brand").primary), ["Insert Button", "Border Pop/Brand/bfc-brand"]);
-  assert.deepEqual(labels(parse("brand").primary), ["Fill Pop/Brand/bfc-brand"]);
+  assert.deepEqual(labels(parse("b base-dimmed-3").primary), ["Border base-dimmed-3"]);
+  assert.deepEqual(labels(parse("b brand p m").primary), ["Border brand", "Padding M"]);
+  assert.deepEqual(labels(parse("button b brand").primary), ["Insert Button", "Border brand"]);
+  assert.deepEqual(labels(parse("brand").primary), ["Fill brand"]);
   assert.match(ctx.aliasError(ENTRIES, "b", "p m"), /built-in/);
   assert.equal(ctx.aliasError(ENTRIES, "brand", "p m"), null);
 });
 
 test("frame and auto layout are word ops that chain like inserts", () => {
   assert.deepEqual(labels(parse("frame alh p m r m b base-dimmed3").primary), [
-    "Insert frame", "Auto layout horizontal", "Padding M", "Radius M", "Border Base/bfc-base-dimmed-3",
+    "Insert frame", "Auto layout horizontal", "Padding M", "Radius M", "Border base-dimmed-3",
   ]);
   assert.deepEqual(Array.from(parse("fr").alternatives, labels), [["Insert frame"]]);
   assert.deepEqual(Array.from(parse("al").alternatives, labels), [["Auto layout horizontal"], ["Auto layout vertical"]]);
@@ -135,7 +135,7 @@ test("frame and auto layout are word ops that chain like inserts", () => {
 test("bare words search components, text styles and colors by name", () => {
   assert.deepEqual(labels(parse("button").primary), ["Insert Button"]);
   assert.deepEqual(labels(parse("icon button").primary), ["Insert Button (icon only)"]);
-  assert.deepEqual(labels(parse("brand p m").primary), ["Fill Pop/Brand/bfc-brand", "Padding M"]);
+  assert.deepEqual(labels(parse("brand p m").primary), ["Fill brand", "Padding M"]);
   assert.deepEqual(labels(parse("button p m").primary), ["Insert Button", "Padding M"]);
   assert.deepEqual(labels(parse("box r m").primary), ["Insert Box", "Radius M"]);
   assert.deepEqual(labels(parse("basic input p m").primary), ["Insert Input/Basic input", "Padding M"]);
@@ -144,7 +144,7 @@ test("bare words search components, text styles and colors by name", () => {
 
 test("a group's search option limits name search to its kinds", () => {
   const components = ctx.createParser(ENTRIES, {}, { search: ["component"] });
-  assert.deepEqual(labels(parse("brand").primary), ["Fill Pop/Brand/bfc-brand"]);
+  assert.deepEqual(labels(parse("brand").primary), ["Fill brand"]);
   assert.match(components.parse("brand").error, /No matches/);
   assert.deepEqual(labels(components.parse("button p m").primary), ["Insert Button", "Padding M"]);
 });
@@ -322,16 +322,16 @@ test("text after a text style is its content, up to the next command", () => {
   assert.equal(first("h1 This is a heading").text, "This is a heading");
   assert.equal(ctx.describeOps(parse("h1 This is a heading").primary), "Text H1 “This is a heading”");
   assert.deepEqual(Array.from(first("h1 This is a heading").at), [0, 5]);
-  assert.deepEqual(labels(parse("h1 Welcome f brand").primary), ["Text H1", "Fill Pop/Brand/bfc-brand"]);
+  assert.deepEqual(labels(parse("h1 Welcome f brand").primary), ["Text H1", "Fill brand"]);
   assert.equal(first("h1 Welcome f brand").text, "Welcome");
   assert.equal(first("h1 p m").text, undefined);
   assert.equal(first("h1 Plan b for later").text, "Plan b for later");
   assert.equal(first("icon m solid star").text, "star");
-  assert.equal(first("icon m solid star").label, "Text Icon/M/Solid");
+  assert.equal(first("icon m solid star").label, "Text Icon M Solid");
 
   // Icons are found by name like text styles, ahead of components named "Icon …".
   const icons = ctx.createParser(ENTRIES.concat(entry("component", "Icon (Medium)")), {}).parse("icon m");
-  assert.deepEqual([icons.primary].concat(icons.alternatives).map((ops) => ops[0].label), ["Text Icon/M/Regular", "Text Icon/M/Solid", "Insert Icon (Medium)"]);
+  assert.deepEqual([icons.primary].concat(icons.alternatives).map((ops) => ops[0].label), ["Text Icon M Regular", "Text Icon M Solid", "Insert Icon (Medium)"]);
 
   // With content, only a text layer itself is rewritten; a frame gets a new text.
   const caps = { fills: true, strokes: true, radius: true, corners: true, autoLayout: true, canAutoLayout: true };
@@ -396,4 +396,50 @@ test("resizing: fill, hug and fixed per axis, fill only inside an auto layout", 
 test("a repeated name is repeated inserts", () => {
   assert.deepEqual(labels(parse("frame alh button button").primary), ["Insert frame", "Auto layout horizontal", "Insert Button", "Insert Button"]);
   assert.deepEqual(labels(parse("icon button").primary), ["Insert Button (icon only)"]);
+});
+
+test("rows show short names: token names without bfc-, text styles without the font", () => {
+  const name = (kind, n, group) => ctx.displayName({ kind, name: n, group });
+  assert.equal(name("fill", "Pop/Warning/bfc-warning-hc"), "warning-hc");
+  assert.equal(name("fill", "Teal/500"), "Teal 500");
+  assert.equal(name("fill", "500", "Assigned"), "Assigned 500");
+  assert.equal(name("textstyle", "S/Open Sans/Semibold italic/Link"), "S Semibold italic Link");
+  assert.equal(name("textstyle", "H5/Satoshi/Link"), "H5 Link");
+  assert.equal(name("textstyle", "Icon/H3/Solid"), "Icon H3 Solid");
+});
+
+test("color pairing follows Bifrost's rules, with contrast for colors they don't cover", () => {
+  const rules = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "bifrost-color-rules.json"), "utf8"));
+  const fit = (fg, bg, use) => ctx.colorFit(rules, fg, bg, use);
+  assert.equal(fit("bfc-brand-hc", "bfc-brand", "text"), "allowed");
+  assert.equal(fit("bfc-brand-hc", "bfc-brand", "border"), "not-allowed");
+  assert.equal(fit("bfc-brand", "bfc-brand-c", "border"), "allowed");
+  assert.equal(fit("bfc-base-c-1", "bfc-brand", "text"), "not-allowed");
+  assert.equal(fit("bfc-base-c-dimmed", "bfc-base-1", "text"), "not-allowed");
+  assert.equal(fit("bfc-base-c-dimmed", "bfc-base-1", "border"), "allowed");
+  assert.equal(fit("bfc-base-1", "bfc-base-c-inverted-1", "text"), "allowed");
+  assert.equal(fit("570", "bfc-brand", "text"), "unknown");
+  // Backgrounds are judged by themselves: text-only colors never are one.
+  assert.equal(fit("bfc-base-2", null, "background"), "allowed");
+  assert.equal(fit("bfc-brand-c", null, "background"), "allowed");
+  assert.equal(fit("bfc-base-c-1", null, "background"), "not-allowed");
+  assert.equal(fit("bfc-brand-fade-c", null, "background"), "not-allowed");
+
+  const entry = (name) => ({ slug: name, kind: "fill", group: "Mode", name: "Pop/" + name, id: name });
+  const table = {
+    "bfc-alert": { collection: "Mode", defaultMode: "Light", values: { Light: "#C9341D", Dark: "#C9341D" } },
+    "bfc-neutral-hc": { collection: "Mode", defaultMode: "Light", values: { Light: "#FFFFFF", Dark: "#071627" } },
+    "bfc-alert-hc": { collection: "Mode", defaultMode: "Light", values: { Light: "#FFFFFF", Dark: "#FFFFFF" } },
+  };
+  const problem = ctx.pairingProblem(rules, table, entry("bfc-neutral-hc"), entry("bfc-alert"), "text", {});
+  assert.equal(problem.reason, "not allowed on alert");
+  assert.match(problem.detail, /Light 5\.3:1, Dark 3\.5:1/);
+  assert.equal(ctx.pairingProblem(rules, table, entry("bfc-alert-hc"), entry("bfc-alert"), "text", {}), null);
+  assert.equal(ctx.pairingProblem(rules, table, entry("bfc-base-c-1"), null, "background", {}).reason, "not a background color");
+
+  // Review proposes only colors allowed on the background when there are any.
+  const fills = [entry("bfc-neutral-hc"), entry("bfc-alert-hc")];
+  const fits = (e) => fit(e.name.split("/").pop(), "bfc-alert", "text") === "allowed";
+  const reviewFill = (e) => Object.assign({}, e, { name: "Pop/Alert/" + e.slug });
+  assert.equal(ctx.reviewChoices(fills.map(reviewFill), table, "fill", "#FFFFFF", {}, "text", fits).match, "bfc-alert-hc");
 });
