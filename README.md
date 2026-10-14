@@ -151,7 +151,8 @@ The Options tab shows the same values.
 | `rt m`, `rtl s`, `rbr m` | Radius on two corners / one corner |
 | `f brand`, `f base3`, `f base-1` | Fill, fuzzy match on the color name (dashes optional) |
 | `b brand`, `b basedimmed3`, `b base-dimmed-3` | Border: that color, always 1px on all sides |
-| `h1` … `h5`, `t regular` | Text style on selected text; with no text selected it inserts a text layer ("Header H5") |
+| `h1` … `h5`, `t regular` | Text style on the selected text, or on all text inside a selected frame; with no text in the selection it inserts a text layer ("Header H5", or "icons" for an icon style) colored `bfc-base-c-1` |
+| `h3`, `solid`, `duo` with an icon selected | Font Awesome icons first: the icon in another size (same variant) or another variant (same size). With an icon selected, the empty palette lists these on top |
 | `frame` | Insert a frame (placed like components, see below) |
 | `alh`, `alv` | Auto layout horizontal / vertical on the selected frames |
 | `frame alh p m r m b base-dimmed3` | Build a styled auto-layout frame in one go |

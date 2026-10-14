@@ -11,7 +11,8 @@
 //             vars | close
 // code -> UI: init {entries, values, aliases, recents, hidden, selection} | selection {selection} |
 //             (selection = {count, nodes: distinct nodeCaps of the selected layers,
-//              modes: {collection name: mode name} of the first selected layer})
+//              modes: {collection name: mode name} of the first selected layer,
+//              icon: {family, style, fontSize} when only Font Awesome icons are selected})
 //             state {aliases, recents, hidden, error, notice} |
 //             review {groups: [{key, kind, value, modes, role, layers, match, exact}], layers, errors} |
 //             changed (the document changed; an open review scans again) |
@@ -214,27 +215,61 @@ function nodeCaps(node) {
     grid: "layoutMode" in node && node.layoutMode === "GRID",
     // Instances get their auto layout from the main component.
     canAutoLayout: "layoutMode" in node && node.type !== "INSTANCE",
-    text: node.type === "TEXT",
+    // Text, or a frame or group with text inside: text styles then apply to
+    // all of it, like Figma's design panel. Otherwise they insert a new text.
+    text: node.type === "TEXT" || ("findOne" in node && node.findOne((n) => n.type === "TEXT") !== null),
   };
 }
 
-// Text styles can only be applied once their font is loaded. Throws a readable
+// Text styles can only be applied once their font is loaded. Figma gives no
+// fontName for some Bifrost styles (the Open Sans Regular and Italic ones,
+// checked 2026-10-14: missing even with no variables bound), so then the font
+// comes from the style's name, size/family/weight/usage. Throws a readable
 // error if the font isn't available on this machine.
 async function loadStyleFont(style) {
+  const [, family, weight] = style.name.split("/");
+  const font = style.fontName && style.fontName.family ? style.fontName : { family, style: weight };
+  if (!font.family || !font.style) throw new Error(style.name + " has no font Figma can read");
   try {
-    await figma.loadFontAsync(style.fontName);
+    await figma.loadFontAsync(font);
   } catch (e) {
-    throw new Error("font " + style.fontName.family + " " + style.fontName.style + " isn't available");
+    throw new Error("font " + font.family + " " + font.style + " isn't available");
   }
 }
 
-// H1-H5 get "Header H5" as their text, other styles "Text".
+// A text style goes to the layer if it's text, or to every text layer inside
+// it. Figma can accept the call and still not apply the style (seen
+// 2026-10-14 on a selected text layer, cause unknown), so the result is
+// checked and reported instead of the command silently doing nothing.
+async function applyTextStyle(node, style) {
+  const texts = node.type === "TEXT" ? [node] : node.findAll((n) => n.type === "TEXT");
+  const failed = [];
+  for (const text of texts) {
+    await text.setTextStyleIdAsync(style.id);
+    if (text.textStyleId !== style.id) {
+      console.warn("Text style not applied", { layer: text.name, expected: style.id, actual: text.textStyleId, key: style.key, remote: style.remote });
+      failed.push(text.name);
+    }
+  }
+  if (failed.length) {
+    throw new Error("Figma didn't apply " + style.name + " to " + failed.slice(0, 2).join(", ") + (failed.length > 2 ? " and " + (failed.length - 2) + " more" : ""));
+  }
+}
+
+// A new text layer: "Header H5" for headings, "icons" for Font Awesome styles
+// (the placeholder Bifrost puts in icon slots; the font draws it as an icon),
+// otherwise "Text". Style names are size/family/weight/usage. Its color is
+// the default text color, Base/bfc-base-c-1, instead of Figma's black.
 async function insertText(style, anchor) {
   const text = figma.createText();
   await figma.loadFontAsync(text.fontName);
   await loadStyleFont(style);
-  text.characters = /^H[1-5]$/.test(style.name) ? "Header " + style.name : "Text";
+  const size = style.name.split("/")[0];
+  text.characters = DEMOTED.test(style.name) ? "icons" : /^H[1-5]$/.test(size) ? "Header " + size : "Text";
   await text.setTextStyleIdAsync(style.id);
+  const textColor = ENTRIES.find((e) => e.kind === "fill" && e.name === "Base/bfc-base-c-1");
+  const variable = textColor && (await resolveVariable(textColor));
+  if (variable) bindPaint(text, "fills", variable);
   placeNode(text, anchor);
   figma.currentPage.selection = [text];
 }
@@ -290,7 +325,7 @@ async function applyOp(op, target, nodes, mode) {
       if (node.layoutMode === "NONE") setAutoLayout(node, guessDirection(node));
       bindFields(node, FIELD_SETS[op.kind][op.side], target);
     } else if (op.kind === "textstyle") {
-      await node.setTextStyleIdAsync(target.id);
+      await applyTextStyle(node, target);
     } else if (op.kind === "radius" && op.side === "ALL" && !nodeCaps(node).corners) {
       // Shapes like stars and polygons only have one uniform radius
       bindFields(node, ["cornerRadius"], target);
@@ -695,7 +730,18 @@ async function selectionInfo() {
     const caps = nodeCaps(node);
     seen.set(JSON.stringify(caps), caps);
   }
-  return { count: sel.length, nodes: [...seen.values()], modes: await layerModes(sel[0]) };
+  return { count: sel.length, nodes: [...seen.values()], modes: await layerModes(sel[0]), icon: selectionIcon(sel) };
+}
+
+// The selected icon, if every text in the selection is a Font Awesome icon (an
+// icon text layer, or an icon component with one inside): its font and size,
+// so the palette can offer the icon's other sizes and variants first.
+function selectionIcon(sel) {
+  const texts = sel.flatMap((n) => (n.type === "TEXT" ? [n] : "findAllWithCriteria" in n ? n.findAllWithCriteria({ types: ["TEXT"] }) : []));
+  const isIcon = (t) => t.fontName !== figma.mixed && /^Font Awesome/.test(t.fontName.family);
+  if (!texts.length || !texts.every(isIcon)) return null;
+  const t = texts[0];
+  return { family: t.fontName.family, style: t.fontName.style, fontSize: t.fontSize === figma.mixed ? null : t.fontSize };
 }
 
 // The variable modes a layer resolves to (its own or inherited from a parent),

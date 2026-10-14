@@ -428,7 +428,38 @@
     const rec = recents.filter((r) => runnable(r.ops)).slice(0, 3);
     if (rec.length) {
       out.push(section("Recent"));
+  // Icons are Font Awesome text styles, "H3/Font Awesome/Solid": size, then
+  // variant. With only icons selected, the palette offers the icon's other
+  // sizes (same variant) and other variants (same size) before anything else,
+  // so "h3" is the icon in H3 rather than the Satoshi heading. Duotone and
+  // Brands are font families of their own; the rest are styles of the Pro font.
+  function iconChoices() {
+    const icon = selection.icon;
+    if (!icon) return [];
+    const all = entries
+      .filter((e) => e.kind === "textstyle" && DEMOTED.test(e.name) && !hidden.has(e.slug))
+      .map((e) => ({ entry: e, size: e.name.split("/")[0], variant: e.name.split("/")[2] }));
+    const variant = /Duotone/.test(icon.family) ? "Duotone" : /Brands/.test(icon.family) ? "Brands" : icon.style;
+    const sameVariant = all.filter((s) => s.variant === variant).sort((a, b) => a.entry.value - b.entry.value);
+    const distance = (s) => Math.abs(s.entry.value - icon.fontSize);
+    const current = icon.fontSize === null ? null : sameVariant.reduce((best, s) => (!best || distance(s) < distance(best) ? s : best), null);
+    const choice = (s, by) => {
+      const ops = [{ slug: s.entry.slug, kind: "textstyle", label: "Icon " + s.size + " " + s.variant }];
+      return { size: s.size, variant: s.variant, by, row: actionRow(ops) };
+    };
+    return sameVariant
+      .filter((s) => s !== current)
+      .map((s) => choice(s, "size"))
+      .concat(current ? all.filter((s) => s.size === current.size && s.variant !== variant).map((s) => choice(s, "variant")) : [])
+      .filter((c) => runnable(c.row.ops));
+  }
+
       for (const r of rec) out.push(actionRow(r.ops, { icon: "↺" }));
+    }
+    const icons = iconChoices();
+    for (const by of ["size", "variant"]) {
+      const rows = icons.filter((c) => c.by === by).map((c) => c.row);
+      if (rows.length) out.push(section(by === "size" ? "Icon size" : "Icon style"), ...rows);
     }
     out.push(section("Groups"));
     for (const g of orderedGroups()) out.push(groupRow(g));
@@ -460,6 +491,9 @@
     if (r.error) {
       if (!out.length) out.push({ type: "error", label: r.error });
       return out;
+    // With an icon selected, a size or variant ("h3", "solid") means the icon first.
+    const icons = iconChoices().filter((c) => c.size.toLowerCase() === lower || c.variant.toLowerCase().startsWith(lower));
+    if (icons.length) out.push(section("Icon"), ...icons.map((c) => c.row), section(""));
     }
     pushParsed(out, r);
     if (!out.length) out.push({ type: "error", label: check(r.primary || r.alternatives[0]).error });
