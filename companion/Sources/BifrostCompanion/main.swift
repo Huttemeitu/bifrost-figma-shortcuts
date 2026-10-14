@@ -1,9 +1,11 @@
 import AppKit
 import ServiceManagement
+import os
 
-/// Menu bar app: numpad digits and recorded shortcuts in Figma press the
-/// Bifrost plugin's menu commands. Alias N applies the alias named N (saved in
-/// the palette's Aliases tab); Open palette and Fix variables can have one too.
+/// Bifrost Figma Companion, a menu bar app: numpad digits and recorded
+/// shortcuts in Figma press the Bifrost plugin's menu commands. Alias N applies
+/// the alias named N (saved in the palette's Aliases tab); Open palette and
+/// Review variables can have one too.
 @MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWindowDelegate {
   private let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
@@ -18,11 +20,19 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
     statusItem.menu = menu
     statusItem.button?.image = logo
     tap.shortcuts = Shortcut.load()
+    tap.onDropped = { [weak self] in self?.flashFailure() }
     startWhenTrusted()
   }
 
+  private let log = Logger(subsystem: "no.intility.bifrost-numpad", category: "palette")
+
   private func run(_ command: String) {
-    if figma.run(command) { flashSuccess() } else { flashFailure() }
+    let start = Date()
+    let pressed = figma.run(command)
+    log.notice("Pressing \(command, privacy: .public) took \(Int(Date().timeIntervalSince(start) * 1000)) ms")
+    if pressed { return flashSuccess() }
+    if Figma.windowCommands.contains(command) { tap.cancelHold() }
+    flashFailure()
   }
 
   // Without Accessibility permission the tap can't be created. Ask once, then
@@ -52,7 +62,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
       menu.addItem(.separator())
       menu.addItem(.sectionHeader(title: "Shortcuts: click to record"))
       menu.addItem(shortcutItem(Figma.paletteCommand))
-      menu.addItem(shortcutItem(Figma.fixCommand))
+      menu.addItem(shortcutItem(Figma.reviewCommand))
       let aliases = NSMenuItem(title: "Aliases", action: nil, keyEquivalent: "")
       aliases.submenu = NSMenu()
       for n in 0..<Figma.aliasCount {
@@ -67,7 +77,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
     login.state = SMAppService.mainApp.status == .enabled ? .on : .off
     menu.addItem(login)
     menu.addItem(.separator())
-    menu.addItem(item("Quit Bifrost Numpad", #selector(NSApplication.terminate(_:)), key: "q"))
+    menu.addItem(item("Quit Bifrost Figma Companion", #selector(NSApplication.terminate(_:)), key: "q"))
   }
 
   private func item(_ title: String, _ action: Selector, key: String = "") -> NSMenuItem {
@@ -170,7 +180,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
   private let logo: NSImage = {
     let image = Bundle.main.image(forResource: "MenuIcon")!
     image.size = NSSize(width: 16, height: 16)
-    image.accessibilityDescription = "Bifrost Numpad"
+    image.accessibilityDescription = "Bifrost Figma Companion"
     return image
   }()
 
@@ -182,7 +192,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
   }
 
   private func flashFailure() {
-    let warning = NSImage(systemSymbolName: "exclamationmark.triangle", accessibilityDescription: "Bifrost Numpad")
+    let warning = NSImage(systemSymbolName: "exclamationmark.triangle", accessibilityDescription: "Bifrost Figma Companion")
     warning?.isTemplate = true
     statusItem.button?.image = warning
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in

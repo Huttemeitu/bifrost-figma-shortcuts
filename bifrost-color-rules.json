@@ -1,0 +1,54 @@
+{
+  "source": "Bifrost Variables file (VZwAtqUV9R8Ft8tYu5E5Zt), page Color systems, component _Color-variables (8420:34050). Read by hand 2026-10-14.",
+  "about": "Each pair: colors in 'contrast' may be used on colors in 'main' as text, icon and/or border ('contrastOnMain'); 'mainOnContrast' is the other way around, a contrast color as the background. Names are token names without the collection path.",
+  "pairs": [
+    {
+      "main": ["bfc-base-1", "bfc-base-2", "bfc-base-3"],
+      "contrast": ["bfc-base-c-1", "bfc-base-c-2", "bfc-base-c-theme", "bfc-base-c-brand", "bfc-base-c-chill", "bfc-base-c-attn", "bfc-base-c-success", "bfc-base-c-warning", "bfc-base-c-alert", "bfc-base-c-wcag", "bfc-base-c-disabled"],
+      "contrastOnMain": ["text", "icon", "border"],
+      "mainOnContrast": []
+    },
+    {
+      "main": ["bfc-base-1", "bfc-base-2", "bfc-base-3"],
+      "contrast": ["bfc-base-c-dimmed"],
+      "contrastOnMain": ["border"],
+      "mainOnContrast": []
+    },
+    {
+      "main": ["bfc-base-dimmed", "bfc-base-dimmed-2"],
+      "contrast": ["bfc-base-c-1", "bfc-base-c-2"],
+      "contrastOnMain": ["text", "icon"],
+      "mainOnContrast": []
+    },
+    { "main": ["bfc-base-dimmed-3"], "contrast": ["bfc-base-c-1"], "contrastOnMain": ["text", "icon"], "mainOnContrast": [] },
+    { "main": ["bfc-base-disabled"], "contrast": ["bfc-base-c-2"], "contrastOnMain": ["text", "icon"], "mainOnContrast": [] },
+    {
+      "main": ["bfc-base-1"],
+      "contrast": ["bfc-base-c-inverted-1", "bfc-base-c-inverted-2", "bfc-base-c-inverted-3"],
+      "contrastOnMain": [],
+      "mainOnContrast": ["text", "icon"]
+    },
+    {
+      "main": ["bfc-theme-1", "bfc-theme-2", "bfc-theme-3"],
+      "contrast": ["bfc-theme-c-1", "bfc-theme-c-2", "bfc-theme-hc"],
+      "contrastOnMain": ["text", "icon"],
+      "mainOnContrast": ["border"]
+    },
+    { "main": ["bfc-theme-fade"], "contrast": ["bfc-theme-fade-c"], "contrastOnMain": ["text", "icon", "border"], "mainOnContrast": [] },
+    { "main": ["bfc-neutral"], "contrast": ["bfc-neutral-c", "bfc-neutral-hc"], "contrastOnMain": ["text", "icon"], "mainOnContrast": ["border"] },
+    { "main": ["bfc-neutral-fade"], "contrast": ["bfc-neutral-fade-c"], "contrastOnMain": ["text", "icon", "border"], "mainOnContrast": [] },
+    { "main": ["bfc-brand"], "contrast": ["bfc-brand-c", "bfc-brand-hc"], "contrastOnMain": ["text", "icon"], "mainOnContrast": ["border"] },
+    { "main": ["bfc-brand-fade"], "contrast": ["bfc-brand-fade-c"], "contrastOnMain": ["text", "icon", "border"], "mainOnContrast": [] },
+    { "main": ["bfc-chill"], "contrast": ["bfc-chill-c", "bfc-chill-hc"], "contrastOnMain": ["text", "icon"], "mainOnContrast": ["border"] },
+    { "main": ["bfc-chill-fade"], "contrast": ["bfc-chill-fade-c"], "contrastOnMain": ["text", "icon", "border"], "mainOnContrast": [] },
+    { "main": ["bfc-attn"], "contrast": ["bfc-attn-c", "bfc-attn-hc"], "contrastOnMain": ["text", "icon"], "mainOnContrast": ["border"] },
+    { "main": ["bfc-attn-fade"], "contrast": ["bfc-attn-fade-c"], "contrastOnMain": ["text", "icon", "border"], "mainOnContrast": [] },
+    { "main": ["bfc-success"], "contrast": ["bfc-success-c", "bfc-success-hc"], "contrastOnMain": ["text", "icon"], "mainOnContrast": ["border"] },
+    { "main": ["bfc-success-fade"], "contrast": ["bfc-success-fade-c"], "contrastOnMain": ["text", "icon", "border"], "mainOnContrast": [] },
+    { "main": ["bfc-warning"], "contrast": ["bfc-warning-c", "bfc-warning-hc"], "contrastOnMain": ["text", "icon"], "mainOnContrast": ["border"] },
+    { "main": ["bfc-warning-fade"], "contrast": ["bfc-warning-fade-c"], "contrastOnMain": ["text", "icon", "border"], "mainOnContrast": [] },
+    { "main": ["bfc-alert", "bfc-alert-2"], "contrast": ["bfc-alert-c", "bfc-alert-hc"], "contrastOnMain": ["text", "icon"], "mainOnContrast": ["border"] },
+    { "main": ["bfc-alert-fade"], "contrast": ["bfc-alert-fade-c"], "contrastOnMain": ["text", "icon", "border"], "mainOnContrast": [] },
+    { "main": ["bfc-alert-fade-2"], "contrast": ["bfc-alert-fade-2-c"], "contrastOnMain": ["text", "icon", "border"], "mainOnContrast": [] }
+  ]
+}

@@ -12,8 +12,8 @@
       "command": "open"
     },
     {
-      "name": "Fix variables",
-      "command": "fix"
+      "name": "Review variables",
+      "command": "review"
     },
     {
       "separator": true

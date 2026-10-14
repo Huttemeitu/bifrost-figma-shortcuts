@@ -1,5 +1,5 @@
 #!/bin/sh
-# Builds "build/Bifrost Numpad.app" (universal: Apple silicon and Intel).
+# Builds "build/Bifrost Figma Companion.app" (universal: Apple silicon and Intel).
 # --release also copies it to dist/, which is committed: designers get the app
 # with git pull and never build it themselves.
 #
@@ -11,9 +11,9 @@ set -e
 cd "$(dirname "$0")"
 
 swift build -c release --arch arm64 --arch x86_64
-BIN="$(swift build -c release --arch arm64 --arch x86_64 --show-bin-path)/BifrostNumpad"
+BIN="$(swift build -c release --arch arm64 --arch x86_64 --show-bin-path)/BifrostCompanion"
 
-APP="build/Bifrost Numpad.app"
+APP="build/Bifrost Figma Companion.app"
 rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cp Info.plist "$APP/Contents/"
@@ -36,9 +36,10 @@ fi
 echo "Built $APP"
 
 if [ "$1" = "--release" ]; then
-  rm -rf "dist/Bifrost Numpad.app"
+  # Bifrost Numpad.app is the same app under its name until 0.4.0.
+  rm -rf "dist/Bifrost Numpad.app" "dist/Bifrost Figma Companion.app"
   mkdir -p dist
-  ditto "$APP" "dist/Bifrost Numpad.app"
-  codesign --verify --strict "dist/Bifrost Numpad.app"
+  ditto "$APP" "dist/Bifrost Figma Companion.app"
+  codesign --verify --strict "dist/Bifrost Figma Companion.app"
   echo "Copied to dist/. Bump the version in Info.plist before releasing, then commit dist/."
 fi

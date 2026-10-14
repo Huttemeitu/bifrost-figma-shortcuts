@@ -150,6 +150,23 @@ function matchScore(name, q) {
 // op syntax (used to check alias names against built-in syntax); an array
 // limits it to those kinds (the Component group).
 // options.limit caps fuzzy matches per slot (default 12).
+// The short name rows show for a token; entry.name stays the full path, for
+// search and the Options tree. Colors are their token name without "bfc-"
+// (Pop/Warning/bfc-warning-hc is warning-hc), numbered ones keep their scale
+// (Teal/500 is "Teal 500"). Text styles drop the font, since S, M and L are
+// always Open Sans and H1-H5 Satoshi, and "Text" for body text
+// (S/Open Sans/Semibold italic/Link is "S Semibold italic Link").
+function displayName(entry) {
+  const parts = entry.name.split("/");
+  const last = parts[parts.length - 1];
+  if (entry.kind === "fill" || entry.kind === "stroke") {
+    if (!/^\d+$/.test(last)) return last.replace(/^bfc-/, "");
+    return ((parts.length > 1 ? parts[parts.length - 2] : entry.group || "") + " " + last).trim();
+  }
+  if (entry.kind === "textstyle") return parts.filter((p) => !/^(Open Sans|Satoshi|Text)$/.test(p)).join(" ");
+  return entry.name;
+}
+
 function createParser(entries, aliases, options) {
   const search = !options || options.search !== false;
   const searchKinds = (options && Array.isArray(options.search) && options.search) || SEARCH_KINDS;
@@ -169,10 +186,10 @@ function createParser(entries, aliases, options) {
   // box them. Ops built outside parse (lists, shorthand) have none.
   function sideOp(key, entry, at) {
     const [kind, side] = SIDE_OPS[key];
-    return { slug: entry.slug, kind, side, key, label: KIND_LABEL[kind] + SIDE_LABEL[side] + " " + entry.name, at };
+    return { slug: entry.slug, kind, side, key, label: KIND_LABEL[kind] + SIDE_LABEL[side] + " " + displayName(entry), at };
   }
   function nameOp(entry, at) {
-    return { slug: entry.slug, kind: entry.kind, label: KIND_LABEL[entry.kind] + " " + entry.name, at };
+    return { slug: entry.slug, kind: entry.kind, label: KIND_LABEL[entry.kind] + " " + displayName(entry), at };
   }
   const wordOp = (w, at) => Object.assign({ key: w, at }, WORD_OPS[w]);
   // "g auto": space between, so the gap follows the frame. No token behind it.
@@ -674,7 +691,9 @@ const COLOR_FAMILIES = ["Base", "Pop", "Miscellaneous"];
 // Pop, Neutral before other Pop colors. Text only ever gets content or Pop
 // colors, never a Base background color, even if one is closer.
 // Returns { match: slug | null, exact }.
-function reviewChoices(entries, table, kind, value, modes, role) {
+// `fits` (optional) says whether a token is allowed on the layer's background
+// (colorFit); when any candidate fits, only those are proposed.
+function reviewChoices(entries, table, kind, value, modes, role, fits) {
   const own = entries.filter((e) => e.kind === kind);
   if (typeof value === "number") {
     const best = own.filter((e) => e.px !== undefined).sort((a, b) => Math.abs(a.px - value) - Math.abs(b.px - value) || b.px - a.px)[0];
@@ -687,8 +706,9 @@ function reviewChoices(entries, table, kind, value, modes, role) {
   };
   const allowed = (e) => role !== "text" || isContentColor(e) || e.name.startsWith("Pop/");
   const neutral = (e) => e.name.startsWith("Pop/Neutral/");
-  const best = own
-    .filter((e) => reviewColor(e) && allowed(e))
+  const candidates = own.filter((e) => reviewColor(e) && allowed(e));
+  const fitting = fits ? candidates.filter(fits) : [];
+  const best = (fitting.length ? fitting : candidates)
     .map((e) => [e, colorDistance(resolveValue(table, e.id, modes), value)])
     .filter(([, d]) => d !== null)
     .sort((a, b) => a[1] - b[1] || forRole(b[0]) - forRole(a[0]) || family(a[0]) - family(b[0]) || neutral(b[0]) - neutral(a[0]) || a[0].name.length - b[0].name.length)[0];
@@ -748,6 +768,77 @@ function reviewTextStyle(entries, font) {
 // canvas highlight show it.
 function reviewLabel(group) {
   return (group.role === "text" ? "Text color" : KIND_LABEL[group.kind]) + " " + formatValue(group.value);
+}
+
+// ---------- Color pairing ----------
+
+// Bifrost's pairing rules (bifrost-color-rules.json, built into COLOR_RULES by
+// generate.js): which colors may be text, icon or border on which background.
+// Colors are token names ("bfc-brand-hc", the last part of a variable name).
+// Returns "allowed", "not-allowed", or "unknown" when the rules don't cover
+// the background or the color (primitives, overlay, shadow).
+// Use "background" (a fill on a frame or rectangle) ignores bg: a color may be
+// a background when it's the main color of a pair, or a contrast color with
+// something allowed on it (mainOnContrast). Colors the rules only list as
+// text, icon or border (bfc-base-c-1, the fade-c colors) never are.
+function colorFit(rules, fg, bg, use) {
+  const pairs = (rules && rules.pairs) || [];
+  if (use === "background") {
+    if (!colorKnown(rules, fg)) return "unknown";
+    return pairs.some((p) => p.main.includes(fg) || (p.contrast.includes(fg) && p.mainOnContrast.length)) ? "allowed" : "not-allowed";
+  }
+  if (!colorKnown(rules, bg) || !colorKnown(rules, fg)) return "unknown";
+  const allowed = pairs.some(
+    (p) =>
+      (p.main.includes(bg) && p.contrast.includes(fg) && p.contrastOnMain.includes(use)) ||
+      (p.contrast.includes(bg) && p.main.includes(fg) && p.mainOnContrast.includes(use))
+  );
+  return allowed ? "allowed" : "not-allowed";
+}
+
+// Whether the rules say anything about this token.
+function colorKnown(rules, token) {
+  return ((rules && rules.pairs) || []).some((p) => p.main.includes(token) || p.contrast.includes(token));
+}
+
+// The token name of a variable entry ("Pop/Brand/bfc-brand" is "bfc-brand").
+const tokenName = (entry) => entry.name.split("/").pop();
+
+// WCAG contrast between two "#RRGGBB" colors (alpha ignored), or null.
+const MIN_CONTRAST = { text: 4.5, icon: 3, border: 3 };
+function contrastRatio(a, b) {
+  const luminance = (hex) => {
+    const m = typeof hex === "string" && /^#([0-9a-f]{6})/i.exec(hex);
+    if (!m) return null;
+    const [r, g, bl] = [0, 2, 4].map((i) => parseInt(m[1].slice(i, i + 2), 16) / 255).map((v) => (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)));
+    return 0.2126 * r + 0.7152 * g + 0.0722 * bl;
+  };
+  const x = luminance(a);
+  const y = luminance(b);
+  if (x === null || y === null) return null;
+  return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05);
+}
+
+// What's wrong with a color on a background, or null: not allowed by the
+// rules, or (for colors the rules don't cover) too little contrast in Light or
+// Dark. A pair the rules allow is fine in both modes, since both tokens switch
+// together. fg and bg are variable entries (bg is null for use "background",
+// which is only about the color itself); modes are the layer's.
+function pairingProblem(rules, table, fg, bg, use, modes) {
+  const fit = colorFit(rules, tokenName(fg), bg && tokenName(bg), use);
+  if (fit === "allowed") return null;
+  if (use === "background") return fit === "not-allowed" ? { reason: "not a background color", detail: "" } : null;
+  const ratio = (mode) => {
+    const m = Object.assign({}, modes, { Mode: mode });
+    return contrastRatio(resolveValue(table, fg.id, m), resolveValue(table, bg.id, m));
+  };
+  const light = ratio("Light");
+  const dark = ratio("Dark");
+  const low = (r) => r !== null && r < MIN_CONTRAST[use];
+  const ratios = (light !== null ? "Light " + light.toFixed(1) + ":1" : "") + (dark !== null ? ", Dark " + dark.toFixed(1) + ":1" : "");
+  if (fit === "not-allowed") return { reason: "not allowed on " + displayName(bg), detail: ratios };
+  if (low(light) || low(dark)) return { reason: "low contrast" + (low(dark) && !low(light) ? " in Dark" : low(light) && !low(dark) ? " in Light" : ""), detail: ratios };
+  return null;
 }
 
 // Distance between two "#RRGGBB(AA)" colors, alpha included; null if either
