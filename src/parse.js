@@ -855,7 +855,23 @@ function colorDistance(a, b) {
   return x && y ? Math.hypot(...x.map((v, i) => v - y[i])) : null;
 }
 
-// The Alias N menu commands run the alias named N without the palette.
+// Gives aliases one of `count` slots, the "Slot N" menu commands the companion
+// presses for shortcuts recorded on an alias. table is { slots: [name or null], next }. Freed
+// slots are handed out last (round robin from next): the companion maps a slot
+// to the name it had at the last import, so a reused slot would run another alias.
+function assignSlots(table, names, count) {
+  const slots = Array.from({ length: count }, (_, i) => (table.slots[i] && names.includes(table.slots[i]) ? table.slots[i] : null));
+  let next = table.next % count;
+  for (const name of names.filter((n) => !slots.includes(n)).sort()) {
+    const free = slots.map((_, k) => (next + k) % count).find((i) => slots[i] === null);
+    if (free === undefined) break;
+    slots[free] = name;
+    next = (free + 1) % count;
+  }
+  return { slots, next };
+}
+
+// The alias menu commands run an alias by name without the palette.
 function aliasOps(entries, aliases, name) {
   if (!aliases[name]) return { error: 'No alias "' + name + '". Add one in the palette: ? › Aliases' };
   const r = createParser(entries, aliases).parse(name);

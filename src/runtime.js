@@ -2,20 +2,23 @@
 // "Open palette" opens the palette window (UI_HTML). Parsing happens inside the
 // window for instant feedback; this side applies ops and owns storage.
 // "Review variables" opens it in the review (init's `start`, so a shortcut can
-// go straight there). "Alias N" runs alias N headless (runAlias).
+// go straight there). "Key q" runs the alias on key q headless, "Slot N" the
+// alias in slot N (runAlias).
 //
-// UI -> code: ready | apply {ops, keepOpen} | saveAlias {name, expansion} |
+// UI -> code: ready | apply {ops, keepOpen} | saveAlias {name, expansion, key} |
 //             deleteAlias {name} | clearRecents | setHidden {hidden} | import {json} |
 //             resize {width, height, save} | review | fixReview {fixes: [{key, slug}]} |
 //             preview {keys, width, height} (show these review groups in the palette) |
 //             vars | close
-// code -> UI: init {entries, values, rules, aliases, recents, hidden, start, selection} | selection {selection} |
+// code -> UI: init {entries, values, rules, aliasKeys, aliases, keys, slots, recents, hidden, start, selection} | selection {selection} |
 //             (selection = {count, nodes: distinct nodeCaps of the selected layers,
 //              modes: {collection name: mode name} of the first selected layer,
 //              icon: {family, style, fontSize} when only Font Awesome icons are selected,
 //              textStyle: slug of the text style all selected text uses, or null,
 //              background: slug of the Bifrost color behind every selected layer, or null})
-//             state {aliases, recents, hidden, error, notice} |
+//             state {aliases, keys, slots, recents, hidden, error, notice} |
+//             (keys = {key: alias name}, slots = {alias name: slot number}, for
+//              Copy as JSON and the companion)
 //             review {groups: [{key, kind, value, modes, role, layers, match, exact, background,
 //                     pairing: {from, reason, detail} | null}], layers, errors} |
 //             changed (the document changed; an open review scans again) |
@@ -50,18 +53,31 @@ const FIELD_SETS = {
   gap: { ALL: ["itemSpacing", "counterAxisSpacing"], COL: ["gridColumnGap"], ROW: ["gridRowGap"] },
 };
 
-// Aliases ({ name: expansion }), recents ([{ ops, label }]) and hidden options
-// (slugs the user turned off in the Options tab) live in clientStorage: per user
-// and per machine, not synced. The help view can export/import aliases and hidden.
-const state = { aliases: {}, recents: [], hidden: [], size: DEFAULT_SIZE };
+// Aliases ({ name: expansion }), their keys ({ key: name }) and slots (assignSlots), recents
+// ([{ ops, label }]) and hidden options (slugs the user turned off in the
+// Options tab) live in clientStorage: per user and per machine, not synced. The
+// help view can export/import aliases and hidden.
+const state = { aliases: {}, keys: {}, slots: { slots: [], next: 0 }, recents: [], hidden: [], size: DEFAULT_SIZE };
 const stateReady = Promise.all([
   figma.clientStorage.getAsync("aliases"),
+  figma.clientStorage.getAsync("keys"),
+  figma.clientStorage.getAsync("slots"),
   figma.clientStorage.getAsync("recents"),
   figma.clientStorage.getAsync("hidden"),
   figma.clientStorage.getAsync("size"),
-]).then(([aliases, recents, hidden, size]) => {
+]).then(async ([aliases, keys, slots, recents, hidden, size]) => {
   state.aliases = respaceAliases(aliases || {});
   if (aliases && JSON.stringify(state.aliases) !== JSON.stringify(aliases)) figma.clientStorage.setAsync("aliases", state.aliases);
+  // Before keys were their own field, alias 1 ran on numpad 1: such aliases
+  // get that key once.
+  if (!keys) {
+    keys = {};
+    for (const name of Object.keys(state.aliases)) if (ALIAS_KEYS.includes(name)) keys[name] = name;
+    figma.clientStorage.setAsync("keys", keys);
+  }
+  state.keys = keys;
+  state.slots = slots || state.slots;
+  await updateSlots();
   state.recents = (recents || []).map(shortenRecent);
   state.size = size || DEFAULT_SIZE;
   // Drop slugs that are no longer generated (e.g. after a library update), so
@@ -478,15 +494,36 @@ async function remember(ops, label) {
 
 // ---------- Aliases ----------
 
-async function setAlias(name, expansion) {
+// key is the alias's ⌃⌥ key ("" for none); taking a key from another alias
+// moves it here.
+async function setAlias(name, expansion, key) {
   if (expansion) state.aliases[name] = expansion;
   else delete state.aliases[name];
+  for (const k of Object.keys(state.keys)) if (state.keys[k] === name || k === key) delete state.keys[k];
+  if (expansion && key) state.keys[key] = name;
   await figma.clientStorage.setAsync("aliases", state.aliases);
+  await figma.clientStorage.setAsync("keys", state.keys);
+  await updateSlots();
+}
+
+async function updateSlots() {
+  const slots = assignSlots(state.slots, Object.keys(state.aliases), ALIAS_SLOTS);
+  if (JSON.stringify(slots) === JSON.stringify(state.slots)) return;
+  state.slots = slots;
+  await figma.clientStorage.setAsync("slots", slots);
+}
+
+function slotMap() {
+  const out = {};
+  state.slots.slots.forEach((name, n) => name && (out[name] = n));
+  return out;
 }
 
 // Accepts { "aliases": { "name": "expansion" }, "hidden": [slugs] } as produced by
 // Copy as JSON. Valid aliases are merged in, invalid ones are reported and
 // skipped. hidden replaces the current choice; unknown slugs are dropped.
+// keys are taken for imported aliases, unless the key is invalid. "slots" is
+// for the companion and ignored: slots are given out per machine.
 async function importBackup(json) {
   let data;
   try {
@@ -508,7 +545,11 @@ async function importBackup(json) {
     if (err) rejected.push(name + " (" + err + ")");
     else state.aliases[name] = respaced[name];
   }
+  const keys = data.keys && typeof data.keys === "object" ? data.keys : {};
+  for (const key of Object.keys(keys)) if (ALIAS_KEYS.includes(key) && state.aliases[keys[key]]) state.keys[key] = keys[key];
   await figma.clientStorage.setAsync("aliases", state.aliases);
+  await figma.clientStorage.setAsync("keys", state.keys);
+  await updateSlots();
   return rejected.length ? "Skipped: " + rejected.join(", ") : null;
 }
 
@@ -975,7 +1016,7 @@ async function layerModes(node) {
 }
 
 function postState(error, notice) {
-  figma.ui.postMessage({ type: "state", aliases: state.aliases, recents: state.recents, hidden: state.hidden, error: error || null, notice: notice || null });
+  figma.ui.postMessage({ type: "state", aliases: state.aliases, keys: state.keys, slots: slotMap(), recents: state.recents, hidden: state.hidden, error: error || null, notice: notice || null });
 }
 
 async function handleMessage(msg) {
@@ -986,7 +1027,10 @@ async function handleMessage(msg) {
       entries: ENTRIES.map((e) => ({ slug: e.slug, id: e.id, kind: e.kind, name: e.name, group: e.group, value: e.value, px: e.px })),
       values: VARIABLE_VALUES,
       rules: COLOR_RULES,
+      aliasKeys: ALIAS_KEYS,
       aliases: state.aliases,
+      keys: state.keys,
+      slots: slotMap(),
       recents: state.recents,
       hidden: state.hidden,
       start: figma.command === "review" ? "review" : null,
@@ -999,11 +1043,12 @@ async function handleMessage(msg) {
   } else if (msg.type === "saveAlias") {
     const name = String(msg.name || "").trim().toLowerCase();
     const expansion = String(msg.expansion || "").trim();
-    const error = aliasError(ENTRIES, name, expansion);
-    if (!error) await setAlias(name, expansion);
+    const key = String(msg.key || "").trim().toLowerCase();
+    const error = aliasError(ENTRIES, name, expansion) || (key && !ALIAS_KEYS.includes(key) ? "Keys are a letter or digit, not h, t or v" : null);
+    if (!error) await setAlias(name, expansion, key);
     postState(error, error ? null : "Saved alias " + name);
   } else if (msg.type === "deleteAlias") {
-    await setAlias(msg.name, "");
+    await setAlias(msg.name, "", "");
     postState(null, "Deleted alias " + msg.name);
   } else if (msg.type === "clearRecents") {
     state.recents = [];
@@ -1052,8 +1097,8 @@ function closeWith(result) {
   figma.closePlugin();
 }
 
-// Alias N runs alias N with no window, so a key bound to the menu item applies
-// it directly. This is what the companion app triggers.
+// The alias commands run an alias with no window, so a key bound to the menu
+// item applies it directly. This is what the companion app triggers.
 async function runAlias(name) {
   const found = aliasOps(ENTRIES, state.aliases, name);
   closeWith(found.error ? { message: found.error, failed: true } : await applyOps(found.ops));
@@ -1061,8 +1106,18 @@ async function runAlias(name) {
 
 // Opened after storage is read, so the window starts at the size it had last time.
 stateReady.then(() => {
-  const alias = /^alias-(\d+)$/.exec(figma.command);
-  if (alias) return runAlias(alias[1]);
+  const key = /^key-(.)$/.exec(figma.command);
+  if (key) {
+    const name = state.keys[key[1]];
+    if (name) return runAlias(name);
+    return closeWith({ message: "No alias on ⌃⌥" + key[1].toUpperCase() + ". Give one that key in the palette: ? › Aliases", failed: true });
+  }
+  const slot = /^slot-(\d+)$/.exec(figma.command);
+  if (slot) {
+    const name = state.slots.slots[slot[1]];
+    if (name) return runAlias(name);
+    return closeWith({ message: "No alias in slot " + slot[1] + ". Import the aliases in the companion again", failed: true });
+  }
   figma.showUI(UI_HTML, Object.assign({ themeColors: true, title: "Bifrost" }, state.size));
   figma.ui.onmessage = (msg) =>
     handleMessage(msg).catch((e) => {

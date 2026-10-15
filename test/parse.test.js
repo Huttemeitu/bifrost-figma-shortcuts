@@ -443,3 +443,14 @@ test("color pairing follows Bifrost's rules, with contrast for colors they don't
   const reviewFill = (e) => Object.assign({}, e, { name: "Pop/Alert/" + e.slug });
   assert.equal(ctx.reviewChoices(fills.map(reviewFill), table, "fill", "#FFFFFF", {}, "text", fits).match, "bfc-alert-hc");
 });
+
+test("alias slots stay put and freed ones are reused last", () => {
+  const assign = (table, names) => JSON.parse(JSON.stringify(ctx.assignSlots(table, names, 3)));
+  const first = assign({ slots: [], next: 0 }, ["cta", "card"]);
+  assert.deepEqual(first, { slots: ["card", "cta", null], next: 2 });
+  const deleted = assign(first, ["cta"]);
+  assert.deepEqual(deleted.slots, [null, "cta", null]);
+  // card's old slot 0 comes after the never used slot 2.
+  assert.deepEqual(assign(deleted, ["cta", "hero", "tag"]).slots, ["tag", "cta", "hero"]);
+  assert.deepEqual(assign(first, ["a1", "b1", "card", "cta"]).slots, ["card", "cta", "a1"]);
+});

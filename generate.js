@@ -4,10 +4,10 @@
 //
 // Reads the JSON exports from the Figma console snippets (see README) and writes:
 //  - manifest.json: "Open palette", "Review variables" (the palette, opened in
-//    the review) and "Alias 0-29" (run alias 0-29 without a window)
+//    the review), "Key <key>" and "Slot 0-29" (run an alias without a window)
 //  - code.js: VARIABLE_MAP (slug -> token/component) + VARIABLE_VALUES (values per
 //    mode) + COLOR_RULES (which colors may go on which, hand-written from the
-//    Variables file into bifrost-color-rules.json) + UI_HTML (src/ui.html with the Bifrost tokens as CSS variables and
+//    Variables file into bifrost-color-rules.json) + ALIAS_KEYS/ALIAS_SLOTS + UI_HTML (src/ui.html with the Bifrost tokens as CSS variables and
 //    src/parse.js inlined) + src/parse.js + src/runtime.js
 //
 // Classification: COLOR variables (except Light/ and Dark/ ones) -> fill AND stroke, FLOAT "Spacing/..." -> padding AND gap,
@@ -160,11 +160,15 @@ const KINDS = {
 // ---------- manifest.json ----------
 
 // Open palette comes first so "bif" → Enter in the Actions menu still opens it.
-// Alias N runs the alias named N without a window: the companion app presses
-// them for numpad digits (0-9) and recorded shortcuts. Menus can't change at
-// runtime, so the count is fixed; Figma.aliasCount in the companion must match.
-// The commands share the plugin id, and with it the aliases in clientStorage.
-const ALIAS_COMMANDS = 30;
+// Aliases run without a window, pressed by the companion app: "Key q" runs the
+// alias given key q in the Aliases tab (⌃⌥Q, numpad digits), "Slot N" the alias
+// in slot N (shortcuts recorded in the companion; see assignSlots in parse.js).
+// Menus can't change at runtime, so both lists are fixed; Figma.aliasKeys and
+// Figma.slotCount in the companion must match. ⌃⌥H, T and V are Figma's (Tidy
+// Up, Distribute), so h, t and v aren't keys. The commands share the plugin id,
+// and with it the aliases in clientStorage.
+const ALIAS_KEYS = [..."abcdefgijklmnopqrsuwxyz0123456789"];
+const ALIAS_SLOTS = 30;
 const manifest = {
   name: "Bifrost",
   id: "bifrost-fill-shortcuts",
@@ -177,7 +181,11 @@ const manifest = {
     { separator: true },
     {
       name: "Aliases",
-      menu: Array.from({ length: ALIAS_COMMANDS }, (_, n) => ({ name: "Alias " + n, command: "alias-" + n })),
+      menu: [
+        ...ALIAS_KEYS.map((k) => ({ name: "Key " + k, command: "key-" + k })),
+        { separator: true },
+        ...Array.from({ length: ALIAS_SLOTS }, (_, n) => ({ name: "Slot " + n, command: "slot-" + n })),
+      ],
     },
   ],
 };
@@ -256,6 +264,9 @@ const codeJs = [
   `const VARIABLE_VALUES = ${JSON.stringify(valueTable)};`,
   "",
   `const COLOR_RULES = ${JSON.stringify({ pairs: colorRules.pairs })};`,
+  "",
+  `const ALIAS_KEYS = ${JSON.stringify(ALIAS_KEYS)};`,
+  `const ALIAS_SLOTS = ${ALIAS_SLOTS};`,
   "",
   `const UI_HTML = ${JSON.stringify(uiHtml)};`,
   "",
