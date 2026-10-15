@@ -3,8 +3,9 @@ import Carbon.HIToolbox
 import os
 
 /// Watches every keypress. While Figma is frontmost it swallows recorded
-/// shortcuts and plain numpad digits (unless a text field has focus) and hands
-/// their Bifrost command to onCommand: numpad N runs Alias N. While recording,
+/// shortcuts, ⌃⌥ + an alias key and plain numpad digits (unless a text field
+/// has focus) and hands their Bifrost command to onCommand: ⌃⌥Q runs Key q,
+/// numpad 3 Key 3. While recording,
 /// it captures the next shortcut instead. After the palette shortcut it holds
 /// what's typed until the palette can take it. Everything else passes through.
 @MainActor
@@ -15,8 +16,14 @@ final class KeyTap {
     Int64(kVK_ANSI_Keypad6): 6, Int64(kVK_ANSI_Keypad7): 7, Int64(kVK_ANSI_Keypad8): 8,
     Int64(kVK_ANSI_Keypad9): 9,
   ]
+  /// ⌃⌥ + a key runs the alias given that key in the palette. It types
+  /// nothing, and Figma only uses it for H, T and V.
+  private static let aliasModifiers = Shortcut(keyCode: 0, flags: [.maskControl, .maskAlternate]).modifiers
 
   var isEnabled = true
+  /// ⌃⌥ + a key runs the alias on that key. Off until turned on in the menu,
+  /// since window managers (Rectangle, Magnet) use ⌃⌥ too.
+  var useAliasKeys = false
   /// Recorded shortcuts by Bifrost command.
   var shortcuts: [String: Shortcut] = [:]
   /// Set to record: gets the next key with ⌘, ⌃ or ⌥, ⌫ or Esc.
@@ -113,13 +120,16 @@ final class KeyTap {
       return hold(key, isDown: true)
     }
     // Unlike digits, shortcuts also work in text fields: a modifier combo
-    // doesn't type anything.
+    // doesn't type anything. A recorded one wins over the ⌃⌥ keys.
     if let command = shortcuts.first(where: { $0.value == shortcut })?.key {
       if Figma.windowCommands.contains(command) { startHolding() }
       return swallow(key) { $0.onCommand(command) }
     }
+    if useAliasKeys, shortcut.modifiers == Self.aliasModifiers, let name = keyCharacter(key.code), Figma.aliasKeys.contains(name) {
+      return swallow(key) { $0.onCommand(Figma.keyCommand(name)) }
+    }
     guard let digit = Self.digits[key.code], shortcut.modifiers == 0, !figma.isTyping else { return false }
-    return swallow(key) { $0.onCommand(Figma.aliasCommand(digit)) }
+    return swallow(key) { $0.onCommand(Figma.keyCommand(String(digit))) }
   }
 
   // Runs off the callback, so a slow menu press can't time out the tap.

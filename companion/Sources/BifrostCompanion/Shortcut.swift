@@ -25,7 +25,7 @@ struct Shortcut: Codable, Equatable, Sendable {
 
   private static let defaultsKey = "shortcuts"
 
-  /// Recorded shortcuts by Bifrost command ("Open palette", "Alias 3"). Until
+  /// Recorded shortcuts by Bifrost command ("Open palette", "Alias cta"). Until
   /// anything is recorded, the palette has the default.
   /// A shortcut for "Fix variables", the item Review variables replaced in
   /// 0.4.0, moves over to it.
@@ -59,9 +59,14 @@ private let specialKeys: [Int: String] = [
 
 private func keyName(_ code: Int64) -> String {
   if let name = specialKeys[Int(code)] { return name }
+  return keyCharacter(code)?.uppercased() ?? "Key \(code)"
+}
+
+/// What the key types without modifiers in the current keyboard layout ("q", "ø").
+func keyCharacter(_ code: Int64) -> String? {
   guard let source = TISCopyCurrentKeyboardLayoutInputSource()?.takeRetainedValue(),
     let layout = TISGetInputSourceProperty(source, kTISPropertyUnicodeKeyLayoutData)
-  else { return "Key \(code)" }
+  else { return nil }
   let data = Unmanaged<CFData>.fromOpaque(layout).takeUnretainedValue() as Data
   var deadKeys: UInt32 = 0
   var length = 0
@@ -71,6 +76,6 @@ private func keyName(_ code: Int64) -> String {
       raw.bindMemory(to: UCKeyboardLayout.self).baseAddress, UInt16(code), UInt16(kUCKeyActionDisplay), 0,
       UInt32(LMGetKbdType()), OptionBits(kUCKeyTranslateNoDeadKeysBit), &deadKeys, chars.count, &length, &chars)
   }
-  guard status == noErr, length > 0 else { return "Key \(code)" }
-  return String(utf16CodeUnits: chars, count: length).uppercased()
+  guard status == noErr, length > 0 else { return nil }
+  return String(utf16CodeUnits: chars, count: length)
 }

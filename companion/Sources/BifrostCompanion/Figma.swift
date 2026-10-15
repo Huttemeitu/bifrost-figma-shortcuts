@@ -10,9 +10,19 @@ final class Figma {
   nonisolated static let reviewCommand = "Review variables"
   /// Commands that open the palette window, so keys typed right after them are held for it.
   nonisolated static let windowCommands: Set<String> = [paletteCommand, reviewCommand]
-  /// Alias 0 to 29: must match ALIAS_COMMANDS in generate.js.
-  nonisolated static let aliasCount = 30
-  nonisolated static func aliasCommand(_ n: Int) -> String { "Alias \(n)" }
+  /// Keys an alias can have, each with a menu item ("Key q") that runs the alias
+  /// on it: must match ALIAS_KEYS in generate.js. ⌃⌥H, T and V are Figma's.
+  nonisolated static let aliasKeys = Set("abcdefgijklmnopqrsuwxyz0123456789".map(String.init))
+  /// Slot 0 to 29, for aliases with longer names: must match ALIAS_SLOTS.
+  nonisolated static let slotCount = 30
+  nonisolated static func keyCommand(_ key: String) -> String { "Key \(key)" }
+  /// What a shortcut recorded on an alias is saved as; run looks up its menu command.
+  nonisolated static func aliasCommand(_ name: String) -> String { "Alias \(name)" }
+  nonisolated static func slotCommand(_ n: Int) -> String { "Slot \(n)" }
+  /// "cta" for a recorded shortcut's command "Alias cta".
+  nonisolated static func aliasName(_ command: String) -> String? {
+    command.hasPrefix("Alias ") ? String(command.dropFirst("Alias ".count)) : nil
+  }
   private static let textRoles: Set<String> = ["AXTextField", "AXTextArea", "AXComboBox", "AXSearchField"]
 
   // Menu items are cached per Figma process. A cached item can go stale when
@@ -43,7 +53,7 @@ final class Figma {
     return Self.textRoles.contains(role)
   }
 
-  /// Runs a Bifrost plugin command, e.g. "Open palette" or "Alias 1". Returns
+  /// Runs a Bifrost plugin command, e.g. "Open palette", "Key q" or "Slot 3". Returns
   /// false if the menu item can't be found or pressed (plugin not installed, Figma busy).
   func run(_ command: String) -> Bool {
     guard let app = frontmost else { return false }

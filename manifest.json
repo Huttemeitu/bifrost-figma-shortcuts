@@ -22,124 +22,259 @@
       "name": "Aliases",
       "menu": [
         {
-          "name": "Alias 0",
-          "command": "alias-0"
+          "name": "Key a",
+          "command": "key-a"
         },
         {
-          "name": "Alias 1",
-          "command": "alias-1"
+          "name": "Key b",
+          "command": "key-b"
         },
         {
-          "name": "Alias 2",
-          "command": "alias-2"
+          "name": "Key c",
+          "command": "key-c"
         },
         {
-          "name": "Alias 3",
-          "command": "alias-3"
+          "name": "Key d",
+          "command": "key-d"
         },
         {
-          "name": "Alias 4",
-          "command": "alias-4"
+          "name": "Key e",
+          "command": "key-e"
         },
         {
-          "name": "Alias 5",
-          "command": "alias-5"
+          "name": "Key f",
+          "command": "key-f"
         },
         {
-          "name": "Alias 6",
-          "command": "alias-6"
+          "name": "Key g",
+          "command": "key-g"
         },
         {
-          "name": "Alias 7",
-          "command": "alias-7"
+          "name": "Key i",
+          "command": "key-i"
         },
         {
-          "name": "Alias 8",
-          "command": "alias-8"
+          "name": "Key j",
+          "command": "key-j"
         },
         {
-          "name": "Alias 9",
-          "command": "alias-9"
+          "name": "Key k",
+          "command": "key-k"
         },
         {
-          "name": "Alias 10",
-          "command": "alias-10"
+          "name": "Key l",
+          "command": "key-l"
         },
         {
-          "name": "Alias 11",
-          "command": "alias-11"
+          "name": "Key m",
+          "command": "key-m"
         },
         {
-          "name": "Alias 12",
-          "command": "alias-12"
+          "name": "Key n",
+          "command": "key-n"
         },
         {
-          "name": "Alias 13",
-          "command": "alias-13"
+          "name": "Key o",
+          "command": "key-o"
         },
         {
-          "name": "Alias 14",
-          "command": "alias-14"
+          "name": "Key p",
+          "command": "key-p"
         },
         {
-          "name": "Alias 15",
-          "command": "alias-15"
+          "name": "Key q",
+          "command": "key-q"
         },
         {
-          "name": "Alias 16",
-          "command": "alias-16"
+          "name": "Key r",
+          "command": "key-r"
         },
         {
-          "name": "Alias 17",
-          "command": "alias-17"
+          "name": "Key s",
+          "command": "key-s"
         },
         {
-          "name": "Alias 18",
-          "command": "alias-18"
+          "name": "Key u",
+          "command": "key-u"
         },
         {
-          "name": "Alias 19",
-          "command": "alias-19"
+          "name": "Key w",
+          "command": "key-w"
         },
         {
-          "name": "Alias 20",
-          "command": "alias-20"
+          "name": "Key x",
+          "command": "key-x"
         },
         {
-          "name": "Alias 21",
-          "command": "alias-21"
+          "name": "Key y",
+          "command": "key-y"
         },
         {
-          "name": "Alias 22",
-          "command": "alias-22"
+          "name": "Key z",
+          "command": "key-z"
         },
         {
-          "name": "Alias 23",
-          "command": "alias-23"
+          "name": "Key 0",
+          "command": "key-0"
         },
         {
-          "name": "Alias 24",
-          "command": "alias-24"
+          "name": "Key 1",
+          "command": "key-1"
         },
         {
-          "name": "Alias 25",
-          "command": "alias-25"
+          "name": "Key 2",
+          "command": "key-2"
         },
         {
-          "name": "Alias 26",
-          "command": "alias-26"
+          "name": "Key 3",
+          "command": "key-3"
         },
         {
-          "name": "Alias 27",
-          "command": "alias-27"
+          "name": "Key 4",
+          "command": "key-4"
         },
         {
-          "name": "Alias 28",
-          "command": "alias-28"
+          "name": "Key 5",
+          "command": "key-5"
         },
         {
-          "name": "Alias 29",
-          "command": "alias-29"
+          "name": "Key 6",
+          "command": "key-6"
+        },
+        {
+          "name": "Key 7",
+          "command": "key-7"
+        },
+        {
+          "name": "Key 8",
+          "command": "key-8"
+        },
+        {
+          "name": "Key 9",
+          "command": "key-9"
+        },
+        {
+          "separator": true
+        },
+        {
+          "name": "Slot 0",
+          "command": "slot-0"
+        },
+        {
+          "name": "Slot 1",
+          "command": "slot-1"
+        },
+        {
+          "name": "Slot 2",
+          "command": "slot-2"
+        },
+        {
+          "name": "Slot 3",
+          "command": "slot-3"
+        },
+        {
+          "name": "Slot 4",
+          "command": "slot-4"
+        },
+        {
+          "name": "Slot 5",
+          "command": "slot-5"
+        },
+        {
+          "name": "Slot 6",
+          "command": "slot-6"
+        },
+        {
+          "name": "Slot 7",
+          "command": "slot-7"
+        },
+        {
+          "name": "Slot 8",
+          "command": "slot-8"
+        },
+        {
+          "name": "Slot 9",
+          "command": "slot-9"
+        },
+        {
+          "name": "Slot 10",
+          "command": "slot-10"
+        },
+        {
+          "name": "Slot 11",
+          "command": "slot-11"
+        },
+        {
+          "name": "Slot 12",
+          "command": "slot-12"
+        },
+        {
+          "name": "Slot 13",
+          "command": "slot-13"
+        },
+        {
+          "name": "Slot 14",
+          "command": "slot-14"
+        },
+        {
+          "name": "Slot 15",
+          "command": "slot-15"
+        },
+        {
+          "name": "Slot 16",
+          "command": "slot-16"
+        },
+        {
+          "name": "Slot 17",
+          "command": "slot-17"
+        },
+        {
+          "name": "Slot 18",
+          "command": "slot-18"
+        },
+        {
+          "name": "Slot 19",
+          "command": "slot-19"
+        },
+        {
+          "name": "Slot 20",
+          "command": "slot-20"
+        },
+        {
+          "name": "Slot 21",
+          "command": "slot-21"
+        },
+        {
+          "name": "Slot 22",
+          "command": "slot-22"
+        },
+        {
+          "name": "Slot 23",
+          "command": "slot-23"
+        },
+        {
+          "name": "Slot 24",
+          "command": "slot-24"
+        },
+        {
+          "name": "Slot 25",
+          "command": "slot-25"
+        },
+        {
+          "name": "Slot 26",
+          "command": "slot-26"
+        },
+        {
+          "name": "Slot 27",
+          "command": "slot-27"
+        },
+        {
+          "name": "Slot 28",
+          "command": "slot-28"
+        },
+        {
+          "name": "Slot 29",
+          "command": "slot-29"
         }
       ]
     }

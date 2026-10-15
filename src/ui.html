@@ -165,7 +165,7 @@
   .chip:hover, .chip:focus-visible { color: var(--bfc-theme-hc); background: var(--accent); outline: 0; }
   .chip.static, .chip.static:hover { cursor: default; color: var(--bfc-neutral-fade-c); background: var(--bfc-neutral-fade); }
   h4 { font: 700 15px var(--heading); color: var(--text); margin: var(--spacing-xl) 0 var(--spacing-s); }
-  .form { display: grid; grid-template-columns: 96px 1fr; gap: var(--spacing-m); padding: var(--spacing-l); }
+  .form { display: grid; grid-template-columns: 96px 1fr 64px; gap: var(--spacing-m); padding: var(--spacing-l); }
   .field label { display: block; font-size: 12px; font-weight: 600; color: var(--text-2); margin-bottom: 6px; }
   .field input { width: 100%; }
   input.text, textarea { font: 13px var(--mono); color: var(--text); background: var(--bfc-base-3);
@@ -291,8 +291,12 @@
             <label for="aliasExpansion">Does</label>
             <input class="text" id="aliasExpansion" placeholder="e.g. f brand p m" spellcheck="false">
           </div>
+          <div class="field">
+            <label for="aliasKey">⌃⌥ key</label>
+            <input class="text" id="aliasKey" placeholder="none" maxlength="1" spellcheck="false">
+          </div>
           <div class="formFoot">
-            <span id="aliasPreview">Words or numbers work as names, e.g. 1 for your most used combo.</span>
+            <span id="aliasPreview">With the companion app, ⌃⌥ + the key runs the alias (turn it on in its menu); digits also work on the numpad.</span>
             <button class="primary" id="saveAlias" type="submit" disabled>Save alias</button>
           </div>
         </form>
@@ -353,6 +357,9 @@
   let entries = [];
   let hidden = new Set();
   let aliases = {};
+  let aliasKeys = [];
+  let keys = {};
+  let slots = {};
   let recents = [];
   let selection = { count: 0, nodes: [] };
   let parser = null;
@@ -919,7 +926,12 @@
   });
   q.addEventListener("scroll", syncTags);
   window.addEventListener("resize", drawPreview);
+  // ← and → only act where they can't move the caret: → at the end of the
+  // input opens a focused group (never applies), ← on an empty input goes
+  // back like Backspace.
+  const caretAtEnd = () => q.selectionStart === q.value.length && q.selectionEnd === q.value.length;
   q.addEventListener("keydown", (e) => {
+    const back = (e.key === "Backspace" || e.key === "ArrowLeft") && !q.value;
     if (e.key === "ArrowDown") move(1);
     else if (e.key === "ArrowUp") move(-1);
     else if (e.key === "Enter") activate(rows[active], e.shiftKey);
@@ -932,8 +944,9 @@
         q.value = "";
         render();
       } else send({ type: "close" });
-    } else if (e.key === "Backspace" && !q.value && reviewView) leaveReview();
-    else if (e.key === "Backspace" && !q.value && group) leaveGroup();
+    } else if (back && reviewView) leaveReview();
+    else if (back && group) leaveGroup();
+    else if (e.key === "ArrowRight" && caretAtEnd() && rows[active] && rows[active].type === "group") enterGroup(rows[active].group);
     else return;
     e.preventDefault();
   });
@@ -959,6 +972,8 @@
     [["⇧↵"], "Apply and keep the palette open"],
     [["⇥"], "Open a group, or copy a row's shorthand to chain more"],
     [["↑", "↓"], "Move between rows"],
+    [["→"], "Open a group"],
+    [["←"], "Back out of a group (with nothing typed)"],
     [["esc"], "Back out of a group or this help, then close"],
     [["←", "→"], "Switch tabs in help (with a tab focused)"],
   ];
@@ -966,6 +981,9 @@
   let helpTab = "guide";
   let lastStatus = null;
   let clearFormOnSuccess = false;
+  // A new alias named like a key (4, q) gets that key, until the key field is
+  // edited or an existing alias is loaded, which keeps its own.
+  let keyFollowsName = true;
 
   function showHelp(tab) {
     $("palette").hidden = true;
@@ -1019,10 +1037,11 @@
         names
           .map((name) => {
             const r = plain.parse(aliases[name]);
+            const key = aliasKey(name);
             const desc = r.primary ? esc(describeOps(r.primary)) : `<span class="warn">⚠ ${esc(r.error || "incomplete")}</span>`;
             return `<div class="item editable" data-edit="${esc(name)}" title="Click to edit">` +
               `<span class="keys name"><kbd>${esc(name)}</kbd></span>` +
-              `<div class="main"><div>${desc}</div><div class="sub">${esc(aliases[name])}</div></div>` +
+              `<div class="main"><div>${desc}</div><div class="sub">${esc(aliases[name])}${key ? " · " + esc(key) : ""}</div></div>` +
               `<button class="del" data-delete="${esc(name)}" title="Delete ${esc(name)}">×</button></div>`;
           })
           .join("") +
@@ -1043,22 +1062,34 @@
     updateAliasPreview();
   }
 
+  // The alias's ⌃⌥ key as shown in the list, e.g. "⌃⌥1, numpad 1".
+  function aliasKey(name) {
+    const key = keyOf(name);
+    if (!key) return "";
+    return "⌃⌥" + key.toUpperCase() + (/^\d$/.test(key) ? ", numpad " + key : "");
+  }
+
+  const keyOf = (name) => Object.keys(keys).find((k) => keys[k] === name) || "";
+
   // Live check of the alias form, so problems show before saving.
   function updateAliasPreview() {
     const name = $("aliasName").value.trim().toLowerCase();
     const expansion = $("aliasExpansion").value.trim();
+    const key = $("aliasKey").value.trim().toLowerCase();
     const preview = $("aliasPreview");
+    const keyError = key && !aliasKeys.includes(key) ? "Keys are a letter or digit, not h, t or v (Figma's ⌃⌥ shortcuts)" : "";
+    const taken = key && keys[key] && keys[key] !== name ? " (⌃⌥" + key.toUpperCase() + " moves from " + keys[key] + ")" : "";
     let ok = false;
     if (!name && !expansion) {
-      preview.textContent = "Words or numbers work as names, e.g. 1 for your most used combo.";
+      preview.textContent = "With the companion app, ⌃⌥ + the key runs the alias (turn it on in its menu); digits also work on the numpad.";
       preview.className = "";
     } else if (!name || !expansion) {
       preview.textContent = !name ? "Give it a name" : "Type what it should do, e.g. f brand p m";
       preview.className = "";
     } else {
-      const err = aliasError(entries, name, expansion);
+      const err = aliasError(entries, name, expansion) || keyError;
       ok = !err;
-      preview.textContent = err || (aliases[name] ? "Updates " : "") + name + " → " + describeOps(createParser(entries, {}).parse(expansion).primary);
+      preview.textContent = err || (aliases[name] ? "Updates " : "") + name + " → " + describeOps(createParser(entries, {}).parse(expansion).primary) + taken;
       preview.className = err ? "error" : "ok";
     }
     $("saveAlias").disabled = !ok;
@@ -1079,14 +1110,22 @@
     const chip = e.target.closest("[data-try]");
     if (chip) hideHelp(chip.dataset.try);
   });
-  $("aliasName").addEventListener("input", updateAliasPreview);
+  $("aliasName").addEventListener("input", () => {
+    const name = $("aliasName").value.trim().toLowerCase();
+    if (keyFollowsName) $("aliasKey").value = aliasKeys.includes(name) ? name : "";
+    updateAliasPreview();
+  });
   $("aliasExpansion").addEventListener("input", updateAliasPreview);
+  $("aliasKey").addEventListener("input", () => {
+    keyFollowsName = false;
+    updateAliasPreview();
+  });
   $("aliasForm").onsubmit = (e) => {
     e.preventDefault();
     if ($("saveAlias").disabled) return;
     lastStatus = "aliasStatus";
     clearFormOnSuccess = true;
-    send({ type: "saveAlias", name: $("aliasName").value, expansion: $("aliasExpansion").value });
+    send({ type: "saveAlias", name: $("aliasName").value, expansion: $("aliasExpansion").value, key: $("aliasKey").value });
   };
   $("aliasList").addEventListener("click", (e) => {
     const del = e.target.closest("[data-delete]");
@@ -1099,6 +1138,8 @@
     if (item) {
       $("aliasName").value = item.dataset.edit;
       $("aliasExpansion").value = aliases[item.dataset.edit];
+      $("aliasKey").value = keyOf(item.dataset.edit);
+      keyFollowsName = false;
       updateAliasPreview();
       $("aliasExpansion").focus();
     }
@@ -1107,9 +1148,11 @@
     lastStatus = null;
     send({ type: "clearRecents" });
   };
+  // The companion's "Import aliases from clipboard" reads this too: keys and
+  // slots say which menu command runs an alias.
   $("export").onclick = () => {
     $("importBox").hidden = false;
-    $("json").value = JSON.stringify({ aliases, hidden: [...hidden] }, null, 2);
+    $("json").value = JSON.stringify({ aliases, keys, hidden: [...hidden], slots }, null, 2);
     $("json").select();
     let copied = false;
     try {
@@ -1338,7 +1381,10 @@
       rules = msg.rules || { pairs: [] };
       hidden = new Set(msg.hidden || []);
       optTree = buildOptionTree(entries);
+      aliasKeys = msg.aliasKeys || [];
       aliases = msg.aliases;
+      keys = msg.keys || {};
+      slots = msg.slots || {};
       recents = msg.recents;
       selection = msg.selection;
       rebuild();
@@ -1374,6 +1420,8 @@
       if (!$("help").hidden && helpTab === "options") renderOptions(true);
     } else if (msg.type === "state") {
       aliases = msg.aliases;
+      keys = msg.keys || {};
+      slots = msg.slots || {};
       recents = msg.recents;
       hidden = new Set(msg.hidden || []);
       rebuild();
@@ -1385,6 +1433,8 @@
         if (!msg.error && clearFormOnSuccess) {
           $("aliasName").value = "";
           $("aliasExpansion").value = "";
+          $("aliasKey").value = "";
+          keyFollowsName = true;
         }
         clearFormOnSuccess = false;
         if (!msg.error && lastStatus === "backupStatus") $("importBox").hidden = true;

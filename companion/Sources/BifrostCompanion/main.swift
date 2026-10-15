@@ -2,10 +2,10 @@ import AppKit
 import ServiceManagement
 import os
 
-/// Bifrost Figma Companion, a menu bar app: numpad digits and recorded
-/// shortcuts in Figma press the Bifrost plugin's menu commands. Alias N applies
-/// the alias named N (saved in the palette's Aliases tab); Open palette and
-/// Review variables can have one too.
+/// Bifrost Figma Companion, a menu bar app: keys in Figma press the Bifrost
+/// plugin's menu commands. ⌃⌥Q and numpad digits run the alias given that key
+/// in the palette's Aliases tab, with no setup here; imported aliases can get
+/// a recorded shortcut, and so can Open palette and Review variables.
 @MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWindowDelegate {
   private let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
@@ -13,6 +13,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
   private lazy var tap = KeyTap(figma: figma, onCommand: { [weak self] in self?.run($0) })
   private var permissionTimer: Timer?
   private var recordPanel: NSPanel?
+  private var aliases = Aliases.load()
 
   func applicationDidFinishLaunching(_ notification: Notification) {
     let menu = NSMenu()
@@ -20,15 +21,24 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
     statusItem.menu = menu
     statusItem.button?.image = logo
     tap.shortcuts = Shortcut.load()
+    tap.useAliasKeys = UserDefaults.standard.bool(forKey: aliasKeysDefault)
     tap.onDropped = { [weak self] in self?.flashFailure() }
     startWhenTrusted()
   }
 
   private let log = Logger(subsystem: "no.intility.bifrost-numpad", category: "palette")
 
+  // Recorded alias shortcuts are saved by alias name ("Alias cta"); the menu
+  // command is looked up when pressed, so a new import applies right away.
   private func run(_ command: String) {
+    var menuCommand: String? = command
+    if let name = Figma.aliasName(command) { menuCommand = aliases.command(for: name) }
+    guard let menuCommand else {
+      log.notice("\(command, privacy: .public) has no slot; import the aliases again")
+      return flashFailure()
+    }
     let start = Date()
-    let pressed = figma.run(command)
+    let pressed = figma.run(menuCommand)
     log.notice("Pressing \(command, privacy: .public) took \(Int(Date().timeIntervalSince(start) * 1000)) ms")
     if pressed { return flashSuccess() }
     if Figma.windowCommands.contains(command) { tap.cancelHold() }
@@ -59,16 +69,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
       let enabled = item("Enabled", #selector(toggleEnabled))
       enabled.state = tap.isEnabled ? .on : .off
       menu.addItem(enabled)
+      let aliasKeys = item("⌃⌥ + key runs aliases", #selector(toggleAliasKeys))
+      aliasKeys.state = tap.useAliasKeys ? .on : .off
+      aliasKeys.toolTip = "Runs the alias given that key in the palette. Leave off if another app (like a window manager) uses ⌃⌥."
+      menu.addItem(aliasKeys)
       menu.addItem(.separator())
       menu.addItem(.sectionHeader(title: "Shortcuts: click to record"))
       menu.addItem(shortcutItem(Figma.paletteCommand))
       menu.addItem(shortcutItem(Figma.reviewCommand))
-      let aliases = NSMenuItem(title: "Aliases", action: nil, keyEquivalent: "")
-      aliases.submenu = NSMenu()
-      for n in 0..<Figma.aliasCount {
-        aliases.submenu!.addItem(shortcutItem(Figma.aliasCommand(n), numpad: n < 10 ? "Numpad \(n)" : nil))
-      }
-      menu.addItem(aliases)
+      let aliasItem = NSMenuItem(title: "Aliases (advanced)", action: nil, keyEquivalent: "")
+      aliasItem.submenu = aliasMenu()
+      menu.addItem(aliasItem)
     } else {
       menu.addItem(item("Grant Accessibility access…", #selector(openAccessibilitySettings)))
     }
@@ -86,14 +97,52 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
     return item
   }
 
-  // "Alias 3      Numpad 3, ⌃⌥B", the keys right-aligned and grey.
-  private func shortcutItem(_ command: String, numpad: String? = nil) -> NSMenuItem {
+  // Imported aliases plus any with a recorded shortcut (recorded before an
+  // import, or since deleted in the palette), each with its keys.
+  private func aliasMenu() -> NSMenu {
+    let menu = NSMenu()
+    menu.addItem(.sectionHeader(title: "Keys for ⌃⌥ and the numpad are set in the palette"))
+    let recorded = tap.shortcuts.keys.compactMap(Figma.aliasName)
+    let names = Set(aliases.expansions.keys).union(recorded).sorted()
+    for name in names {
+      var keys: [String] = []
+      if let key = aliases.key(of: name) {
+        if tap.useAliasKeys { keys.append("⌃⌥" + key.uppercased()) }
+        if key.first!.isNumber { keys.append("Numpad \(key)") }
+      }
+      if aliases.slots[name] == nil { keys.append("no slot") }
+      let item = shortcutItem(Figma.aliasCommand(name), title: name, fixedKeys: keys)
+      item.toolTip = aliases.expansions[name]
+      menu.addItem(item)
+    }
+    if names.isEmpty {
+      menu.addItem(NSMenuItem(title: "Import to give any alias a shortcut", action: nil, keyEquivalent: ""))
+    }
+    menu.addItem(.separator())
+    menu.addItem(item("Import aliases from clipboard", #selector(importAliases)))
+    return menu
+  }
+
+  // Reads what the palette's Copy as JSON put on the clipboard.
+  @objc private func importAliases() {
+    do {
+      aliases = try Aliases.fromClipboard()
+      aliases.save()
+      flashSuccess()
+    } catch {
+      NSApp.activate()
+      NSAlert(error: error).runModal()
+    }
+  }
+
+  // "cta      ⌃⌥B", the keys right-aligned and grey.
+  private func shortcutItem(_ command: String, title text: String? = nil, fixedKeys: [String] = []) -> NSMenuItem {
     let item = item(command, #selector(recordShortcut(_:)))
     item.representedObject = command
     let style = NSMutableParagraphStyle()
     style.tabStops = [NSTextTab(textAlignment: .right, location: 200)]
-    let title = NSMutableAttributedString(string: command, attributes: [.font: NSFont.menuFont(ofSize: 0), .paragraphStyle: style])
-    let keys = [numpad, tap.shortcuts[command]?.description].compactMap { $0 }
+    let title = NSMutableAttributedString(string: text ?? command, attributes: [.font: NSFont.menuFont(ofSize: 0), .paragraphStyle: style])
+    let keys = fixedKeys + [tap.shortcuts[command]?.description].compactMap { $0 }
     if !keys.isEmpty {
       title.append(NSAttributedString(
         string: "\t" + keys.joined(separator: ", "),
@@ -101,6 +150,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, NSWind
     }
     item.attributedTitle = title
     return item
+  }
+
+  private let aliasKeysDefault = "aliasKeys"
+
+  // Saved, unlike Enabled: it's a choice about other apps' shortcuts.
+  @objc private func toggleAliasKeys() {
+    tap.useAliasKeys.toggle()
+    UserDefaults.standard.set(tap.useAliasKeys, forKey: aliasKeysDefault)
   }
 
   // Not saved: pausing is meant to be temporary, so every launch starts enabled.
