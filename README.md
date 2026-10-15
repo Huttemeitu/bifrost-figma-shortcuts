@@ -3,8 +3,8 @@
 A keyboard-first Figma plugin for applying Bifrost design tokens (fill and
 border colors, padding, gap, radius, text styles) to the selection and inserting Bifrost
 components, from a small command palette. With the optional **Bifrost Figma
-Companion** app, a keyboard shortcut opens the palette and a single numpad key applies a
-command of your choice.
+Companion** app, a keyboard shortcut opens the palette, and ⌃⌥ + a key or a single
+numpad key applies a command of your choice.
 
 It covers 796 colors (as fill or border), 12 spacing values (padding and gap), 7 radius
 values, 68 text styles and 86 components.
@@ -60,9 +60,13 @@ Without them, commands fail with "not in an enabled library".
 ### 5. Optional: shortcuts and numpad keys
 
 With **Bifrost Figma Companion** running, **⌃⌥Space** in Figma opens the palette (no
-Actions menu needed), and if your keyboard has a numpad, pressing numpad 1
-runs your alias `1`, numpad 2 runs alias `2`, and so on. You can also record
-a shortcut for any alias from `0` to `29`, so it works without a numpad too.
+Actions menu needed), and any alias can have a key: give `btn` the key `b`
+in the palette and **⌃⌥B** runs it; a digit key also works on the numpad.
+Every letter and digit works except h, t and v, which Figma uses for ⌃⌥H,
+⌃⌥T and ⌃⌥V. The ⌃⌥ keys are off until you turn on **⌃⌥ + key runs
+aliases** in the app's menu, since window managers like Rectangle and Magnet
+use ⌃⌥ too (move theirs first, or leave it off and use the numpad). If you'd
+rather pick your own shortcut, record one in the app.
 You can start typing right after the shortcut: the app holds the keys until
 the palette is open and types them into it (Esc drops them).
 
@@ -77,14 +81,18 @@ the palette is open and types them into it (Esc drops them).
 4. Press ⌃⌥Space in Figma to check that the palette opens. To use another
    shortcut: menu bar icon › **Open palette**, then press the new one (it
    needs ⌘, ⌃ or ⌥).
-5. Choose what each key does by saving aliases named with a number, `0`–`29`.
-   In the palette, type `?` and open the **Aliases** tab. Name `1` and Does
-   `button p m` makes numpad 1 insert a Button with padding M; name `2` and
-   Does `alh p m g s` makes numpad 2 add auto layout with padding M and gap S.
-   Any command that works in the palette works as an alias.
-6. To give an alias a shortcut: menu bar icon › **Aliases** › **Alias 12**,
-   then press the shortcut. Numpad keys always run `0`–`9`; a recorded
-   shortcut works on top of that.
+5. Choose what each key does with aliases. In the palette, type `?` and open
+   the **Aliases** tab. Name `btn`, Does `button p m` and key `b` makes ⌃⌥B
+   insert a Button with padding M; name `layout`, Does `alh p m g s` and key
+   `1` makes ⌃⌥1 and numpad 1 add auto layout with padding M and gap S. Any
+   command that works in the palette works as an alias. Giving a key that
+   another alias has moves it. For ⌃⌥, turn on menu bar icon › **⌃⌥ + key
+   runs aliases**.
+6. To give any alias a shortcut of your choice: in the palette's Aliases tab,
+   click **Copy as JSON**, then menu bar icon › **Aliases (advanced)** › **Import aliases
+   from clipboard**. Your aliases are listed there with their keys; click one
+   and press the shortcut. Import again after adding, renaming or deleting
+   aliases with a recorded shortcut.
 7. Optional: menu bar icon › **Launch at login**.
 
 To use the same keys as a teammate, have them copy their aliases (palette ›
@@ -106,7 +114,11 @@ cd ~/Code/bifrost-figma-shortcuts && git pull
   `−` and turn the new one on. Until 0.4.0 the app was called **Bifrost
   Numpad**: delete that one from Applications (and turn off its **Launch at
   login** first, if you use it). Your shortcuts carry over, and a shortcut
-  for Fix variables now opens Review variables.
+  for Fix variables now opens Review variables. Since 0.5.0, an alias's key is set in the
+  palette; aliases named `0`–`9` or with a letter keep that key, so the
+  numpad works as before. Aliases named `10`–`29` have no numbered command
+  anymore: import your aliases (step 5.6) and their recorded shortcuts work
+  again.
 
 ### Troubleshooting
 
@@ -114,9 +126,11 @@ cd ~/Code/bifrost-figma-shortcuts && git pull
 |---|---|
 | "not in an enabled library" | Enable the Bifrost libraries in this file (step 3) |
 | "font … isn't available" | Install that font on your Mac (text styles need their font locally) |
+| ⌃⌥ + a key does nothing | Turn on **⌃⌥ + key runs aliases** in the app's menu, and check that the alias has that key (`?` › Aliases) |
 | The shortcut or a numpad key does nothing | Check the menu bar icon: dimmed means paused (turn on **Enabled**) or no Accessibility access (step 5.3) |
 | Nothing happens, and the menu bar icon flashes a warning sign | The plugin isn't installed, or was imported from a folder that moved (step 2) |
-| Toast: `No alias "3"` | Save an alias named `3` in the palette's Aliases tab (`?` › Aliases) |
+| Toast: `No alias on ⌃⌥3` | Give an alias the key `3` in the palette's Aliases tab (`?` › Aliases) |
+| Toast: `No alias in slot 4`, a recorded shortcut runs the wrong alias, or the app's menu says "no slot" | Aliases changed since the last import: Copy as JSON and import again (step 5.6) |
 | Numpad types digits instead | You're in a text field (W/H, layer name, a text layer); that's on purpose. Click the canvas first |
 | Text typed right after the shortcut is lost, and the icon flashes a warning sign | The palette took over 3 s to open, so the held keys were dropped instead of reaching Figma as shortcuts. Type again |
 | A shortcut also does something else in Figma | Record another one (step 5.4 or 5.6); the app takes it over while Figma is in front |
@@ -143,7 +157,8 @@ The Options tab shows the same values.
 | Enter | Apply the row (or open a group) and close |
 | Shift+Enter | Apply and keep the palette open |
 | Tab | Open a group, or copy a row's shorthand to the input to chain more (`p m`, Tab, `g s`) |
-| Esc / Backspace | Leave a group; Esc on an empty palette closes it |
+| → | Open the focused group (at the end of what you typed; never applies) |
+| Esc / Backspace / ← | Leave a group (Backspace and ← with nothing typed); Esc on an empty palette closes it |
 
 
 | Type | Does |
@@ -311,17 +326,20 @@ Use a text or multi-action key that types the whole sequence, e.g.
 
 ## Bifrost Figma Companion
 
-The plugin has thirty menu commands, **Plugins › Development › Bifrost ›
-Aliases › Alias 0–29**. Each runs the alias with that name directly, without
-opening the palette. If the alias is missing or can't apply to the selection,
-a toast says why. Figma plugin menus are fixed in the manifest, so commands
-can't be named after your aliases; that's why the aliases are numbered.
+The plugin has menu commands under **Plugins › Development › Bifrost ›
+Aliases** that run an alias directly, without opening the palette: **Key a**
+to **Key 9** run the alias given that key, **Slot 0–29** the alias the plugin
+put in that slot. If the alias is missing or can't apply to
+the selection, a toast says why. Figma plugin menus are fixed in the
+manifest, so commands can't be named after your aliases. Instead, every alias
+gets a slot, and Copy as JSON tells the app which.
 
 **Bifrost Figma Companion** (`companion/`, set up in [step 5](#5-optional-shortcuts-and-numpad-keys))
-is a small menu bar app that presses those commands for you: **Alias N** when
-you press numpad N or a shortcut recorded for that alias, and **Open palette**
-or **Review variables** for their shortcuts. What an alias does is set in the palette; the app
-only stores which keys run which command.
+is a small menu bar app that presses those commands for you: **Key q** for
+⌃⌥Q, **Key 3** for ⌃⌥3 or numpad 3, the alias's slot for a shortcut
+recorded on it, and **Open palette** or **Review variables** for their
+shortcuts. What an alias does is set in the palette; the app only stores
+which keys run which alias, and the imported names and slots.
 
 - It only acts while Figma is the frontmost app. Other apps never see a
   difference.
@@ -329,7 +347,7 @@ only stores which keys run which command.
   while you edit text. Click a command in the app's menu to record one; it
   needs ⌘, ⌃ or ⌥ so plain typing can't trigger it. ⌫ in the record window
   removes the shortcut, Esc cancels. A shortcut runs one command: recording
-  it again moves it.
+  it again moves it. A recorded ⌃⌥ shortcut wins over the alias on that key.
 - Numpad digits only count without modifiers. Top-row digits and ⌘/⌥/⌃/⇧
   combos are untouched, and while you type in a field (W/H, layer name, a
   text layer) the numpad types digits as usual.
