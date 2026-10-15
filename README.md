@@ -7,7 +7,7 @@ Companion** app, a keyboard shortcut opens the palette, and ⌃⌥ + a key or a 
 numpad key applies a command of your choice.
 
 It covers 796 colors (as fill or border), 12 spacing values (padding and gap), 7 radius
-values, 68 text styles and 86 components.
+values, 68 text styles, 86 components and the breakpoint template.
 
 ## Getting started
 
@@ -44,8 +44,9 @@ plugin id.
 
 The plugin applies tokens and components from the Bifrost libraries, so they
 have to be enabled in the file you work in: **Assets panel › Libraries** (the
-book icon), then turn on the Bifrost variables library and Bifrost Components.
-Without them, commands fail with "not in an enabled library".
+book icon), then turn on the Bifrost variables library and Bifrost Components
+(and Breakpoints template, if you insert the breakpoint template). Without them,
+commands fail with "not in an enabled library".
 
 ### 4. Try it
 
@@ -234,6 +235,16 @@ Some details:
   selected it's added right after it, and with nothing selected it lands in
   the center of the viewport. The new instance gets selected, and anything
   after the component in the same command applies to it.
+- **The breakpoint template** (`breakpoint`, or Component › Breakpoints)
+  first asks which service it's for: Enter or → lists the services (type to
+  filter), and Enter on one inserts the template with that service's logo in
+  every TopBar and its name instead of "Name of project". "No service", on
+  top, keeps the template's own logo and text. Services you never use can be
+  turned off under Options › Component › Breakpoints › Services. It's inserted as a
+  section (detached, without the "(detach og konverter …)" note), named
+  after the service (or Breakpoints Template), on the page where it doesn't cover anything: in the
+  middle of the view if there's room, otherwise to the right of everything.
+  Recents remember the service.
 - **Aliases** are saved in the help view's Aliases tab (`?` › Aliases). Names
   can be words or numbers (`1` → `p m g s`), and they work anywhere a command
   can start, so `cta r l` works if `cta` is an alias. They never
@@ -416,11 +427,32 @@ Mac.
    internal parts.
 5. Regenerate (Node.js only, no dependencies):
    ```bash
-   node generate.js bifrost-variables.json . bifrost-text-styles.json bifrost-components.json bifrost-color-rules.json
+   node generate.js bifrost-variables.json . bifrost-text-styles.json bifrost-components.json bifrost-color-rules.json bifrost-templates.json
    ```
    `bifrost-color-rules.json` is written by hand from the Variables file's
    Color systems page (which colors may be text, icon or border on which
    background); update it when that page changes.
+
+   `bifrost-templates.json` holds the breakpoint template and its services.
+   When logos are added, open the Breakpoints template file, paste this and
+   save the output as `bifrost-templates.json` (`name` is the plugin's name
+   for it, `page` its group in the palette):
+   ```js
+   (async () => {
+     const template = await figma.getNodeByIdAsync("4529:13435");
+     const topBar = template.findOne((n) => n.type === "INSTANCE" && Object.keys(n.componentProperties).some((k) => k.startsWith("Logo#")));
+     const prop = Object.entries(topBar.componentProperties).find(([k]) => k.startsWith("Logo#"))[1];
+     const logos = [];
+     for (const p of prop.preferredValues) {
+       const c = p.type === "COMPONENT_SET" ? await figma.importComponentSetByKeyAsync(p.key) : await figma.importComponentByKeyAsync(p.key);
+       const name = c.name.trim();
+       if (!logos.some((l) => l.name === name)) logos.push({ name, key: p.key, isSet: p.type === "COMPONENT_SET" });
+     }
+     console.log(JSON.stringify([{ name: "Breakpoints Template", id: template.id, key: template.key, isSet: false, page: "Breakpoints", logos }], null, 2));
+   })();
+   ```
+   The services are the TopBar's preferred logos (its Logo property); a
+   logo with variants uses its default variant.
 
 ### Files
 
@@ -432,6 +464,6 @@ Mac.
 | `src/runtime.js` | Resolving and applying tokens, recents, aliases, palette messages |
 | `src/ui.html` | The palette window and its help view |
 | `generate.js` | Builds `manifest.json` + `code.js` from the JSON exports and `src/` |
-| `bifrost-*.json` | Exports of variables, text styles and components from Figma |
+| `bifrost-*.json` | Exports of variables, text styles and components from Figma, plus the hand-written color rules and templates |
 | `test/parse.test.js` | Parser tests: `node --test test/` |
 | `companion/` | Bifrost Figma Companion menu bar app (Swift package, `build.sh`) |
