@@ -488,7 +488,14 @@ function respaceAlias(entries, expansion) {
 // The Options tree: kinds, then the entry's group (a fill's collection, a
 // component's page), then its name path. A group with a single child is merged
 // into it, so there are no one-item levels to click through. Every node has
-// `slugs`: all leaf slugs below it, for toggling a whole group at once.
+// `slugs`: all leaf slugs below it, for toggling a whole group at once. A
+// template's services (`logos`, names) are leaves in a Services group next to
+// it, hidden by `serviceSlug`.
+// A template's service, hidden like an entry (in `hidden`) but not one itself.
+function serviceSlug(slug, name) {
+  return slug + ":" + name;
+}
+
 function buildOptionTree(entries) {
   const root = { id: "", label: "All options", children: [] };
   const groupNode = (parent, label) => {
@@ -506,6 +513,8 @@ function buildOptionTree(entries) {
       let node = kindNode;
       for (const seg of parts.slice(0, -1)) node = groupNode(node, seg);
       node.children.push({ id: e.slug, label: parts[parts.length - 1], slug: e.slug });
+      const services = e.logos && groupNode(node, "Services");
+      for (const name of e.logos || []) services.children.push({ id: serviceSlug(e.slug, name), label: name, slug: serviceSlug(e.slug, name) });
     }
     if (kindNode.children.length) root.children.push(kindNode);
   }
@@ -626,7 +635,7 @@ function checkOps(ops, selection) {
 // A text style inserts a new text layer when no text is selected, and padding
 // or gap on a frame without auto layout adds it.
 function opLabel(op, mode) {
-  const text = op.text ? " “" + op.text + "”" : "";
+  const text = op.text ? " “" + op.text + "”" : op.logo ? " (" + op.logo + ")" : "";
   if (op.kind === "textstyle" && mode === "insert") return "Insert text " + op.label.replace(/^Text /, "") + text;
   if (mode === "autolayout") return op.label + " (adds auto layout)";
   return op.label + text;

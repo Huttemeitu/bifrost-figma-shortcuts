@@ -81,8 +81,9 @@ const stateReady = Promise.all([
   state.recents = (recents || []).map(shortenRecent);
   state.size = size || DEFAULT_SIZE;
   // Drop slugs that are no longer generated (e.g. after a library update), so
-  // the "N hidden" count stays right.
-  state.hidden = (hidden || []).filter((slug) => VARIABLE_MAP[slug]);
+  // the "N hidden" count stays right. Template services count too.
+  const services = new Set(ENTRIES.flatMap((e) => (e.logos || []).map((l) => serviceSlug(e.slug, l.name))));
+  state.hidden = (hidden || []).filter((slug) => VARIABLE_MAP[slug] || services.has(slug));
 });
 
 // Old glued expansions ("pm gs") get spaces ("p m g s"); ones that can't be
@@ -176,6 +177,89 @@ function placeNode(instance, anchor) {
   figma.currentPage.appendChild(instance);
   instance.x = figma.viewport.center.x - instance.width / 2;
   instance.y = figma.viewport.center.y - instance.height / 2;
+}
+
+// ---------- Templates ----------
+
+// Templates (bifrost-templates.json) are meant to be detached and kept as a
+// section, which their own text asks for in parentheses; that hint is removed.
+// The chosen service's logo goes into every TopBar (an instance swap property
+// named Logo), and its name replaces "Name of project".
+const TEMPLATE_HINT = /\s*\(detach[^)]*\)/i;
+const LOGO_PROPERTY = /^Logo#/;
+const PROJECT_NAME = "Name of project";
+
+async function insertTemplate(component, entry, logoName) {
+  const frame = component.createInstance().detachInstance();
+  const section = figma.createSection();
+  section.name = logoName || entry.name;
+  section.x = frame.x;
+  section.y = frame.y;
+  section.resizeWithoutConstraints(frame.width, frame.height);
+  section.fills = clone(frame.fills);
+  if (frame.cornerRadius !== figma.mixed) section.cornerRadius = frame.cornerRadius;
+  // Kept where they were on the canvas, whatever appendChild does with x and y.
+  for (const child of [...frame.children]) {
+    const [[, , x], [, , y]] = child.absoluteTransform;
+    section.appendChild(child);
+    child.x += x - child.absoluteTransform[0][2];
+    child.y += y - child.absoluteTransform[1][2];
+  }
+  frame.remove();
+  placeInFreeSpace(section);
+  const logo = logoName && (entry.logos || []).find((l) => l.name === logoName);
+  if (logo) await applyLogo(section, logo, entry.logos);
+  for (const text of section.children.filter((n) => n.type === "TEXT")) {
+    const hint = text.characters.match(TEMPLATE_HINT);
+    if (!hint) continue;
+    await loadFonts(text);
+    text.deleteCharacters(hint.index, hint.index + hint[0].length);
+  }
+  return section;
+}
+
+async function applyLogo(root, logo, logos) {
+  let component;
+  try {
+    component = logo.isSet ? (await figma.importComponentSetByKeyAsync(logo.key)).defaultVariant : await figma.importComponentByKeyAsync(logo.key);
+  } catch (e) {
+    throw new Error("the " + logo.name + " logo isn't in an enabled library");
+  }
+  const instances = root.findAllWithCriteria({ types: ["INSTANCE"] });
+  for (const bar of instances) {
+    const prop = Object.keys(bar.componentProperties).find((k) => LOGO_PROPERTY.test(k) && bar.componentProperties[k].type === "INSTANCE_SWAP");
+    if (prop) bar.setProperties({ [prop]: component.id });
+  }
+  // The TopBar's Logo property only reaches the small-screen logo; the one
+  // wider breakpoints show isn't linked to it. So every instance of a service
+  // logo is swapped too.
+  const keys = new Set(logos.map((l) => l.key));
+  for (const node of instances) {
+    if (node.removed) continue;
+    const main = await node.getMainComponentAsync();
+    const set = main && main.parent && main.parent.type === "COMPONENT_SET" ? main.parent : null;
+    if (main && main.id !== component.id && (keys.has(main.key) || (set && keys.has(set.key)))) node.swapComponent(component);
+  }
+  for (const text of root.findAllWithCriteria({ types: ["TEXT"] }).filter((n) => n.name === PROJECT_NAME)) {
+    await loadFonts(text);
+    text.characters = logo.name;
+  }
+}
+
+async function loadFonts(text) {
+  await Promise.all(text.getRangeAllFontNames(0, text.characters.length).map((f) => figma.loadFontAsync(f)));
+}
+
+// A template is too big for anywhere but the page, and shouldn't cover what's
+// there: the viewport center if that's free, else right of everything.
+function placeInFreeSpace(node) {
+  const gap = 200;
+  const boxes = figma.currentPage.children.filter((n) => n !== node && n.absoluteBoundingBox).map((n) => n.absoluteBoundingBox);
+  const x = Math.round(figma.viewport.center.x - node.width / 2);
+  const y = Math.round(figma.viewport.center.y - node.height / 2);
+  const hits = boxes.some((b) => x < b.x + b.width + gap && b.x < x + node.width + gap && y < b.y + b.height + gap && b.y < y + node.height + gap);
+  node.x = hits ? Math.max(...boxes.map((b) => b.x + b.width)) + gap : x;
+  node.y = y;
 }
 
 function bindFields(node, fields, variable) {
@@ -360,6 +444,12 @@ async function applyOp(op, target, nodes, mode) {
     await bindDefaultFill(frame, "Base/bfc-base-3");
     placeNode(frame, nodes[0]);
     figma.currentPage.selection = [frame];
+    return 1;
+  }
+  if (op.kind === "component" && VARIABLE_MAP[op.slug].template) {
+    const section = await insertTemplate(target, VARIABLE_MAP[op.slug], op.logo);
+    figma.currentPage.selection = [section];
+    figma.viewport.scrollAndZoomIntoView([section]);
     return 1;
   }
   if (op.kind === "component") {
@@ -1024,7 +1114,7 @@ async function handleMessage(msg) {
   if (msg.type === "ready") {
     figma.ui.postMessage({
       type: "init",
-      entries: ENTRIES.map((e) => ({ slug: e.slug, id: e.id, kind: e.kind, name: e.name, group: e.group, value: e.value, px: e.px })),
+      entries: ENTRIES.map((e) => ({ slug: e.slug, id: e.id, kind: e.kind, name: e.name, group: e.group, value: e.value, px: e.px, logos: e.logos && e.logos.map((l) => l.name) })),
       values: VARIABLE_VALUES,
       rules: COLOR_RULES,
       aliasKeys: ALIAS_KEYS,
