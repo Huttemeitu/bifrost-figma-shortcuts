@@ -349,6 +349,7 @@
     component: "button  ·  modal",
     layout: "frame  ·  h  ·  v",
     sizing: "fill  ·  hugv  ·  fixed 320",
+    logo: "Which service? e.g. portal",
     review: "Filter, e.g. padding or #fff",
   };
   const REVIEW_FOOTER = "<span><b>↵</b> apply this row</span><span><b>⇧↵</b> apply selected</span><span><b>space</b> check</span><span><b>⇥</b> check section</span><span><b>esc</b> back</span>";
@@ -425,7 +426,33 @@
     return [parser.shorthand(ops)].concat(aliasIndex[describeOps(ops)] || []).filter(Boolean);
   }
   // Labels follow the selection: a text style reads "Insert text H5" when no text is selected.
-  const actionRow = (ops, extra) => Object.assign({ type: "action", ops, label: describeOpsIn(ops, check(ops).modes), keys: keysFor(ops) }, colorFitFor(ops), extra);
+  const actionRow = (ops, extra) => Object.assign({ type: "action", ops, label: describeOpsIn(ops, check(ops).modes), keys: keysFor(ops) }, colorFitFor(ops), logoPick(ops), extra);
+
+  // A template with logos (the breakpoint template) asks for the service
+  // first: Enter or → lists the logos like a group, and the chosen one goes
+  // along as op.logo (null for "No service": the template's own logo).
+  // Recents keep it, so they insert right away.
+  const NO_SERVICE = "No service";
+  const logoOp = (ops) => ops.find((o) => o.logo === undefined && entryBySlug[o.slug] && entryBySlug[o.slug].logos);
+  // Services turned off in the Options tab are left out.
+  const services = (slug) => entryBySlug[slug].logos.filter((name) => !hidden.has(serviceSlug(slug, name)));
+  function logoPick(ops) {
+    const op = logoOp(ops);
+    return op ? { picks: true, icon: "▸", meta: services(op.slug).length + " services" } : {};
+  }
+  function logoGroup(row) {
+    return { kind: "logo", label: "Service", ops: row.ops, choices: services(logoOp(row.ops).slug), back: { group, query: q.value } };
+  }
+  function logoRows(t) {
+    const op = logoOp(group.ops);
+    const lower = t.toLowerCase();
+    const rows = [NO_SERVICE].concat(group.choices)
+      .map((name) => ({ name, score: lower ? matchScore(name, lower) : 0 }))
+      .filter((c) => c.score >= 0)
+      .sort((a, b) => a.score - b.score)
+      .map((c) => actionRow(group.ops.map((o) => (o === op ? Object.assign({}, o, { logo: c.name === NO_SERVICE ? null : c.name }) : o)), { label: c.name, keys: [] }));
+    return rows.length ? rows : [{ type: "error", label: "No service matches " + t }];
+  }
 
   // A single fill or border follows Bifrost's pairing rules: text, icon and
   // border colors need the selection on a known Bifrost color, fills on
@@ -480,7 +507,7 @@
   // Rows already shown above (a style swap, an icon choice) aren't repeated.
   // query: the parsed text, to spot a row typed out in full ("f base-c-1").
   function pushParsed(out, r, query) {
-    const key = (ops) => ops.map((o) => (o.slug || o.key) + (o.text ? ":" + o.text : "")).join(",");
+    const key = (ops) => ops.map((o) => (o.slug || o.key) + (o.text ? ":" + o.text : "") + (o.logo ? ":" + o.logo : "")).join(",");
     const shown = new Set(out.filter((row) => row.ops).map((row) => key(row.ops)));
     const fresh = (ops) => runnable(ops) && !shown.has(key(ops));
     const rows = [];
@@ -601,6 +628,7 @@
   }
 
   function groupRows(t) {
+    if (group.choices) return logoRows(t);
     if (!groupVisible(group)) return [{ type: "error", label: check(parser.list(group.kind)[0]).error }];
     if (!t) return byFit(parser.list(group.kind).filter(runnable).map((ops) => actionRow(ops)));
     const out = [];
@@ -754,7 +782,7 @@
   const selectable = (row) => row && row.type !== "section" && row.type !== "error" && row.type !== "note";
   const rowId = (row) => row && row.type + ":" + row.label;
   // The focused action row gets a checkmark: it's what Enter applies.
-  const iconFor = (row, isActive) => (isActive && (row.type === "action" || row.type === "fix") ? "✓" : row.icon || "");
+  const iconFor = (row, isActive) => (isActive && ((row.type === "action" && !row.picks) || row.type === "fix") ? "✓" : row.icon || "");
   // Review proposals show their checkbox instead.
   const iconHtml = (row, isActive) => (row.type === "proposal" ? `<span class="cb${row.checked ? " on" : ""}"></span>` : esc(iconFor(row, isActive)));
 
@@ -880,10 +908,12 @@
     render();
   }
 
+  // The service list goes back to where it was opened, query included.
   function leaveGroup() {
-    group = null;
+    const back = group.back || {};
+    group = back.group || null;
     showMisfits = false;
-    q.value = "";
+    q.value = back.query || "";
     render();
   }
 
@@ -895,6 +925,7 @@
     if (row.type === "vars") return send({ type: "vars" });
     if (row.type === "review") return startReview();
     if (row.type === "fold") return toggleMisfits();
+    if (row.picks) return enterGroup(logoGroup(row));
     // In the review, Enter applies the focused row (a proposal, checked or
     // not, or an Accept row); Shift+Enter everything checked, like the top row.
     if (reviewView && keepOpen && !row.all) return activate(rows.find((r) => r.all));
@@ -946,7 +977,7 @@
       } else send({ type: "close" });
     } else if (back && reviewView) leaveReview();
     else if (back && group) leaveGroup();
-    else if (e.key === "ArrowRight" && caretAtEnd() && rows[active] && rows[active].type === "group") enterGroup(rows[active].group);
+    else if (e.key === "ArrowRight" && caretAtEnd() && rows[active] && (rows[active].type === "group" || rows[active].picks)) activate(rows[active]);
     else return;
     e.preventDefault();
   });

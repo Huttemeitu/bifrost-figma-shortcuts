@@ -1,6 +1,6 @@
 // generate.js: rerun whenever the Bifrost library gets new variables, styles or
 // components, or after editing anything in src/.
-// Usage: node generate.js <variables.json> <outDir> [textstyles.json] [components.json] [color-rules.json]
+// Usage: node generate.js <variables.json> <outDir> [textstyles.json] [components.json] [color-rules.json] [templates.json]
 //
 // Reads the JSON exports from the Figma console snippets (see README) and writes:
 //  - manifest.json: "Open palette", "Review variables" (the palette, opened in
@@ -21,15 +21,20 @@ const outDir = process.argv[3] || ".";
 const textStylesPath = process.argv[4];
 const componentsPath = process.argv[5];
 const colorRulesPath = process.argv[6];
+const templatesPath = process.argv[7];
 
 if (!inputPath) {
-  console.error("Usage: node generate.js <variables.json> <outDir> [textstyles.json] [components.json]");
+  console.error("Usage: node generate.js <variables.json> <outDir> [textstyles.json] [components.json] [color-rules.json] [templates.json]");
   process.exit(1);
 }
 
 const variables = JSON.parse(fs.readFileSync(inputPath, "utf8"));
 const textStyles = textStylesPath ? JSON.parse(fs.readFileSync(textStylesPath, "utf8")) : [];
-const components = componentsPath ? JSON.parse(fs.readFileSync(componentsPath, "utf8")) : [];
+// Templates are components from other files (the breakpoint template), from
+// their own export (see README), so re-exporting the Components file keeps
+// them. They're inserted as a section, with an optional logo from `logos`.
+const readList = (p) => (p ? JSON.parse(fs.readFileSync(p, "utf8")) : []);
+const components = [...readList(componentsPath), ...readList(templatesPath).map((t) => ({ ...t, template: true }))];
 const colorRules = colorRulesPath ? JSON.parse(fs.readFileSync(colorRulesPath, "utf8")) : { pairs: [] };
 
 function slugify(prefix, name) {
@@ -153,7 +158,7 @@ const KINDS = {
   })),
   component: components.map((c) => {
     const name = componentLabel(c);
-    return { slug: uniqueSlug("comp", name), name, id: c.id, key: c.key, isSet: c.isSet, group: c.page };
+    return { slug: uniqueSlug("comp", name), name, id: c.id, key: c.key, isSet: c.isSet, group: c.page, template: c.template, logos: c.logos };
   }),
 };
 
@@ -192,10 +197,10 @@ const manifest = {
 
 // ---------- code.js ----------
 
-// Flat lookup: slug -> { id, key, name, kind, type, isSet?, group?, value?, px? }. group is
-// the top level in the Options tree: a fill's collection, a component's page. value
-// is a text style's font size; variables get theirs from VARIABLE_VALUES. px is a
-// spacing or radius number for value search ("r 12").
+// Flat lookup: slug -> { id, key, name, kind, type, isSet?, group?, value?, px?, template?, logos? }.
+// group is the top level in the Options tree: a fill's collection, a component's page.
+// value is a text style's font size; variables get theirs from VARIABLE_VALUES. px is a
+// spacing or radius number for value search ("r 12"). template and logos: see templatesPath.
 const TYPE_BY_KIND = { textstyle: "style", component: "component" };
 const flatMap = {};
 for (const [kind, entries] of Object.entries(KINDS)) {
@@ -206,6 +211,8 @@ for (const [kind, entries] of Object.entries(KINDS)) {
     if (e.value) flatMap[e.slug].value = e.value;
     if (e.px !== undefined) flatMap[e.slug].px = e.px;
     if (e.font) flatMap[e.slug].font = e.font;
+    if (e.template) flatMap[e.slug].template = true;
+    if (e.logos) flatMap[e.slug].logos = e.logos;
   }
 }
 

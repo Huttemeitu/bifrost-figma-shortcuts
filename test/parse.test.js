@@ -185,12 +185,13 @@ test("option tree groups by kind, group and path, and merges one-child levels", 
     { slug: "g", kind: "component", name: "Button (icon only)", group: "Button" },
     { slug: "h", kind: "component", name: "Backdrop", group: "Backdrop" },
     { slug: "i", kind: "component", name: "Modal/Image", group: "Modal" },
+    { slug: "t", kind: "component", name: "Breakpoints Template", group: "Breakpoints", logos: ["Portal", "Bifrost"] },
   ]);
   const shape = (n) => (n.children ? { [n.label + " (" + n.slugs.length + ")"]: n.children.map(shape) } : n.label);
   assert.deepEqual(JSON.parse(JSON.stringify(shape(tree))), {
-    "All options (9)": [
+    "All options (12)": [
       { "Fill (5)": [{ "Mode (3)": [{ "Pop/Brand (2)": ["bfc-brand", "bfc-brand-hc"] }, "Base/bfc-base-1"] }, { "Primitives/Teal (2)": ["10", "20"] }] },
-      { "Component (4)": [{ "Button (2)": ["Button", "Button (icon only)"] }, "Backdrop", "Modal/Image"] },
+      { "Component (7)": [{ "Button (2)": ["Button", "Button (icon only)"] }, "Backdrop", "Modal/Image", { "Breakpoints (3)": ["Breakpoints Template", { "Services (2)": ["Portal", "Bifrost"] }] }] },
     ],
   });
 });
