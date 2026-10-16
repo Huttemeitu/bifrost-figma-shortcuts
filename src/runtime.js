@@ -182,17 +182,19 @@ function placeNode(instance, anchor) {
 // ---------- Templates ----------
 
 // Templates (bifrost-templates.json) are meant to be detached and kept as a
-// section, which their own text asks for in parentheses; that hint is removed.
+// section, which their own text asks for in parentheses; that hint is removed,
+// or the whole text ("Frame name") replaced by the page title.
 // The chosen service's logo goes into every TopBar (an instance swap property
-// named Logo), and its name replaces "Name of project".
+// named Logo), and its name replaces "Name of project". A page title names the
+// section and goes into the headers, breadcrumbs and sidebars (applyTitle).
 const TEMPLATE_HINT = /\s*\(detach[^)]*\)/i;
 const LOGO_PROPERTY = /^Logo#/;
 const PROJECT_NAME = "Name of project";
 
-async function insertTemplate(component, entry, logoName) {
+async function insertTemplate(component, entry, logoName, title) {
   const frame = component.createInstance().detachInstance();
   const section = figma.createSection();
-  section.name = logoName || entry.name;
+  section.name = title || logoName || entry.name;
   section.x = frame.x;
   section.y = frame.y;
   section.resizeWithoutConstraints(frame.width, frame.height);
@@ -209,11 +211,13 @@ async function insertTemplate(component, entry, logoName) {
   placeInFreeSpace(section);
   const logo = logoName && (entry.logos || []).find((l) => l.name === logoName);
   if (logo) await applyLogo(section, logo, entry.logos);
+  if (title) await applyTitle(section, title);
   for (const text of section.children.filter((n) => n.type === "TEXT")) {
     const hint = text.characters.match(TEMPLATE_HINT);
     if (!hint) continue;
     await loadFonts(text);
-    text.deleteCharacters(hint.index, hint.index + hint[0].length);
+    if (title) text.characters = title;
+    else text.deleteCharacters(hint.index, hint.index + hint[0].length);
   }
   return section;
 }
@@ -246,8 +250,45 @@ async function applyLogo(root, logo, logos) {
   }
 }
 
+// The title goes into every Heading property (Header row content), the last
+// breadcrumb, and the first single item of each sidebar, which gets selected.
+async function applyTitle(root, title) {
+  const textProp = (node, re) => Object.keys(node.componentProperties).find((k) => re.test(k) && node.componentProperties[k].type === "TEXT");
+  const setText = async (node, props) => {
+    await Promise.all(node.findAllWithCriteria({ types: ["TEXT"] }).map(loadFonts));
+    node.setProperties(props);
+  };
+  for (const node of root.findAllWithCriteria({ types: ["INSTANCE"] })) {
+    if (node.removed) continue;
+    const heading = textProp(node, /^Heading#/);
+    if (heading) await setText(node, { [heading]: title });
+    const name = await componentName(node);
+    if (name === "Breadcrumbs") {
+      const crumb = node.findAllWithCriteria({ types: ["TEXT"] }).filter((n) => n.name === "Text").pop();
+      if (crumb) {
+        await loadFonts(crumb);
+        crumb.characters = title;
+      }
+    }
+    if (name !== "Nav: Sidebar") continue;
+    for (const item of node.findAllWithCriteria({ types: ["INSTANCE"] })) {
+      if ((await componentName(item)) !== "Nav: Sidebar item (single)") continue;
+      await setText(item, { [textProp(item, /^Text#/)]: title, Selected: "True" });
+      break;
+    }
+  }
+}
+
+// A variant's set name, else the component's.
+async function componentName(instance) {
+  const main = await instance.getMainComponentAsync();
+  if (!main) return null;
+  return main.parent && main.parent.type === "COMPONENT_SET" ? main.parent.name : main.name;
+}
+
 async function loadFonts(text) {
-  await Promise.all(text.getRangeAllFontNames(0, text.characters.length).map((f) => figma.loadFontAsync(f)));
+  const fonts = text.characters.length ? text.getRangeAllFontNames(0, text.characters.length) : [text.fontName];
+  await Promise.all(fonts.map((f) => figma.loadFontAsync(f)));
 }
 
 // A template is too big for anywhere but the page, and shouldn't cover what's
@@ -447,7 +488,7 @@ async function applyOp(op, target, nodes, mode) {
     return 1;
   }
   if (op.kind === "component" && VARIABLE_MAP[op.slug].template) {
-    const section = await insertTemplate(target, VARIABLE_MAP[op.slug], op.logo);
+    const section = await insertTemplate(target, VARIABLE_MAP[op.slug], op.logo, op.title);
     figma.currentPage.selection = [section];
     figma.viewport.scrollAndZoomIntoView([section]);
     return 1;

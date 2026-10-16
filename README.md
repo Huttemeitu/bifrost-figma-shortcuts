@@ -237,14 +237,17 @@ Some details:
   after the component in the same command applies to it.
 - **The breakpoint template** (`breakpoint`, or Component › Breakpoints)
   first asks which service it's for: Enter or → lists the services (type to
-  filter), and Enter on one inserts the template with that service's logo in
-  every TopBar and its name instead of "Name of project". "No service", on
-  top, keeps the template's own logo and text. Services you never use can be
-  turned off under Options › Component › Breakpoints › Services. It's inserted as a
-  section (detached, without the "(detach og konverter …)" note), named
-  after the service (or Breakpoints Template), on the page where it doesn't cover anything: in the
-  middle of the view if there's room, otherwise to the right of everything.
-  Recents remember the service.
+  filter), and the chosen service's logo goes in every TopBar and its name
+  instead of "Name of project". "No service", on top, keeps the template's
+  own logo and text. Services you never use can be turned off under Options ›
+  Component › Breakpoints › Services. Then it asks for a page title: type one
+  and press Enter to put it in every header, the last breadcrumb, a
+  selected sidebar item and the "Frame name" label, or press Enter right away to skip it. It's inserted
+  as a section (detached, without the "(detach og konverter …)" note), named
+  after the page title, else the service (or Breakpoints Template), on the
+  page where it doesn't cover anything: in the middle of the view if there's
+  room, otherwise to the right of everything. Recents remember the service
+  and the title.
 - **Aliases** are saved in the help view's Aliases tab (`?` › Aliases). Names
   can be words or numbers (`1` → `p m g s`), and they work anywhere a command
   can start, so `cta r l` works if `cta` is an alias. They never

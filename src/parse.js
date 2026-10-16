@@ -635,7 +635,7 @@ function checkOps(ops, selection) {
 // A text style inserts a new text layer when no text is selected, and padding
 // or gap on a frame without auto layout adds it.
 function opLabel(op, mode) {
-  const text = op.text ? " “" + op.text + "”" : op.logo ? " (" + op.logo + ")" : "";
+  const text = op.text ? " “" + op.text + "”" : (op.logo ? " (" + op.logo + ")" : "") + (op.title ? " “" + op.title + "”" : "");
   if (op.kind === "textstyle" && mode === "insert") return "Insert text " + op.label.replace(/^Text /, "") + text;
   if (mode === "autolayout") return op.label + " (adds auto layout)";
   return op.label + text;
