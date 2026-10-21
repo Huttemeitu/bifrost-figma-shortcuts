@@ -1228,26 +1228,29 @@ function closeWith(result) {
   figma.closePlugin();
 }
 
-// The alias commands run an alias with no window, so a key bound to the menu
-// item applies it directly. This is what the companion app triggers.
-async function runAlias(name) {
+// The alias commands ("key-q", "slot-3") run an alias with no window, so a key
+// bound to the menu item applies it directly. This is what the companion app
+// triggers.
+async function runAlias(command) {
+  const key = /^key-(.)$/.exec(command);
+  const slot = /^slot-(\d+)$/.exec(command);
+  const name = key ? state.keys[key[1]] : state.slots.slots[slot[1]];
+  if (!name && key) return { message: "No alias on ⌃⌥" + key[1].toUpperCase() + ". Give one that key in the palette: ? › Aliases", failed: true };
+  if (!name) return { message: "No alias in slot " + slot[1] + ". Import the aliases in the companion again", failed: true };
   const found = aliasOps(ENTRIES, state.aliases, name);
-  closeWith(found.error ? { message: found.error, failed: true } : await applyOps(found.ops));
+  return found.error ? { message: found.error, failed: true } : applyOps(found.ops);
 }
 
 // Opened after storage is read, so the window starts at the size it had last time.
 stateReady.then(() => {
-  const key = /^key-(.)$/.exec(figma.command);
-  if (key) {
-    const name = state.keys[key[1]];
-    if (name) return runAlias(name);
-    return closeWith({ message: "No alias on ⌃⌥" + key[1].toUpperCase() + ". Give one that key in the palette: ? › Aliases", failed: true });
-  }
-  const slot = /^slot-(\d+)$/.exec(figma.command);
-  if (slot) {
-    const name = state.slots.slots[slot[1]];
-    if (name) return runAlias(name);
-    return closeWith({ message: "No alias in slot " + slot[1] + ". Import the aliases in the companion again", failed: true });
+  // Without a window, an error would end the command without a word.
+  if (/^(key|slot)-/.test(figma.command)) {
+    return runAlias(figma.command)
+      .catch((e) => {
+        console.error(e);
+        return { message: "Error: " + e.message, failed: true };
+      })
+      .then(closeWith);
   }
   figma.showUI(UI_HTML, Object.assign({ themeColors: true, title: "Bifrost" }, state.size));
   figma.ui.onmessage = (msg) =>
