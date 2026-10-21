@@ -168,6 +168,9 @@ const KINDS = {
 // Aliases run without a window, pressed by the companion app: "Key q" runs the
 // alias given key q in the Aliases tab (⌃⌥Q, numpad digits), "Slot N" the alias
 // in slot N (shortcuts recorded in the companion; see assignSlots in parse.js).
+// Slots have their own submenu: a slot number isn't an alias name, and next to
+// the keys "Slot 1" read as alias 1. The companion finds items anywhere below
+// Bifrost, so where they sit doesn't matter to it.
 // Menus can't change at runtime, so both lists are fixed; Figma.aliasKeys and
 // Figma.slotCount in the companion must match. ⌃⌥H, T and V are Figma's (Tidy
 // Up, Distribute), so h, t and v aren't keys. The commands share the plugin id,
@@ -186,11 +189,11 @@ const manifest = {
     { separator: true },
     {
       name: "Aliases",
-      menu: [
-        ...ALIAS_KEYS.map((k) => ({ name: "Key " + k, command: "key-" + k })),
-        { separator: true },
-        ...Array.from({ length: ALIAS_SLOTS }, (_, n) => ({ name: "Slot " + n, command: "slot-" + n })),
-      ],
+      menu: ALIAS_KEYS.map((k) => ({ name: "Key " + k, command: "key-" + k })),
+    },
+    {
+      name: "Companion slots",
+      menu: Array.from({ length: ALIAS_SLOTS }, (_, n) => ({ name: "Slot " + n, command: "slot-" + n })),
     },
   ],
 };

@@ -152,10 +152,12 @@
         {
           "name": "Key 9",
           "command": "key-9"
-        },
-        {
-          "separator": true
-        },
+        }
+      ]
+    },
+    {
+      "name": "Companion slots",
+      "menu": [
         {
           "name": "Slot 0",
           "command": "slot-0"
