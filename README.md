@@ -340,13 +340,15 @@ Use a text or multi-action key that types the whole sequence, e.g.
 
 ## Bifrost Figma Companion
 
-The plugin has menu commands under **Plugins › Development › Bifrost ›
-Aliases** that run an alias directly, without opening the palette: **Key a**
-to **Key 9** run the alias given that key, **Slot 0–29** the alias the plugin
-put in that slot. If the alias is missing or can't apply to
+The plugin has menu commands under **Plugins › Development › Bifrost** that
+run an alias directly, without opening the palette: **Aliases › Key a** to
+**Key 9** run the alias given that key, **Companion slots › Slot 0–29** the
+alias the plugin put in that slot. If the alias is missing or can't apply to
 the selection, a toast says why. Figma plugin menus are fixed in the
 manifest, so commands can't be named after your aliases. Instead, every alias
-gets a slot, and Copy as JSON tells the app which.
+gets a slot, and Copy as JSON tells the app which. A slot number isn't the
+alias's name: alias `1` runs from **Key 1**, and **Slot 1** is whichever
+alias got slot 1.
 
 **Bifrost Figma Companion** (`companion/`, set up in [step 5](#5-optional-shortcuts-and-numpad-keys))
 is a small menu bar app that presses those commands for you: **Key q** for
