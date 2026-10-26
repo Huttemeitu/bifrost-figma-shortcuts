@@ -239,7 +239,9 @@ Some details:
   first asks which service it's for: Enter or → lists the services (type to
   filter), and the chosen service's logo goes in every TopBar and its name
   instead of "Name of project". "No service", on top, keeps the template's
-  own logo and text. Services you never use can be turned off under Options ›
+  own logo and text. "New service", at the bottom, asks for a name (what you
+  typed to filter is filled in) and keeps the template's own logo, but uses
+  the name instead of "Name of project". Services you never use can be turned off under Options ›
   Component › Breakpoints › Services. Then it asks for a page title: type one
   and press Enter to put it in every header, the last breadcrumb, a
   selected sidebar item and the "Frame name" label, or press Enter right away to skip it. It's inserted
