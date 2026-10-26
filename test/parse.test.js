@@ -128,8 +128,31 @@ test("frame and auto layout are word ops that chain like inserts", () => {
   assert.deepEqual(Array.from(parse("al").alternatives, labels), [["Auto layout horizontal"], ["Auto layout vertical"]]);
   const p = ctx.createParser(ENTRIES, {});
   assert.equal(p.shorthand(p.parse("frame alh p m").primary), "frame alh p m");
-  assert.deepEqual(Array.from(p.list("layout"), (ops) => p.shorthand(ops)), ["frame", "alh", "alv"]);
+  assert.deepEqual(Array.from(p.list("layout"), (ops) => p.shorthand(ops)), ["frame", "post-it", "notes", "alh", "alv"]);
   assert.match(ctx.aliasError(ENTRIES, "frame", "p m"), /built-in/);
+});
+
+test("post-it inserts a note, with the words after it as its text", () => {
+  const [note] = parse("post-it Check the spacing").primary;
+  assert.equal(note.kind, "postit");
+  assert.equal(note.text, "Check the spacing");
+  assert.equal(ctx.describeOps([note]), "Insert post-it “Check the spacing”");
+  assert.deepEqual(labels(parse("post-it Check this p m").primary), ["Insert post-it", "Padding M"]);
+  assert.deepEqual(Array.from(parse("po").alternatives, labels), [["Insert post-it"]]);
+  // "p" is still padding, not the start of "post-it".
+  assert.ok(Array.from(parse("p").alternatives, labels).every(([l]) => l.startsWith("Padding")));
+  // It's a section in the middle of the view, never in a layout; later ops go to its text.
+  const check = (q) => ctx.checkOps(parse(q).primary, [{ fills: true, autoLayout: true, canAutoLayout: true }]);
+  assert.deepEqual(Array.from(check("post-it fixed 200").modes), ["insert", "apply"]);
+  assert.match(check("post-it fill").error, /inside an auto layout/);
+});
+
+test("notes inserts a notes card whose list is the text after it", () => {
+  const [notes] = parse("notes Create new").primary;
+  assert.equal(notes.kind, "notes");
+  assert.equal(notes.text, "Create new");
+  // Its list is in the card's auto layout, so it can fill the width.
+  assert.deepEqual(Array.from(ctx.checkOps(parse("notes fill").primary, []).modes), ["insert", "apply"]);
 });
 
 test("bare words search components, text styles and colors by name", () => {

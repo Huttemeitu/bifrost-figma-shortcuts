@@ -185,6 +185,8 @@ The Options tab shows the same values.
 | `alh`, `alv` | Auto layout horizontal / vertical on the selected frames |
 | `frame alh p m r m b base-dimmed3` | Build a styled auto-layout frame in one go |
 | `frame alh button button` | Everything inserted after `frame` goes inside it (it gets auto layout if it has none), and the frame hugs its contents |
+| `post-it`, `post-it Check the spacing` | Insert a post-it note (design files have no FigJam stickies): a 240×240 `bfc-warning` section, so Figma never puts it inside a frame you drop it on. It always goes in the middle of the view. Its text is ready for typing: "Note" is selected, so typing replaces it; text after `post-it` is its content, with the cursor after it |
+| `notes`, `notes Create new` | Insert a notes card (from the Admin file): a "Notes" heading over a bulleted list, 396 px wide and at least 150 px tall, `bfc-warning-fade` with a `bfc-base-c-warning` border. It goes in the middle of the view with the list ready for typing; text after `notes` is the first point. It's a frame, so unlike a post-it it can be dropped into a design |
 | `fill`, `fillv`, `fillhv` | Fill the width, height or both; only for layers inside an auto layout (also one you just inserted into it: `button fill`) |
 | `hug`, `hugv`, `hughv` | Hug the content; on auto-layout frames and text (a frame without auto layout gets it) |
 | `fixed 320`, `fixedv 48`, `fixedhv 100` | A fixed size in px for the width, height or both |
