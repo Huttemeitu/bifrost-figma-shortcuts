@@ -185,7 +185,8 @@ function placeNode(instance, anchor) {
 // section, which their own text asks for in parentheses; that hint is removed,
 // or the whole text ("Frame name") replaced by the page title.
 // The chosen service's logo goes into every TopBar (an instance swap property
-// named Logo), and its name replaces "Name of project". A page title names the
+// named Logo), and its name replaces "Name of project". A new service (a name
+// with no logo in the list) keeps the template's logo and only names it. A page title names the
 // section and goes into the headers, breadcrumbs and sidebars (applyTitle).
 const TEMPLATE_HINT = /\s*\(detach[^)]*\)/i;
 const LOGO_PROPERTY = /^Logo#/;
@@ -211,6 +212,12 @@ async function insertTemplate(component, entry, logoName, title) {
   placeInFreeSpace(section);
   const logo = logoName && (entry.logos || []).find((l) => l.name === logoName);
   if (logo) await applyLogo(section, logo, entry.logos);
+  if (logoName) {
+    for (const text of section.findAllWithCriteria({ types: ["TEXT"] }).filter((n) => n.name === PROJECT_NAME)) {
+      await loadFonts(text);
+      text.characters = logoName;
+    }
+  }
   if (title) await applyTitle(section, title);
   for (const text of section.children.filter((n) => n.type === "TEXT")) {
     const hint = text.characters.match(TEMPLATE_HINT);
@@ -243,10 +250,6 @@ async function applyLogo(root, logo, logos) {
     const main = await node.getMainComponentAsync();
     const set = main && main.parent && main.parent.type === "COMPONENT_SET" ? main.parent : null;
     if (main && main.id !== component.id && (keys.has(main.key) || (set && keys.has(set.key)))) node.swapComponent(component);
-  }
-  for (const text of root.findAllWithCriteria({ types: ["TEXT"] }).filter((n) => n.name === PROJECT_NAME)) {
-    await loadFonts(text);
-    text.characters = logo.name;
   }
 }
 

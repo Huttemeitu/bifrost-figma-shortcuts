@@ -351,6 +351,7 @@
     sizing: "fill  ·  hugv  ·  fixed 320",
     logo: "Which service? e.g. portal",
     title: "Page title, or ↵ for none",
+    service: "Name of the new service",
     review: "Filter, e.g. padding or #fff",
   };
   const REVIEW_FOOTER = "<span><b>↵</b> apply this row</span><span><b>⇧↵</b> apply selected</span><span><b>space</b> check</span><span><b>⇥</b> check section</span><span><b>esc</b> back</span>";
@@ -432,8 +433,10 @@
   // A template with logos (the breakpoint template) asks for the service,
   // then an optional page title: Enter or → opens each step like a group, and
   // the answers go along as op.logo (null for "No service": the template's
-  // own logo) and op.title (null for none). Recents keep both, so they insert
-  // right away.
+  // own logo) and op.title (null for none). "New service", last, asks for a
+  // name instead: op.logo is then a name with no logo, which keeps the
+  // template's logo but still names the project. Recents keep both, so they
+  // insert right away.
   const NO_SERVICE = "No service";
   const templateOp = (ops) => ops.find((o) => entryBySlug[o.slug] && entryBySlug[o.slug].logos);
   const pendingStep = (op) => (!op ? null : op.logo === undefined ? "logo" : op.title === undefined ? "title" : null);
@@ -461,7 +464,14 @@
       .filter((c) => c.score >= 0)
       .sort((a, b) => a.score - b.score)
       .map((c) => actionRow(withAnswer(group.ops, { logo: c.name === NO_SERVICE ? null : c.name }), { label: c.name, keys: [] }));
-    return rows.length ? rows : [{ type: "error", label: "No service matches " + t }];
+    // What was typed to filter becomes the new service's name.
+    const name = { kind: "service", label: "New service", ops: group.ops, query: t, back: { group, query: t } };
+    return rows.concat({ type: "group", group: name, label: "New service", meta: "Default logo", keys: [], icon: "▸" });
+  }
+  function serviceRows(t) {
+    const name = t.trim();
+    if (!name) return [{ type: "note", label: "Type the service's name" }];
+    return [actionRow(withAnswer(group.ops, { logo: name }), { label: "New service “" + name + "”", keys: [] })];
   }
   function titleRows(t) {
     const title = t.trim();
@@ -644,6 +654,7 @@
   function groupRows(t) {
     if (group.kind === "logo") return logoRows(t);
     if (group.kind === "title") return titleRows(t);
+    if (group.kind === "service") return serviceRows(t);
     if (!groupVisible(group)) return [{ type: "error", label: check(parser.list(group.kind)[0]).error }];
     if (!t) return byFit(parser.list(group.kind).filter(runnable).map((ops) => actionRow(ops)));
     const out = [];
@@ -919,7 +930,7 @@
   function enterGroup(g) {
     group = g;
     showMisfits = false;
-    q.value = "";
+    q.value = g.query || "";
     render();
   }
 
