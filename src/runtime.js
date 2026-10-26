@@ -439,18 +439,24 @@ async function applyTextStyle(node, style, content) {
 
 // New layers get Bifrost colors instead of Figma's defaults: frames
 // Base/bfc-base-3 (not plain white), text Base/bfc-base-c-1 (not black).
-// Left as Figma made it if the library isn't enabled.
-async function bindDefaultFill(node, name) {
+// Left as Figma made it if the library isn't enabled, like bindToken.
+async function bindColor(node, name, prop = "fills") {
   const entry = ENTRIES.find((e) => e.kind === "fill" && e.name === name);
   const variable = entry && (await resolveVariable(entry));
-  if (variable) bindPaint(node, "fills", variable);
+  if (variable) bindPaint(node, prop, variable);
+}
+
+async function bindToken(node, fields, kind, name) {
+  const entry = ENTRIES.find((e) => e.kind === kind && e.name === name);
+  const variable = entry && (await resolveVariable(entry));
+  if (variable) bindFields(node, fields, variable);
 }
 
 // A new text layer with the given content, or by default "Header H5" for
 // headings, "icons" for Font Awesome styles
 // (the placeholder Bifrost puts in icon slots; the font draws it as an icon),
 // otherwise "Text". Style names are size/family/weight/usage. Its color is
-// the default text color (bindDefaultFill).
+// the default text color (bindColor).
 async function insertText(style, anchor, content) {
   const text = figma.createText();
   await figma.loadFontAsync(text.fontName);
@@ -458,21 +464,22 @@ async function insertText(style, anchor, content) {
   const size = style.name.split("/")[0];
   text.characters = content || (/\/Font Awesome\//.test(style.name) ? "icons" : /^H[1-5]$/.test(size) ? "Header " + size : "Text");
   await text.setTextStyleIdAsync(style.id);
-  await bindDefaultFill(text, "Base/bfc-base-c-1");
+  await bindColor(text, "Base/bfc-base-c-1");
   placeNode(text, anchor);
   figma.currentPage.selection = [text];
 }
+
+// Notes go in the middle of the view, on the page (next to the selection was
+// often out of sight), with their text in edit mode so typing goes straight
+// in: the placeholder selected (typing replaces it), or the cursor after text
+// given in the command. Their colors, spacing and text styles are Bifrost's,
+// so the review leaves them alone.
 
 // A FigJam-style sticky note (design files have none): a section in Bifrost's
 // yellow with a text filling it. A section, since Figma never puts one inside
 // a frame, so the note stays on top when dropped on a design. It has no name,
 // since Figma then shows no name tag over the text. Sections have no auto
-// layout, so the text is placed by hand. It always goes in the middle of the
-// view, on the page: next to the selection was often out of sight. Its colors
-// and text style are Bifrost's, so the
-// review leaves it alone. The text is left in edit mode so typing goes
-// straight into it: the placeholder selected (typing replaces it), or the
-// cursor after text given in the command.
+// layout, so the text is placed by hand.
 const POSTIT_SIZE = 240;
 const POSTIT_PADDING = 16;
 
@@ -480,27 +487,81 @@ async function insertPostit(content) {
   const note = figma.createSection();
   note.name = "";
   note.resizeWithoutConstraints(POSTIT_SIZE, POSTIT_SIZE);
-  await bindDefaultFill(note, "Pop/Warning/bfc-warning");
+  await bindColor(note, "Pop/Warning/bfc-warning");
   figma.currentPage.appendChild(note);
-  moveTo(note, figma.viewport.center.x - POSTIT_SIZE / 2, figma.viewport.center.y - POSTIT_SIZE / 2);
-  const text = figma.createText();
-  await figma.loadFontAsync(text.fontName);
-  text.characters = content || "Note";
-  const entry = ENTRIES.find((e) => e.kind === "textstyle" && e.name === "L/Open Sans/Regular/Text");
-  const style = entry && (await resolveStyle(entry));
-  if (style) {
-    await loadStyleFont(style);
-    await text.setTextStyleIdAsync(style.id);
-  }
-  await bindDefaultFill(text, "Pop/Warning/bfc-warning-c");
+  centerInView(note);
+  const text = await styledText(content || "Note", "L/Open Sans/Regular/Text", "Pop/Warning/bfc-warning-c");
   text.textAutoResize = "NONE";
   text.resize(POSTIT_SIZE - 2 * POSTIT_PADDING, POSTIT_SIZE - 2 * POSTIT_PADDING);
   note.appendChild(text);
   const [[, , x], [, , y]] = note.absoluteTransform;
   moveTo(text, x + POSTIT_PADDING, y + POSTIT_PADDING);
+  startTyping(text, content);
+}
+
+// A notes card, copied from the Admin file (wPqnoePXFqW0evtF4xY76y, 2:5658):
+// a "Notes" heading over a bulleted list, on Bifrost's pale yellow with a
+// border. A frame, so it can have auto layout and grow with the list.
+const NOTES_WIDTH = 396;
+const NOTES_MIN_HEIGHT = 150;
+const NOTES_SHADOW = { type: "DROP_SHADOW", color: { r: 0, g: 0, b: 0, a: 0.1 }, offset: { x: 0, y: 0 }, radius: 8, spread: 0, visible: true, blendMode: "NORMAL" };
+
+async function insertNotes(content) {
+  const notes = figma.createFrame();
+  notes.name = "Notes";
+  // Auto layout hugs both ways when it's turned on, so the width comes after.
+  notes.layoutMode = "VERTICAL";
+  notes.primaryAxisSizingMode = "AUTO";
+  notes.counterAxisSizingMode = "FIXED";
+  notes.resize(NOTES_WIDTH, notes.height);
+  notes.minHeight = NOTES_MIN_HEIGHT;
+  notes.strokeWeight = 2;
+  notes.strokesIncludedInLayout = true;
+  notes.effects = [NOTES_SHADOW];
+  await bindColor(notes, "Pop/Warning/bfc-warning-fade");
+  await bindColor(notes, "Base/bfc-base-c-warning", "strokes");
+  await bindToken(notes, FIELD_SETS.padding.ALL, "padding", "M");
+  await bindToken(notes, ["itemSpacing"], "gap", "S");
+  await bindToken(notes, FIELD_SETS.radius.ALL, "radius", "S");
+  const heading = await styledText("Notes", "H3", "Pop/Warning/bfc-warning-fade-c");
+  const list = await styledText(content || "Write your notes here", "M/Open Sans/Regular/Text", "Pop/Warning/bfc-warning-fade-c");
+  list.setRangeListOptions(0, list.characters.length, { type: "UNORDERED" });
+  list.setRangeIndentation(0, list.characters.length, 1);
+  for (const text of [heading, list]) {
+    notes.appendChild(text);
+    text.layoutSizingHorizontal = "FILL";
+    text.layoutSizingVertical = "HUG";
+  }
+  figma.currentPage.appendChild(notes);
+  centerInView(notes);
+  startTyping(list, content);
+}
+
+// A text with a Bifrost text style and color. Figma's default font is loaded
+// first, since the content is set before the style.
+async function styledText(content, styleName, colorName) {
+  const text = figma.createText();
+  await figma.loadFontAsync(text.fontName);
+  text.characters = content;
+  const entry = ENTRIES.find((e) => e.kind === "textstyle" && e.name === styleName);
+  const style = entry && (await resolveStyle(entry));
+  if (style) {
+    await loadStyleFont(style);
+    await text.setTextStyleIdAsync(style.id);
+  }
+  await bindColor(text, colorName);
+  return text;
+}
+
+function centerInView(node) {
+  moveTo(node, figma.viewport.center.x - node.width / 2, figma.viewport.center.y - node.height / 2);
+}
+
+// Setting selectedTextRange is how a plugin enters text editing.
+function startTyping(text, typed) {
   figma.currentPage.selection = [text];
   const end = text.characters.length;
-  figma.currentPage.selectedTextRange = { node: text, start: content ? end : 0, end };
+  figma.currentPage.selectedTextRange = { node: text, start: typed ? end : 0, end };
 }
 
 // Moves a layer to a canvas position, whatever its parent's coordinates are
@@ -528,13 +589,13 @@ async function applyOp(op, target, nodes, mode) {
   if (op.kind === "frame") {
     const frame = figma.createFrame();
     frame.name = "Frame";
-    await bindDefaultFill(frame, "Base/bfc-base-3");
+    await bindColor(frame, "Base/bfc-base-3");
     placeNode(frame, nodes[0]);
     figma.currentPage.selection = [frame];
     return 1;
   }
-  if (op.kind === "postit") {
-    await insertPostit(op.text);
+  if (op.kind === "postit" || op.kind === "notes") {
+    await (op.kind === "postit" ? insertPostit : insertNotes)(op.text);
     return 1;
   }
   if (op.kind === "component" && VARIABLE_MAP[op.slug].template) {

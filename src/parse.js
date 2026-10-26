@@ -22,8 +22,10 @@ const FUZZY_OPS = { f: "fill", b: "stroke", t: "textstyle" };
 // Ops that are a single word with no value or token behind them (no slug).
 const WORD_OPS = {
   frame: { kind: "frame", label: "Insert frame" },
-  // A FigJam-style sticky note, which design files don't have; text after it is its content.
-  "post-it": { kind: "postit", label: "Insert post-it" },
+  // Notes: a FigJam-style sticky note, which design files don't have, and a
+  // notes card with a bulleted list. Text after them is their content.
+  "post-it": { kind: "postit", label: "Insert post-it", takesText: true },
+  notes: { kind: "notes", label: "Insert notes", takesText: true },
   alh: { kind: "autolayout", value: "HORIZONTAL", label: "Auto layout horizontal" },
   alv: { kind: "autolayout", value: "VERTICAL", label: "Auto layout vertical" },
 };
@@ -94,6 +96,7 @@ const SYNTAX = [
     rows: [
       [["frame"], "Insert a frame; ops after it apply to the new frame"],
       [["post-it", "post-it Check the spacing"], "Insert a post-it note in the middle of the view; text after it is its content"],
+      [["notes", "notes Create new"], "Insert a notes card with a bulleted list; text after it is the first point"],
       [["alh", "alv"], "Auto layout horizontal or vertical"],
       [["frame alh p m r m"], "Build a styled frame in one go"],
       [["frame alh button button"], "Everything inserted after a frame goes inside it; the frame hugs it"],
@@ -316,7 +319,7 @@ function createParser(entries, aliases, options) {
       if (WORD_OPS[w]) {
         const op = wordOp(w, at(i, i + 1));
         ops.push(op);
-        if (op.kind === "postit") i = takeText(op, i + 1) - 1;
+        if (op.takesText) i = takeText(op, i + 1) - 1;
         continue;
       }
       // "fixed 320", "fixedv 48px": a size in px for the axis.
@@ -470,7 +473,7 @@ function createParser(entries, aliases, options) {
 
   // Every entry of a kind as a one-op list (all sides/corners for spacing and radius).
   function list(kind) {
-    if (kind === "layout") return ["frame", "post-it", "alh", "alv"].map((k) => [wordOp(k)]);
+    if (kind === "layout") return ["frame", "post-it", "notes", "alh", "alv"].map((k) => [wordOp(k)]);
     if (kind === "sizing") return ["fill", "fillv", "fillhv", "hug", "hugv", "hughv"].map((k) => [wordOp(k)]);
     if (kind === "gap") return sideValues("g").map((op) => [op]);
     const key = { padding: "p", radius: "r" }[kind];
@@ -558,8 +561,10 @@ const INSERTED_CAPS = {
   component: { fills: true, strokes: true, radius: true, corners: true, autoLayout: true, canAutoLayout: false, text: false },
   textstyle: { fills: true, strokes: true, radius: false, corners: false, autoLayout: false, canAutoLayout: false, text: true, textLayer: true },
 };
-// After a post-it, its text is selected and being edited, and that's what later ops apply to.
-INSERTED_CAPS.postit = INSERTED_CAPS.textstyle;
+// After a post-it or notes, its text is being edited, and that's what later
+// ops apply to. Only the notes' list sits in an auto layout.
+INSERTED_CAPS.postit = Object.assign({}, INSERTED_CAPS.textstyle, { inAutoLayout: false });
+INSERTED_CAPS.notes = Object.assign({}, INSERTED_CAPS.textstyle, { inAutoLayout: true });
 
 function opNeed(op) {
   if (op.kind === "gap" && (op.side === "COL" || op.side === "ROW")) return "grid";
@@ -618,12 +623,12 @@ function checkOps(ops, selection) {
     // only a text layer itself, so a selected frame gets a new text instead
     // of every text inside it rewritten.
     const textTarget = (t) => (op.text ? t.textLayer : t.text);
-    const inserts = op.kind === "frame" || op.kind === "component" || op.kind === "postit" || (op.kind === "textstyle" && !targets.some(textTarget));
+    const inserts = op.kind === "textstyle" ? !targets.some(textTarget) : Boolean(INSERTED_CAPS[op.kind]);
     if (inserts) {
       // Placed inside a selected auto-layout frame, or next to the selection
       // in its parent (placeNode in runtime.js).
       const t = targets[0];
-      const inAutoLayout = op.kind !== "postit" && (container || Boolean(t && ((t.autoLayout && t.canAutoLayout) || t.inAutoLayout)));
+      const inAutoLayout = container || Boolean(t && ((t.autoLayout && t.canAutoLayout) || t.inAutoLayout));
       targets = [Object.assign({ inAutoLayout }, INSERTED_CAPS[op.kind])];
       if (op.kind === "frame") container = true;
       modes.push("insert");
