@@ -204,8 +204,7 @@ async function insertTemplate(component, entry, logoName, title) {
   for (const child of [...frame.children]) {
     const [[, , x], [, , y]] = child.absoluteTransform;
     section.appendChild(child);
-    child.x += x - child.absoluteTransform[0][2];
-    child.y += y - child.absoluteTransform[1][2];
+    moveTo(child, x, y);
   }
   frame.remove();
   placeInFreeSpace(section);
@@ -464,6 +463,53 @@ async function insertText(style, anchor, content) {
   figma.currentPage.selection = [text];
 }
 
+// A FigJam-style sticky note (design files have none): a section in Bifrost's
+// yellow with a text filling it. A section, since Figma never puts one inside
+// a frame, so the note stays on top when dropped on a design. It has no name,
+// since Figma then shows no name tag over the text. Sections have no auto
+// layout, so the text is placed by hand. It always goes in the middle of the
+// view, on the page: next to the selection was often out of sight. Its colors
+// and text style are Bifrost's, so the
+// review leaves it alone. The text is left in edit mode so typing goes
+// straight into it: the placeholder selected (typing replaces it), or the
+// cursor after text given in the command.
+const POSTIT_SIZE = 240;
+const POSTIT_PADDING = 16;
+
+async function insertPostit(content) {
+  const note = figma.createSection();
+  note.name = "";
+  note.resizeWithoutConstraints(POSTIT_SIZE, POSTIT_SIZE);
+  await bindDefaultFill(note, "Pop/Warning/bfc-warning");
+  figma.currentPage.appendChild(note);
+  moveTo(note, figma.viewport.center.x - POSTIT_SIZE / 2, figma.viewport.center.y - POSTIT_SIZE / 2);
+  const text = figma.createText();
+  await figma.loadFontAsync(text.fontName);
+  text.characters = content || "Note";
+  const entry = ENTRIES.find((e) => e.kind === "textstyle" && e.name === "L/Open Sans/Regular/Text");
+  const style = entry && (await resolveStyle(entry));
+  if (style) {
+    await loadStyleFont(style);
+    await text.setTextStyleIdAsync(style.id);
+  }
+  await bindDefaultFill(text, "Pop/Warning/bfc-warning-c");
+  text.textAutoResize = "NONE";
+  text.resize(POSTIT_SIZE - 2 * POSTIT_PADDING, POSTIT_SIZE - 2 * POSTIT_PADDING);
+  note.appendChild(text);
+  const [[, , x], [, , y]] = note.absoluteTransform;
+  moveTo(text, x + POSTIT_PADDING, y + POSTIT_PADDING);
+  figma.currentPage.selection = [text];
+  const end = text.characters.length;
+  figma.currentPage.selectedTextRange = { node: text, start: content ? end : 0, end };
+}
+
+// Moves a layer to a canvas position, whatever its parent's coordinates are
+// (a section's children are positioned relative to the section).
+function moveTo(node, x, y) {
+  node.x += Math.round(x - node.absoluteTransform[0][2]);
+  node.y += Math.round(y - node.absoluteTransform[1][2]);
+}
+
 // Gap auto is space-between. A gap token on such a frame switches it back to
 // packed, or the token wouldn't show. Plain gap on a grid sets both grid gaps.
 function applyGap(node, op, variable) {
@@ -485,6 +531,10 @@ async function applyOp(op, target, nodes, mode) {
     await bindDefaultFill(frame, "Base/bfc-base-3");
     placeNode(frame, nodes[0]);
     figma.currentPage.selection = [frame];
+    return 1;
+  }
+  if (op.kind === "postit") {
+    await insertPostit(op.text);
     return 1;
   }
   if (op.kind === "component" && VARIABLE_MAP[op.slug].template) {
